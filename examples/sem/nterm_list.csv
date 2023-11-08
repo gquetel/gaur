@@ -1,0 +1,17 @@
+input.0,,
+input.1,,
+instructions.0,,
+instructions.1,,
+instruction.0,,
+instruction.1,,
+instruction.2,,
+instruction.3,,
+instruction.4,,
+instruction.5,,
+create_table.0,CREATE, create_table
+delete_table.0,DELETE, delete_table
+modify_table.0,MODIFY, modify_table
+show_table.0,SHOW, show_table
+modify_and_create.0,PLUS,
+execute_function.0,EXECUTE, execute_function
+newline.0,NEWLINE,
