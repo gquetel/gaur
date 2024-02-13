@@ -329,7 +329,7 @@ void extract_terminal(char *string)
     if (gaur_mode == M_EXTRACT && match_terminals(string))
     {
         char tmp[MAX_SIZE_CODE];
-        snprintf(tmp, sizeof(tmp), "%s", string);
+        snprintf(tmp, sizeof(tmp), "%s ", string);
         append_rule_group_buffer(tmp);
     }
 }

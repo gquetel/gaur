@@ -1,4 +1,4 @@
-GAUR is a tool to instrument Bison grammar. Given an input grammar file, it injects code to automatically and transparently produce sequences of semantics. A sequence of semantics corresponds to the operations performed on the system for one user input.  This project relies on `pygaur` to generate flag values for each grammar rule, the project is available at [pygaur](https://github.com/gquetel/pygaur).  
+GAUR is a tool to instrument Bison grammar. Given an input grammar file, it injects code to automatically and transparently produce sequences of semantics. A sequence of semantics corresponds to the operations performed on the system for one parser input.  This project relies on `pygaur` to generate flag values for each grammar rule, the project is available at [pygaur](https://github.com/gquetel/pygaur).  
 
 # Installation 
 Gaur requires `gcc`, `flex` and `bison`. After cloning this repository GAUR can be built as follows:
