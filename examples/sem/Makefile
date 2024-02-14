@@ -30,4 +30,4 @@ scan.o: scan.c
 build: parse.o scan.o
 	$(CC)  -o parse parse.o scan.o $(LDFLAGS)
 clean: 
-	rm -f parse gaur.modified.y *.c *.h *.o parse.output *.log nterm_list.txt
+	rm -f parse gaur.modified.y *.c *.h *.o parse.output *.log nterm_list.csv nterm_sem.txt

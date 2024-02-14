@@ -5,6 +5,7 @@ CC = gcc
 CPPFLAGS=-I ./include
 CFLAGS=-g -Wall
 G=parse.y
+GCLASSIFY=/home/gquetel/repos/pygaur/gclassify.py
 
 all: run   
 
@@ -62,7 +63,7 @@ output/nterm_list.txt: gaur | output
 	./gaur -e $(G) -o output/nterm_list.txt
 
 output/nterm_sem.csv:  output/nterm_list.txt output/output.dot | output
-	gclassify -o output/nterm_sem.csv output/nterm_list.txt
+	$(GCLASSIFY) -o output/nterm_sem.csv output/nterm_list.txt
 
 output/output.dot: gaur | output
 	./gaur -d parse.y -o output/parse.dot

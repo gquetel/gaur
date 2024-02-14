@@ -23,7 +23,7 @@ If the option -o is not used, the default output grammar filename is gaur.modifi
 
 # Running
 
-The GAUR pipeline is divided into three steps: data extractions, semantic similarity computation, and grammar modification. 
+The GAUR pipeline is divided into three steps: data extractions, semantic similarity computation, and grammar instrumentation. 
 
 ## Data extraction 
 
@@ -69,7 +69,7 @@ The output of the Python script is made to facilitate the parsing in the next ph
 0b00100execute_function
 0b00000newline
 ```
-Flags are in this order: read, modify, execute, delete, create. So we can see that `input` or `instructions` doesn't carry any particular semantic related to our actions, therefore no flags are set. But for the `create_table` nonterminal we have the create flags set to 1. 
+Flags are in this order: read, modify, execute, delete, create. So we can see that `input` or `instructions` don't carry any particular semantic related to our actions, therefore no flags are set. But for the `create_table` nonterminal we have the create flags set to 1. 
 
 This part involves two mechanisms: 
 - Hijacking Bison to use a custom [skeleton](https://www.gnu.org/software/bison/manual/html_node/Decl-Summary.html#index-_0025skeleton) that places C macros at specific positions to dynamically produce a semantic sequence. 
@@ -79,11 +79,11 @@ To do so we use the following command: `./gaur --list filename_flags filename_gr
 
 ## Makefile targets
 ### Instrumenting
-We defined makefile targets to automate the instrumentation process. After installing `gaur` and `pygaur` place the grammar to modify in the current directory and name it `parse.y`. Calling `make` will create the `gaur` binary, extract grammar data, call `pygaur` to classify rules, and creates a modified grammar in the `output/` folder under the name `gaur.modify.y`. 
+We defined makefile targets to automate the instrumentation process. After installing `gaur` and `pygaur` place the grammar to modify in the current directory and name it `parse.y`. Calling `make` will create the `gaur` binary, extract grammar data, call `pygaur` to classify rules, and create a modified grammar in the `output/` folder under the name `gaur.modify.y`. 
 
 ### Tree generation
 
 GAUR also allows generating a dot file corresponding to the visual representation of the given BISON grammar using the `-d` option, which results in the creation of a `output.dot` file. `make graph` can be used to display a tree for the `parse.y` grammar. 
 
 ### Corpus generation
-To generate a corpus of extracted documents through `gaur`. You can use the `make corpus` target, it will create a corpus using the grammar located under the [grammar](data/grammars/) folder and save it to `output/corpus.txt`.
+For the semantic inference step, GAUR creates for each grammar rule a document consisting of the name in the left-hand side, terminals in the right-hand side and the literals in the action code. For pre-processing purposes one could aim to construct a corpus of such documents. We provide a script that creates a corpus using the grammars located in the [grammar](data/grammars/). Using the `make corpus` target will generate a text file in the output directory. 

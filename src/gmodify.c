@@ -38,7 +38,7 @@ static int gaur_mode = M_DEFAULT;
  * @brief Internal function to store extracted data of a whole set of rule.
  * We cannot directly output data in file as if a midrule action occurs in a set of rules it will be declared before by bison
  * And we need to keep the same order as bison
- * @param source 
+ * @param source
  */
 void append_rule_group_buffer(char *source)
 {
@@ -57,7 +57,7 @@ void append_rule_group_buffer(char *source)
 }
 /**
  * @brief Internal function to store extracted data from action code
- * 
+ *
  * @param source buffer to append to action_buffer
  */
 void append_action_buffer(char *source)
@@ -76,9 +76,7 @@ void append_action_buffer(char *source)
     }
 }
 
-
 /* -------------------- INIT Func --------------------*/
-
 
 void init_output_file(char *fn_out)
 {
@@ -97,6 +95,7 @@ void init_inject_file(char *fn_inject)
     if (f_inject_code == NULL)
     {
         perror("Cannot open file to inject code from");
+        printf("%s\n",fn_inject);
         exit(EXIT_FAILURE);
     }
 }
@@ -207,7 +206,7 @@ void end_group_rule()
     if (gaur_mode == M_EXTRACT)
     {
         append_rule_group_buffer(action_buffer);
-        
+
         fprintf(f_out, "%s\n", rule_group_buffer);
 
         strcpy(rule_group_buffer, "");
