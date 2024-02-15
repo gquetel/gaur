@@ -95,7 +95,7 @@ void init_inject_file(char *fn_inject)
     if (f_inject_code == NULL)
     {
         perror("Cannot open file to inject code from");
-        printf("%s\n",fn_inject);
+        printf("%s\n", fn_inject);
         exit(EXIT_FAILURE);
     }
 }
@@ -129,6 +129,7 @@ void p_functions_definitions()
 {
     if (gaur_mode == M_DEFAULT)
     {
+        int nb_rules = 0;
         char ch;
         fprintf(f_out, "\n%%skeleton \"");
         fprintf(f_out, PATH_SKELETON);
@@ -162,9 +163,9 @@ void p_functions_definitions()
                 perror("Error while reading semantic file");
                 exit(EXIT_FAILURE);
             }
-
             b_nterm[strcspn(b_nterm, "\n")] = 0;
-            fprintf(f_out, "\t%s, /* %s */\n", b_score, b_nterm);
+            fprintf(f_out, "\t%s, /* Rule number: %03d %s */\n", b_score, nb_rules, b_nterm);
+            nb_rules++;
         }
 
         fprintf(f_out, "};\n}\n");

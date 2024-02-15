@@ -49,6 +49,7 @@ static char *output_name = "gaur.log";
     {                                                                    \
         if (nrule <= YYNRULES && nrule > 0)                              \
         {                                                                \
+            printf("%d ",nrule - 2); \
             int32_t isem_root = MARK_N(nrule);                           \
             char sem_ast[MAX_SIZE_SEM];                                  \
             strcpy(sem_ast, "");                                         \
