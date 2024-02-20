@@ -1,17 +1,28 @@
 %{
+  #include <string.h>
+  #include <stdlib.h>
 extern int yylex();
 extern int yyparse();
 extern void yyerror(const char* s);
 
-void create_table(){
+void create_table(char * str){
+  free(str);
  }
-void delete_table(){
+void delete_table(char * str){
+  free(str);
  }
-void modify_table(){
+void modify_table(char * str){
+  free(str);
  }
-void show_table(){
+void show_table(char * str){
+  free(str);
  }
-void execute_function(){
+void execute_function(char * str){
+  free(str);
+ }
+
+ void newline(char * str){
+  free(str);
  }
 
 %}
@@ -20,15 +31,16 @@ void execute_function(){
 %union {
     char *str;
 }
+
 %token <str> CREATE DELETE MODIFY SHOW EXECUTE PLUS NEWLINE;
-%type <str> create_table;
-%type <str> delete_table;
-%type <str> modify_table;
-%type <str> execute_function;
-%type <str> show_table;
-%type <str> newline;
-%type <str> modify_and_create;
-%type <str> instruction;
+%type  create_table;
+%type  delete_table;
+%type  modify_table;
+%type  execute_function;
+%type  show_table;
+%type  newline;
+%type  modify_and_create;
+%type  instruction;
 
 
 %%
@@ -42,13 +54,13 @@ instructions: instruction
 instruction:  create_table |  delete_table |  modify_table 
 |   show_table |  execute_function |  modify_and_create   ;
 
-create_table: CREATE {$$ = $1; create_table();}
-delete_table: DELETE {$$ = $1;delete_table();}
-modify_table: MODIFY {$$ = $1;modify_table();}
-show_table: SHOW {$$ = $1;show_table();}
-modify_and_create: modify_table PLUS create_table  {$$ = $1;};  
-execute_function: EXECUTE {$$ = $1;execute_function();}
-newline: NEWLINE {$$ = $1;}
+create_table: CREATE {create_table($1);}
+delete_table: DELETE {delete_table($1);}
+modify_table: MODIFY {modify_table($1);}
+show_table: SHOW {show_table($1);}
+modify_and_create: modify_table PLUS create_table    
+execute_function: EXECUTE {execute_function($1);}
+newline: %empty | NEWLINE  {newline($1);}
 
 %% 
 void
