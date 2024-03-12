@@ -27,7 +27,6 @@ void execute_function(char * str){
 
 %}
 
-
 %union {
     char *str;
 }

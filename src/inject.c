@@ -4,95 +4,63 @@
 
 #define LOG_ENV "GAUR_LOGFILE"
 #define MAX_SIZE_SEM 4096
-#define MAX_SIZE_RULE 10
 
 static char *output_name = "gaur.log";
 
 #define GAUR_PARSE_BEGIN(size, state_stack) \
-    char ggsem[YYINITDEPTH][MAX_SIZE_SEM];  \
-    char ggruleseq[MAX_SIZE_SEM];           \
-    int ggi = -1; /* Index for ggsem */     \
+    char ggsem[MAX_SIZE_SEM] = "\0";        \
     long ggid = (long)&state_stack[0];
-
-#define GAUR_SHIFT(yytoken)                                                      \
-    do                                                                           \
-    {                                                                            \
-        if (yytoken == YYSYMBOL_YYEOF)                                           \
-        {                                                                        \
-            FILE *f_logs;                                                        \
-            const char *env_fn = getenv(LOG_ENV);                                \
-            if (env_fn)                                                          \
-                output_name = strdup(env_fn);                                    \
-            f_logs = fopen(output_name, "a");                                    \
-            if (f_logs == NULL)                                                  \
-            {                                                                    \
-                perror("Gaur: cannot open file to output semantics logs");       \
-            }                                                                    \
-            else                                                                 \
-            {                                                                    \
-                fprintf(f_logs, " %ld - %s\n%s\n", ggid, ggsem[ggi], ggruleseq); \
-                ggi++;                                                           \
-                fclose(f_logs);                                                  \
-            }                                                                    \
-        }                                                                        \
-        ggi++;                                                                   \
-        if (yytoken <= YYNTOKENS)                                                \
-            strcpy(ggsem[ggi], "N"); /* Shift terminal */                        \
-        else                                                                     \
-            ggsem[ggi][0] = '\0'; /* Shift nonterminal */                        \
-    } while (0)
 
 #define MARK_N(i) (ggrulesem[i - 2])
 
-#define GAUR_REDUCE(nrule, yylen)                                        \
-    do                                                                   \
-    {                                                                    \
-        if (nrule <= YYNRULES && nrule > 0)                              \
-        {                                                                \
-            printf("%d ",nrule - 2); \
-            int32_t isem_root = MARK_N(nrule);                           \
-            char sem_ast[MAX_SIZE_SEM];                                  \
-            strcpy(sem_ast, "");                                         \
-            if (!isem_root)                                              \
-            {                                                            \
-                /* Root has no semantic */                               \
-                int is_empty = 1;                                        \
-                for (int i = ggi - (yylen - 1); i <= ggi; i++)           \
-                { /* Append semantic of children is sem <> 'N' */        \
-                    if (strcmp("N", ggsem[i]))                           \
-                    {                                                    \
-                        concat(sem_ast, ggsem[i]);                       \
-                        is_empty = 0;                                    \
-                    }                                                    \
-                }                                                        \
-                if (is_empty) /* All children has 'N' semantic */        \
-                    strcpy(sem_ast, "N");                                \
-            }                                                            \
-            else                                                         \
-            { /* Root  has a semantic*/                                  \
-                char *ssem_root = seq(isem_root);                        \
-                if (ssem_root == NULL)                                   \
-                {                                                        \
-                    printf("Error with semantic of rule: %d.\n", nrule); \
-                    break;                                               \
-                }                                                        \
-                for (int i = ggi - (yylen - 1); i <= ggi; i++)           \
-                { /* Append semantic of children is sem <> 'N' */        \
-                    if (strcmp("N", ggsem[i]))                           \
-                    {                                                    \
-                        concat(sem_ast, ggsem[i]);                       \
-                    }                                                    \
-                }                                                        \
-                concat(sem_ast, ssem_root);                              \
-                free(ssem_root);                                         \
-            }                                                            \
-            ggi -= yylen - 1;                                            \
-            strcpy(ggsem[ggi], sem_ast); /* Save sem(AST)*/              \
-        }                                                                \
-        else                                                             \
-        {                                                                \
-            printf("Rule number out of bounds: %d.\n", nrule);           \
-        }                                                                \
+#define GAUR_SHIFT(yytoken)                                                \
+    do                                                                     \
+    {                                                                      \
+        if (yytoken == YYSYMBOL_YYEOF)                                     \
+        {                                                                  \
+            FILE *f_logs;                                                  \
+            const char *env_fn = getenv(LOG_ENV);                          \
+            if (env_fn)                                                    \
+                output_name = strdup(env_fn);                              \
+            f_logs = fopen(output_name, "a");                              \
+            if (f_logs == NULL)                                            \
+            {                                                              \
+                perror("Gaur: cannot open file to output semantics logs"); \
+            }                                                              \
+            else                                                           \
+            {                                                              \
+                fprintf(f_logs, " %ld - %s\n", ggid, ggsem);               \
+                ggid++;                                                    \
+                fclose(f_logs);                                            \
+            }                                                              \
+        }                                                                  \
+    } while (0)
+
+#define GAUR_REDUCE(nrule, yylen)                                           \
+    do                                                                      \
+    {                                                                       \
+        char s_rule[16]; /*Save rule number string format*/                 \
+        /* Bison adds an accept rule, to get the number of rule matching */ \
+        /* with the line number in nterm_list file, we substract one */     \
+        sprintf(s_rule, "%d:", nrule - 1);                                  \
+        concat(ggsem, s_rule);                                              \
+        int32_t nrule_flags = MARK_N(nrule); /*Save rule semantic*/         \
+        if (!nrule_flags)                                                   \
+        {                                                                   \
+            concat(ggsem, "N ");                                            \
+        }                                                                   \
+        else                                                                \
+        {                                                                   \
+            char *ssem_root = seq(nrule_flags);                             \
+            if (ssem_root == NULL)                                          \
+            {                                                               \
+                printf("Error with semantic of rule: %d,"                   \
+                       "flag : % d\n ",                                     \
+                       nrule, nrule_flags);                                 \
+                break;                                                      \
+            }                                                               \
+            concat(ggsem, ssem_root);                                       \
+        }                                                                   \
     } while (0)
 ;
 
@@ -124,6 +92,7 @@ int s_len(int32_t i)
     i = (i + (i >> 4)) & 0x0F0F0F0F;
     return (i * 0x01010101) >> 24;
 }
+
 /**
  * @brief Returns a pointer to a string representing the semantics associated to a given int32_t
  * You need to FREE the pointer after usage
