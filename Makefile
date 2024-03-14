@@ -4,27 +4,27 @@ CC = gcc
 
 CPPFLAGS=-I ./include
 CFLAGS=-g -Wall
-G=parse.y
+GRAMMARFILE=parse.y
+INJECTFILE=/usr/local/gaur/src/injects/inject.c
 GCLASSIFY=/home/gquetel/repos/pygaur/gclassify.py
 
 all: run   
 
 # -------------------- INSTALLATION FILES   --------------------
-install: /usr/local/gaur/src/inject.c /usr/share/bison/skeletons/gaur_yacc.c 
+install: /usr/local/gaur/src/injects/ /usr/share/bison/skeletons/
 
 output: 
 	@mkdir -p $@
 
-# File to inject into grammar prologue
-/usr/local/gaur/src/inject.c: src/inject.c | /usr/local/gaur/src 
-	sudo cp src/inject.c $@
+/usr/local/gaur/src/injects/: src/injects/*.c src/injects/*.cpp | /usr/local/gaur/src/
+	sudo cp -r src/injects/*.c $@
+	sudo cp -r src/injects/*.cpp $@
 
-# Custom bison skeleton
-/usr/share/bison/skeletons/gaur_yacc.c: src/skeleton/gaur_yacc.c
-	sudo cp src/skeleton/gaur_yacc.c $@
+/usr/local/gaur/src/:
+	    sudo mkdir -p /usr/local/gaur/src/injects/
 
-/usr/local/gaur/src:
-	    sudo mkdir -p $@
+/usr/share/bison/skeletons/: src/skeletons/
+	sudo cp src/skeletons/ $@
 
 
 # -------------------- BUILD GAUR BINARY --------------------
@@ -54,13 +54,13 @@ gaur.tab.o: gaur.tab.c gaur.tab.h
 # -------------------- INSTRUMENT  --------------------
 
 run: gaur output/nterm_sem.csv
-	./gaur --list output/nterm_sem.csv $(G) -o output/gaur.modified.y
+	./gaur --list output/nterm_sem.csv $(GRAMMARFILE) -i $(INJECTFILE)  -o output/gaur.modified.y
 
 output/stopwordlist.txt: output/corpus.txt
 	mswlist output/corpus.txt -o output/stopwordlist.txt
 	
 output/nterm_list.txt: gaur | output
-	./gaur -e $(G) -o output/nterm_list.txt
+	./gaur -e $(GRAMMARFILE) -o output/nterm_list.txt
 
 output/nterm_sem.csv:  output/nterm_list.txt output/output.dot | output
 	$(GCLASSIFY) -o output/nterm_sem.csv output/nterm_list.txt
@@ -85,4 +85,7 @@ clean:
 	@rm -rf output 
 	@cd examples/ ; make clean
 
+# -------------------- UNINSTALL   --------------------
+uninstall:
+	@sudo rm -rf /usr/local/gaur/ 
 

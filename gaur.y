@@ -9,7 +9,7 @@
   #include <gmodify.h>
 
   #define OUTPUT_FILENAME "gaur.modified.y"
-  #define INJECT_FILENAME "/usr/local/gaur/src/inject.c"
+  #define INJECT_FILENAME "/usr/local/gaur/src/injects/inject.c"
   #define EXTRACT_FILENAME "nterm_list.csv"
 
   extern int yylex();

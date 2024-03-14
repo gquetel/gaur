@@ -10,9 +10,9 @@ static char *output_name = "gaur.log";
 #define GAUR_PARSE_BEGIN(size, state_stack) \
     char ggsem[MAX_SIZE_SEM] = "\0";        \
     long ggid = (long)&state_stack[0];
-
+  
 #define MARK_N(i) (ggrulesem[i - 2])
-
+ 
 #define GAUR_SHIFT(yytoken)                                                \
     do                                                                     \
     {                                                                      \
