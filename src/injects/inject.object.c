@@ -101,7 +101,7 @@ int s_len(int32_t i)
  */
 char *seq(int32_t flags)
 {
-    char *res = (char*)malloc(sizeof(char) * MAX_SIZE_SEM);
+    char *res = malloc(sizeof(char) * MAX_SIZE_SEM);
     if (!res)
     {
         perror("failed to allocate sequence.\n");

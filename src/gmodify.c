@@ -2,12 +2,13 @@
 #include <gmodify.h>
 #include <dll.h>
 #include <regex.h>
+#include <errno.h>
 
-#define SIZE_FLAG 8
+#define MAX_FLAG_SIZE 8
 #define MAX_SIZE_NTERM 100
 #define MAX_SIZE_CODE 10000
 #define MAX_SIZE_RULE 100000
-#define PATH_SKELETON "gaur_yacc.c"
+#define PATH_SKELETON "gaur_mysql.c"
 
 static FILE *f_out;         /* Modified grammar output file OR nonterminal list */
 static FILE *f_inject_code; /* Input file to inject code in prologue*/
@@ -124,32 +125,67 @@ int get_gaur_mode()
     return gaur_mode;
 }
 
-/* -------------------- GRAMMAR INSTRUMENTALIZATION --------------------*/
-void p_functions_definitions()
+/**
+ * @brief Print the rules-labels array in the instrumented grammar file.
+ * Called by p_functions_definitions
+ */
+void p_semantic_array()
 {
-    if (gaur_mode == M_DEFAULT)
+    /* Chech how many tags have been declared, for now we only support 1 or 2*/
+    int n_tags = 0;
+    int nb_rules = 0;
+
+    if ((n_tags = fgetc(f_semantics)) == EOF)
     {
-        int nb_rules = 0;
-        char ch;
-        fprintf(f_out, "\n%%skeleton \"");
-        fprintf(f_out, PATH_SKELETON);
-        fprintf(f_out, "\"\n");
+        perror("Error while reading semantic file");
+        exit(EXIT_FAILURE);
+    }
+    n_tags -= '0';
 
-        fprintf(f_out, "\n%%code{\n\n");
-        /* Static inject file */
-        while ((ch = fgetc(f_inject_code)) != EOF)
-            fputc(ch, f_out);
+    /* Semantic array injection */
+    switch (n_tags)
+    {
+    case 1: /* action */
+    {
+        char b_size_flag[MAX_FLAG_SIZE];
+        char b_nterm[MAX_SIZE_NTERM];
 
-        /* Semantic array injection */
+        long flag_size;
+
+        /* Skip comma */
+        fgetc(f_semantics);
+
+        /* Read until comma or EOF*/
+        if (fscanf(f_semantics, "%31[^,]", b_size_flag) != 1)
+        {
+            perror("Error while reading semantic file");
+            exit(EXIT_FAILURE);
+        }
+        /* Get flag value and checks its validity */
+        flag_size = strtol(b_size_flag, NULL, 10);
+        if (flag_size > 32 || flag_size < 1)
+        {
+            perror("Invalid flag size, must be between 1 and 32");
+            exit(EXIT_FAILURE);
+        }
+
+        /* Read EOL */
+        if (fgets(b_nterm, MAX_SIZE_NTERM, f_semantics) == NULL || feof(f_semantics))
+        {
+            perror("Error while reading semantic file");
+            exit(EXIT_FAILURE);
+        }
+
+        /* We can start to print array */
         fprintf(f_out, "\nstatic const  int32_t ggrulesem[] = {\n");
 
-        char b_score[SIZE_FLAG];
-        char b_nterm[MAX_SIZE_NTERM];
+        /* TODO Lire nombre de bits pour flag et initialiser b_score à n+1 */
+        char b_score[flag_size + 1];
 
         while (!feof(f_semantics) && !ferror(f_semantics))
         {
             // Read SIZE_FLAG-1 first characters (semantic values)
-            if (fgets(b_score, SIZE_FLAG, f_semantics) == NULL)
+            if (fgets(b_score, flag_size, f_semantics) == NULL)
             {
                 if (feof(f_semantics))
                     break; /* In case of newline eof can be triggered here */
@@ -167,8 +203,35 @@ void p_functions_definitions()
             fprintf(f_out, "\t%s, /* Rule number: %03d %s */\n", b_score, nb_rules, b_nterm);
             nb_rules++;
         }
-
         fprintf(f_out, "};\n}\n");
+        break;
+    }
+    case 2: /* action, object */
+        // TODO
+        break;
+    default:
+        errno = EINVAL;
+        perror("Invalid number of tags, must either be 1 or 2");
+        exit(EINVAL);
+        break;
+    }
+}
+/* -------------------- GRAMMAR INSTRUMENTALIZATION --------------------*/
+void p_functions_definitions()
+{
+    if (gaur_mode == M_DEFAULT)
+    {
+        char ch;
+        fprintf(f_out, "\n%%skeleton \"");
+        fprintf(f_out, PATH_SKELETON);
+        fprintf(f_out, "\"\n");
+
+        fprintf(f_out, "\n%%code{\n\n");
+        /* Static inject file */
+        while ((ch = fgetc(f_inject_code)) != EOF)
+            fputc(ch, f_out);
+
+        p_semantic_array();
     }
 }
 

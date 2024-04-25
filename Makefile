@@ -6,7 +6,7 @@ CPPFLAGS=-I ./include
 CFLAGS=-g -Wall
 GRAMMARFILE=parse.y
 INJECTFILE=/usr/local/gaur/src/injects/inject.c
-GCLASSIFY=/home/gquetel/repos/pygaur/gclassify.py
+GCLASSIFY=gclassify
 
 all: run   
 
@@ -23,8 +23,8 @@ output:
 /usr/local/gaur/src/:
 	    sudo mkdir -p /usr/local/gaur/src/injects/
 
-/usr/share/bison/skeletons/: src/skeletons/
-	sudo cp src/skeletons/ $@
+/usr/share/bison/skeletons/: src/skeletons/*.c
+	sudo cp src/skeletons/* $@
 
 
 # -------------------- BUILD GAUR BINARY --------------------
@@ -63,7 +63,7 @@ output/nterm_list.txt: gaur | output
 	./gaur -e $(GRAMMARFILE) -o output/nterm_list.txt
 
 output/nterm_sem.csv:  output/nterm_list.txt output/output.dot | output
-	$(GCLASSIFY) -o output/nterm_sem.csv output/nterm_list.txt
+	$(GCLASSIFY) -o output/nterm_sem.csv output/nterm_list.txt ~/.local/lib/python3.10/site-packages/pygaur/data/sem/tags/
 
 output/output.dot: gaur | output
 	./gaur -d parse.y -o output/parse.dot

@@ -259,7 +259,7 @@ int my_sql_parser_lex(void *yylval, void *yythd);
   } while(0)
 
 /**
-  Parse_tree_root::make_cmd() wrapper to raise postponed error message on OOM
+  Parse_tree_root::make_cmd() wrapper to raise postponed error message on delete
 
   @note x may be nullptr because of OOM error.
 */
@@ -13571,7 +13571,6 @@ opt_low_priority:
         ;
 
 /* Delete rows from a table */
-
 delete_stmt:
           opt_with_clause
           DELETE_SYM
