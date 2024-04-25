@@ -1,6 +1,6 @@
 
 GAUR= ../../gaur
-GAUR_FLAGS=-i ../../src/inject.c -l nterm_sem.txt -o gaur.modified.y
+GAUR_FLAGS=-i  /usr/local/gaur/src/injects/inject.c -l nterm_sem.txt -o gaur.modified.y
 BISON = bison -d -t
 LDFLAGS= -L/opt/local/lib -lreadline -lm 
 FLEX = flex
@@ -13,7 +13,7 @@ nterm_list.csv: parse.y
 	$(GAUR) --extract parse.y 
 
 nterm_sem.txt: nterm_list.csv parse.dot
-	gclassify -o nterm_sem.txt nterm_list.csv
+	gclassify -o nterm_sem.txt nterm_list.csv  ~/.local/lib/python3.10/site-packages/pygaur/data/sem/tags/
 
 gaur.modified.y: parse.y nterm_sem.txt
 	$(GAUR) $(GAUR_FLAGS) parse.y 

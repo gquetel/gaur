@@ -53,8 +53,8 @@ gaur.tab.o: gaur.tab.c gaur.tab.h
 
 # -------------------- INSTRUMENT  --------------------
 
-run: gaur output/nterm_sem.csv
-	./gaur --list output/nterm_sem.csv $(GRAMMARFILE) -i $(INJECTFILE)  -o output/gaur.modified.y
+run: gaur output/labels.gaur
+	./gaur --list output/labels.gaur $(GRAMMARFILE) -i $(INJECTFILE)  -o output/gaur.modified.y
 
 output/stopwordlist.txt: output/corpus.txt
 	mswlist output/corpus.txt -o output/stopwordlist.txt
@@ -62,8 +62,8 @@ output/stopwordlist.txt: output/corpus.txt
 output/nterm_list.txt: gaur | output
 	./gaur -e $(GRAMMARFILE) -o output/nterm_list.txt
 
-output/nterm_sem.csv:  output/nterm_list.txt output/output.dot | output
-	$(GCLASSIFY) -o output/nterm_sem.csv output/nterm_list.txt ~/.local/lib/python3.10/site-packages/pygaur/data/sem/tags/
+output/labels.gaur:  output/nterm_list.txt output/output.dot | output
+	$(GCLASSIFY) -o output/labels.gaur output/nterm_list.txt ~/.local/lib/python3.10/site-packages/pygaur/data/sem/tags/
 
 output/output.dot: gaur | output
 	./gaur -d parse.y -o output/parse.dot

@@ -4,11 +4,11 @@
 #include <regex.h>
 #include <errno.h>
 
-#define MAX_FLAG_SIZE 8
+#define MAX_FLAG_SIZE 32
 #define MAX_SIZE_NTERM 100
 #define MAX_SIZE_CODE 10000
 #define MAX_SIZE_RULE 100000
-#define PATH_SKELETON "gaur_mysql.c"
+#define PATH_SKELETON "gaur_yacc.c"
 
 static FILE *f_out;         /* Modified grammar output file OR nonterminal list */
 static FILE *f_inject_code; /* Input file to inject code in prologue*/
@@ -178,14 +178,12 @@ void p_semantic_array()
 
         /* We can start to print array */
         fprintf(f_out, "\nstatic const  int32_t ggrulesem[] = {\n");
-
-        /* TODO Lire nombre de bits pour flag et initialiser b_score à n+1 */
-        char b_score[flag_size + 1];
+        char b_score[MAX_FLAG_SIZE];
 
         while (!feof(f_semantics) && !ferror(f_semantics))
         {
             // Read SIZE_FLAG-1 first characters (semantic values)
-            if (fgets(b_score, flag_size, f_semantics) == NULL)
+            if (fgets(b_score, flag_size + 1, f_semantics) == NULL)
             {
                 if (feof(f_semantics))
                     break; /* In case of newline eof can be triggered here */
@@ -200,7 +198,7 @@ void p_semantic_array()
                 exit(EXIT_FAILURE);
             }
             b_nterm[strcspn(b_nterm, "\n")] = 0;
-            fprintf(f_out, "\t%s, /* Rule number: %03d %s */\n", b_score, nb_rules, b_nterm);
+            fprintf(f_out, "\t0b%s, /* Rule number: %03d %s */\n", b_score, nb_rules, b_nterm);
             nb_rules++;
         }
         fprintf(f_out, "};\n}\n");

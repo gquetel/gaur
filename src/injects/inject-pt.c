@@ -149,15 +149,15 @@ char *seq(int32_t flags)
     /* Only one semantic */
     if (s_len(flags) == 1)
     {
-        if (flags & 0b00001)
+        if (flags & 0b10000)
             strcpy(res, "C ");
-        if (flags & 0b00010)
+        if (flags & 0b01000)
             strcpy(res, "D ");
         if (flags & 0b00100)
             strcpy(res, "E ");
-        if (flags & 0b01000)
+        if (flags & 0b00010)
             strcpy(res, "M ");
-        if (flags & 0b10000)
+        if (flags & 0b00001)
             strcpy(res, "R ");
         return res;
     }
@@ -165,30 +165,30 @@ char *seq(int32_t flags)
     /* More than one semantic */
     strcpy(res, "");
     char *tmp = NULL;
-    if (flags & 0b00001)
+    if (flags & 0b10000)
     {
         concat(res, "C");
-        tmp = seq(flags - 0b00001);
+        tmp = seq(flags - 0b10000);
     }
-    else if (flags & 0b00010)
+    else if (flags & 0b01000)
     {
         concat(res, "D");
-        tmp = seq(flags - 0b00010);
+        tmp = seq(flags - 0b01000);
     }
     else if (flags & 0b00100)
     {
         concat(res, "E");
         tmp = seq(flags - 0b00100);
     }
-    else if (flags & 0b01000)
+    else if (flags & 0b00010)
     {
         concat(res, "M");
-        tmp = seq(flags - 0b01000);
+        tmp = seq(flags - 0b00010);
     }
-    else if (flags & 0b10000)
+    else if (flags & 0b00001)
     {
         concat(res, "R");
-        tmp = seq(flags - 0b10000);
+        tmp = seq(flags - 0b00001);
     }
 
     if (tmp == NULL)
