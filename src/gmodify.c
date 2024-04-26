@@ -8,6 +8,7 @@
 #define MAX_SIZE_NTERM 100
 #define MAX_SIZE_CODE 10000
 #define MAX_SIZE_RULE 100000
+#define MAX_SIZE_JSON 64000
 #define PATH_SKELETON "gaur_yacc.c"
 
 static FILE *f_out;         /* Modified grammar output file OR nonterminal list */
@@ -125,92 +126,133 @@ int get_gaur_mode()
     return gaur_mode;
 }
 
-/**
- * @brief Print the rules-labels array in the instrumented grammar file.
- * Called by p_functions_definitions
- */
-void p_semantic_array()
-{
-    /* Chech how many tags have been declared, for now we only support 1 or 2*/
-    int n_tags = 0;
-    int nb_rules = 0;
+/* --------------- Loading JSON file from pygaur --------------- */
 
-    if ((n_tags = fgetc(f_semantics)) == EOF)
+char *read_semantic_file()
+{
+    char *b_json = NULL;
+    /* Read JSON file in buffer for cJSON*/
+    if (fseek(f_semantics, 0, SEEK_END) != 0)
     {
-        perror("Error while reading semantic file");
+        perror("Error while looking for EOF of tagging file");
         exit(EXIT_FAILURE);
     }
-    n_tags -= '0';
+    size_t filesize = ftell(f_semantics);
+    if (filesize < 0)
+    {
+        perror("Error while getting size of tagging file");
+        exit(EXIT_FAILURE);
+    }
+    if (fseek(f_semantics, 0, SEEK_SET) != 0)
+    {
+        perror("Error while setting pointer to begining of tagging file");
+        exit(EXIT_FAILURE);
+    }
+    b_json = (char *)malloc((size_t)filesize + sizeof(""));
+    if (b_json == NULL)
+    {
+        perror("Error while allocating memory for JSON buffer");
+        exit(EXIT_FAILURE);
+    }
 
-    /* Semantic array injection */
+    if (fread(b_json, sizeof(char), (size_t)filesize, f_semantics) != filesize)
+    {
+        free(b_json);
+        perror("Error while reading JSON file");
+        exit(EXIT_FAILURE);
+    }
+    b_json[filesize] = '\0';
+    return b_json;
+}
+/**
+ * @brief Parse JSON file and inject semantic array in the instrumented grammar file
+ * See https://github.com/DaveGamble/cJSON for cJSON documentation and usage
+ */
+void p_semantic_array_from_json()
+{
+    // TODO: Maybe find some place to verify size of flags is both consistant and valid (1-32)
+
+    /* Read json file and init data structures */
+    char *b_json = read_semantic_file();
+    cJSON *parsed = cJSON_Parse(b_json);
+    if (parsed == NULL)
+    {
+        const char *error_ptr = cJSON_GetErrorPtr();
+        if (error_ptr != NULL)
+        {
+            fprintf(stderr, "Error before: %s\n", error_ptr);
+        }
+        exit(EXIT_FAILURE);
+    }
+
+    if (b_json != NULL)
+    {
+        free(b_json);
+    }
+
+    const cJSON *general = NULL;
+    const cJSON *rules = NULL;
+    const cJSON *flags_number = NULL;
+
+    cJSON *flags_array = NULL;
+    cJSON *rule_name = NULL;
+    cJSON *flag = NULL;
+
+    /* In the first place, get how many flags are defined in file and how many rules */
+    general = cJSON_GetObjectItemCaseSensitive(parsed, "GENERAL");
+    if (!cJSON_IsObject(general) || general->child == NULL)
+    {
+        perror("Error while general field of JSON file");
+        exit(EXIT_FAILURE);
+    }
+
+    flags_number = cJSON_GetObjectItemCaseSensitive(general, "flags_number");
+    if (!cJSON_IsNumber(flags_number))
+    {
+        perror("Error while reading flags_number field of JSON file");
+        exit(EXIT_FAILURE);
+    }
+
+    int n_tags = flags_number->valueint;
+    int nb_rules = 0; /* Compteur pour indices du tableau injecté */
+
+    /* Given the amount of tags we will not inject the same content  */
     switch (n_tags)
     {
     case 1: /* action */
-    {
-        char b_size_flag[MAX_FLAG_SIZE];
-        char b_nterm[MAX_SIZE_NTERM];
-
-        long flag_size;
-
-        /* Skip comma */
-        fgetc(f_semantics);
-
-        /* Read until comma or EOF*/
-        if (fscanf(f_semantics, "%31[^,]", b_size_flag) != 1)
-        {
-            perror("Error while reading semantic file");
-            exit(EXIT_FAILURE);
-        }
-        /* Get flag value and checks its validity */
-        flag_size = strtol(b_size_flag, NULL, 10);
-        if (flag_size > 32 || flag_size < 1)
-        {
-            perror("Invalid flag size, must be between 1 and 32");
-            exit(EXIT_FAILURE);
-        }
-
-        /* Read EOL */
-        if (fgets(b_nterm, MAX_SIZE_NTERM, f_semantics) == NULL || feof(f_semantics))
-        {
-            perror("Error while reading semantic file");
-            exit(EXIT_FAILURE);
-        }
-
-        /* We can start to print array */
         fprintf(f_out, "\nstatic const  int32_t ggrulesem[] = {\n");
-        char b_score[MAX_FLAG_SIZE];
 
-        while (!feof(f_semantics) && !ferror(f_semantics))
+        cJSON_ArrayForEach(rules, cJSON_GetObjectItemCaseSensitive(parsed, "RULES"))
         {
-            // Read SIZE_FLAG-1 first characters (semantic values)
-            if (fgets(b_score, flag_size + 1, f_semantics) == NULL)
+            rule_name = cJSON_GetObjectItemCaseSensitive(rules, "name");
+
+            if (!cJSON_IsString(rule_name))
             {
-                if (feof(f_semantics))
-                    break; /* In case of newline eof can be triggered here */
-                perror("Error while reading semantic file");
+                perror("Error while reading name field of JSON file");
+                exit(EXIT_FAILURE);
+            }
+            flags_array = cJSON_GetObjectItemCaseSensitive(rules, "flags");
+            /* This switch case means we only have one flag: we take first elem of array */
+            flag = cJSON_GetArrayItem(flags_array, 0);
+
+            if (!cJSON_IsString(flag) || flag->valuestring == NULL)
+            {
+                perror("Error while reading flags field of JSON file");
                 exit(EXIT_FAILURE);
             }
 
-            // Prints comma, comment, name of nontemrinal newline
-            if (fgets(b_nterm, MAX_SIZE_NTERM, f_semantics) == NULL || feof(f_semantics))
-            {
-                perror("Error while reading semantic file");
-                exit(EXIT_FAILURE);
-            }
-            b_nterm[strcspn(b_nterm, "\n")] = 0;
-            fprintf(f_out, "\t0b%s, /* Rule number: %03d %s */\n", b_score, nb_rules, b_nterm);
+            fprintf(f_out, "\t0b%s, /* Rule number: %03d %s */\n", flag->valuestring, nb_rules, rule_name->valuestring);
             nb_rules++;
         }
-        fprintf(f_out, "};\n}\n");
+        fprintf(f_out, "};\n");
         break;
-    }
-    case 2: /* action, object */
+    case 2: /* action, datasets*/
         // TODO
         break;
+
     default:
         errno = EINVAL;
         perror("Invalid number of tags, must either be 1 or 2");
-        exit(EINVAL);
         break;
     }
 }
@@ -229,7 +271,8 @@ void p_functions_definitions()
         while ((ch = fgetc(f_inject_code)) != EOF)
             fputc(ch, f_out);
 
-        p_semantic_array();
+        p_semantic_array_from_json();
+        fprintf(f_out, "}\n");
     }
 }
 

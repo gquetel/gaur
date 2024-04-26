@@ -1,4 +1,3 @@
-
 #include <dll.h>
 
 struct parsed_string *head = NULL;

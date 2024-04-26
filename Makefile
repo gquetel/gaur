@@ -30,7 +30,7 @@ output:
 # -------------------- BUILD GAUR BINARY --------------------
 build: output install gaur 
 
-gaur: gmodify.o dll.o lex.yy.o gaur.tab.o 
+gaur: gmodify.o dll.o lex.yy.o gaur.tab.o cJSON.o
 	$(CC) $(CFLAGS) -o gaur $^  
 
 lex.yy.c: gaur.l gaur.tab.h
@@ -40,6 +40,9 @@ gaur.tab.c gaur.tab.h: gaur.y
 	$(BISON) gaur.y 
 
 gmodify.o: ./src/gmodify.c ./include/gmodify.h
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c $<
+
+cJSON.o: ./src/cJSON.c ./include/cJSON.h
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $<
 
 dll.o: ./src/dll.c ./include/dll.h

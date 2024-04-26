@@ -2,7 +2,7 @@
  * @file gmodify.h
  * @author gregor quetel
  *
- * @brief Functions to print the instrumented grammar into the output file / extract grammar information / 
+ * @brief Functions to print the instrumented grammar into the output file / extract grammar information /
  * Create dot file.
  *
  * @version 0.1
@@ -14,6 +14,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <cJSON.h>
 
 /* GAUR MODES */
 #define M_DEFAULT 1
@@ -121,12 +122,11 @@ void extract_nterm(char *nterm);
 void extract_action(char *action_literal);
 
 /**
- * @brief 
- * 
- * @param string 
+ * @brief
+ *
+ * @param string
  */
-void extract_terminal(char * string);
-
+void extract_terminal(char *string);
 
 /**
  * @brief
