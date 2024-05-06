@@ -1,6 +1,6 @@
 
 GAUR= ../../gaur
-GAUR_FLAGS=-i  /usr/local/gaur/src/injects/inject.c -l nterm_sem.txt -o gaur.modified.y
+GAUR_FLAGS=-i  /usr/local/gaur/src/injects/inject.linked-list.c -l nterm_sem.txt -o gaur.modified.y
 BISON = bison -d -t
 LDFLAGS= -L/opt/local/lib -lreadline -lm 
 FLEX = flex
