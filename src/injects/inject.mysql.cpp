@@ -3,9 +3,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <inttypes.h>
-
 #define LOG_ENV "GAUR_LOGFILE"
-static char *output_name = "gaur.log";
 
 typedef struct _node_pt
 {
@@ -33,7 +31,7 @@ typedef struct _node_pt
     { /* We substract 1 to nrule because of the bison accept rule offset*/ \
         if (first == NULL)                                                 \
         {                                                                  \
-            first = malloc(sizeof(struct _node_pt));                       \
+            first = (_node_pt *)(sizeof(struct _node_pt));                 \
             first->rule_semantic = MARK_N(nrule);                          \
             first->rule_number = nrule - 1;                                \
             first->next = NULL;                                            \
@@ -41,7 +39,7 @@ typedef struct _node_pt
         }                                                                  \
         else                                                               \
         {                                                                  \
-            current->next = malloc(sizeof(struct _node_pt));               \
+            current->next = (_node_pt *)malloc(sizeof(struct _node_pt));   \
             current = current->next;                                       \
             current->rule_semantic = MARK_N(nrule);                        \
             current->rule_number = nrule - 1;                              \
@@ -79,11 +77,14 @@ static struct
 void create_logentry(struct _node_pt *first, uint64_t query_id)
 {
     FILE *f_logs;
+    const char *output_name = "gaur.log";
+
     const char *env_fn = getenv(LOG_ENV);
     if (env_fn)
-        output_name = strdup(env_fn);
+        f_logs = fopen(strdup(env_fn), "a");
+    else
+        f_logs = fopen(output_name, "a");
 
-    f_logs = fopen(output_name, "a");
     if (f_logs == NULL)
     {
         perror("Gaur: cannot open file to log file");
