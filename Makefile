@@ -16,12 +16,12 @@ install: /usr/local/gaur/src/injects/ /usr/share/bison/skeletons/
 output: 
 	@mkdir -p $@
 
-/usr/local/gaur/src/injects/: src/injects/*.c src/injects/*.cpp | /usr/local/gaur/src/
+/usr/local/gaur/src/injects/: src/injects/*.c src/injects/*.cpp 
+	sudo mkdir -p /usr/local/gaur/src/injects/
 	sudo cp -r src/injects/*.c $@
 	sudo cp -r src/injects/*.cpp $@
 
 /usr/local/gaur/src/:
-	    sudo mkdir -p /usr/local/gaur/src/injects/
 
 /usr/share/bison/skeletons/: src/skeletons/*.c
 	sudo cp src/skeletons/* $@

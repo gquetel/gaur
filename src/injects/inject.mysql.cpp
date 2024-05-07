@@ -2,168 +2,116 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdint.h>
+#include <inttypes.h>
 
 #define LOG_ENV "GAUR_LOGFILE"
-#define MAX_SIZE_SEM 4096
-
 static char *output_name = "gaur.log";
 
-#define GAUR_PARSE_BEGIN(size, thd)        \
-    char ggsem[MAX_SIZE_SEM] = "\0";       \
-    uint64_t ggquery_id = thd->query_id; \
+typedef struct _node_pt
+{
+    int rule_number;
+    unsigned long rule_semantic;
+    struct _node_pt *next;
+} _Node_pt;
+
+#define GAUR_PARSE_BEGIN(size, thd)  \
+    struct _node_pt *first = NULL;   \
+    struct _node_pt *current = NULL; \
+    uint64_t ggid = thd->query_id;
 
 #define MARK_N(i) (ggrulesem[i - 2])
 
-#define GAUR_SHIFT(yytoken)                                                                         \
-    do                                                                                              \
-    {                                                                                               \
-        if (yytoken == YYSYMBOL_YYEOF)                                                              \
-        {                                                                                           \
-            FILE *f_logs;                                                                           \
-            const char *env_fn = getenv(LOG_ENV);                                                   \
-            if (env_fn)                                                                             \
-                output_name = strdup(env_fn);                                                       \
-            f_logs = fopen(output_name, "a");                                                       \
-            if (f_logs == NULL)                                                                     \
-            {                                                                                       \
-                perror("GAUR data collector: cannot open file to output input informations.");      \
-            }                                                                                       \
-            else                                                                                    \
-            {                                                                                       \
-                fprintf(f_logs, "%" PRId64 ",%s\n", ggquery_id, ggsem); \
-                fclose(f_logs);                                                                     \
-            }                                                                                       \
-        }                                                                                           \
+#define GAUR_SHIFT(yytoken)               \
+    do                                    \
+    {                                     \
+        if (yytoken == YYSYMBOL_YYEOF)    \
+            create_logentry(first, ggid); \
+    } while (0);
+
+#define GAUR_REDUCE(nrule, yylen)                                          \
+    do                                                                     \
+    { /* We substract 1 to nrule because of the bison accept rule offset*/ \
+        if (first == NULL)                                                 \
+        {                                                                  \
+            first = malloc(sizeof(struct _node_pt));                       \
+            first->rule_semantic = MARK_N(nrule);                          \
+            first->rule_number = nrule - 1;                                \
+            first->next = NULL;                                            \
+            current = first;                                               \
+        }                                                                  \
+        else                                                               \
+        {                                                                  \
+            current->next = malloc(sizeof(struct _node_pt));               \
+            current = current->next;                                       \
+            current->rule_semantic = MARK_N(nrule);                        \
+            current->rule_number = nrule - 1;                              \
+            current->next = NULL;                                          \
+        }                                                                  \
     } while (0)
 
-#define GAUR_REDUCE(nrule, yylen)                                           \
-    do                                                                      \
-    {                                                                       \
-        char s_rule[16]; /*Save rule number string format*/                 \
-        /* Bison adds an accept rule, to get the number of rule matching */ \
-        /* with the line number in nterm_list file, we substract one */     \
-        sprintf(s_rule, "%d:", nrule - 1);                                  \
-        concat(ggsem, s_rule);                                              \
-        int32_t nrule_flags = MARK_N(nrule); /*Save rule semantic*/         \
-        if (!nrule_flags)                                                   \
-        {                                                                   \
-            concat(ggsem, "N ");                                            \
-        }                                                                   \
-        else                                                                \
-        {                                                                   \
-            char *ssem_root = seq(nrule_flags);                             \
-            if (ssem_root == NULL)                                          \
-            {                                                               \
-                printf("Error with semantic of rule: %d,"                   \
-                       "flag:% d\n ",                                     \
-                       nrule, nrule_flags);                                 \
-                break;                                                      \
-            }                                                               \
-            concat(ggsem, ssem_root);                                       \
-        }                                                                   \
-    } while (0)
-;
+enum
+{
+    // Hopefully, temporary
+    _CREATE = 1 << 4,
+    _DELETE = 1 << 3,
+    _EXECUTE = 1 << 2,
+    _MODIFY = 1 << 1,
+    _READ = 1 << 0,
+};
+
+static struct
+{
+    int value;
+    const char *name;
+} _sem_mapping[] = {
+    {_CREATE, "CREATE"},
+    {_DELETE, "DELETE"},
+    {_EXECUTE, "EXECUTE"},
+    {_MODIFY, "MODIFY"},
+    {_READ, "READ"},
+};
 
 /**
- * @brief UGLY FIX
+ * @brief Create the log entry corresponding to parsed input.
  *
- * @param src
- * @param dest
- * @return char*
+ * @param first
  */
-char *concat(char *src, char *dest)
+void create_logentry(struct _node_pt *first, uint64_t query_id)
 {
-    if (MAX_SIZE_SEM > strlen(src) + strlen(dest) + 1)
-    {
-        return strcat(src, dest);
-    }
-    return src;
-}
-/**
- * @brief Popcount function
- *
- * @param i int32_t semantic representation through flags
- * @return int number of flags sets (number of semantics)
- */
-int s_len(int32_t i)
-{
-    i = i - ((i >> 1) & 0x55555555);
-    i = (i & 0x33333333) + ((i >> 2) & 0x33333333);
-    i = (i + (i >> 4)) & 0x0F0F0F0F;
-    return (i * 0x01010101) >> 24;
-}
+    FILE *f_logs;
+    const char *env_fn = getenv(LOG_ENV);
+    if (env_fn)
+        output_name = strdup(env_fn);
 
-/**
- * @brief Returns a pointer to a string representing the semantics associated to a given int32_t
- * You need to FREE the pointer after usage
- * @param flags int32_t semantic representation through flags
- * @return char* String representation, NULL if malloc failed
- */
-char *seq(int32_t flags)
-{
-    char *res = (char *)malloc(sizeof(char) * MAX_SIZE_SEM);
-    if (!res)
+    f_logs = fopen(output_name, "a");
+    if (f_logs == NULL)
     {
-        perror("failed to allocate sequence.\n");
-        return NULL;
+        perror("Gaur: cannot open file to log file");
     }
+    else
+    {
+        struct _node_pt *current = first;
+        fprintf(f_logs, "%" PRId64 " -- ", query_id); /* Print Input ID*/
+        while (current != NULL)
+        { /* Iterate over tree nodes, print their number (given by yyn)*/
+            fprintf(f_logs, "%d:", current->rule_number);
 
-    /* No semantic */
-    if (flags == 0)
-    {
-        strcpy(res, "N");
-        return res;
-    }
+            /* Then compare tag with flags and print corresponding semantic */
+            for (size_t i = 0; i < sizeof(_sem_mapping) / sizeof(_sem_mapping[0]); i++)
+            {
+                if (current->rule_semantic & _sem_mapping[i].value)
+                {
+                    fprintf(f_logs, "%s", _sem_mapping[i].name);
+                    break;
+                }
+            }
+            fprintf(f_logs, ", ");
 
-    /* Only one semantic */
-    if (s_len(flags) == 1)
-    {
-        if (flags & 0b10000)
-            strcpy(res, "C ");
-        if (flags & 0b01000)
-            strcpy(res, "D ");
-        if (flags & 0b00100)
-            strcpy(res, "E ");
-        if (flags & 0b00010)
-            strcpy(res, "M ");
-        if (flags & 0b00001)
-            strcpy(res, "R ");
-        return res;
+            struct _node_pt *tmp = current;
+            current = current->next;
+            free(tmp);
+        }
+        fprintf(f_logs, "\n");
+        fclose(f_logs);
     }
-
-    /* More than one semantic */
-    strcpy(res, "");
-    char *tmp = NULL;
-    if (flags & 0b10000)
-    {
-        concat(res, "C");
-        tmp = seq(flags - 0b10000);
-    }
-    else if (flags & 0b01000)
-    {
-        concat(res, "D");
-        tmp = seq(flags - 0b01000);
-    }
-    else if (flags & 0b00100)
-    {
-        concat(res, "E");
-        tmp = seq(flags - 0b00100);
-    }
-    else if (flags & 0b01000)
-    {
-        concat(res, "M");
-        tmp = seq(flags - 0b00010);
-    }
-    else if (flags & 0b00001)
-    {
-        concat(res, "R");
-        tmp = seq(flags - 0b00001);
-    }
-
-    if (tmp == NULL)
-        return NULL;
-
-    /* Concat with rest of sequence */
-    concat(res, tmp);
-    return res;
 }
