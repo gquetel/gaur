@@ -43,7 +43,7 @@ typedef struct _node_pt
             current->next = (struct _node_pt *)malloc(sizeof(struct _node_pt)); \
             current = current->next;                                            \
             current->rule_action = GET_ACTION_TAG(nrule);                       \
-            first->rule_asset = GET_ASSET_TAG(nrule);                           \
+            current->rule_asset = GET_ASSET_TAG(nrule);                           \
             current->rule_number = nrule - 1;                                   \
             current->next = NULL;                                               \
         }                                                                       \
