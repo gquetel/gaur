@@ -105,6 +105,7 @@ void create_logentry(struct _node_pt *first, uint64_t query_id)
             current = current->next;
             free(tmp);
         }
+        
         fprintf(f_logs, "\n");
         fclose(f_logs);
 

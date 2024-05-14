@@ -74,10 +74,8 @@ static struct
  */
 void create_logentry(struct _node_pt *first, uint64_t query_id)
 {
-
     const char *output_name = "gaur.log";
     FILE *f_logs = fopen(output_name, "a");
-
     if (f_logs == NULL)
     {
         perror("Gaur: cannot open file to log file");

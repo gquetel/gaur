@@ -4,13 +4,10 @@
 #include <stdint.h>
 #include <inttypes.h>
 
-#define LOG_ENV "GAUR_LOGFILE"
-static char *output_name = "gaur.log";
- 
 typedef struct _node_pt
 {
     int rule_number;
-    unsigned long rule_semantic;
+    int rule_action;
     struct _node_pt *next;
 } _Node_pt;
 
@@ -19,7 +16,7 @@ typedef struct _node_pt
     struct _node_pt *current = NULL;        \
     uint64_t ggid = (long)&state_stack[0];
 
-#define MARK_N(i) (ggrulesem[i - 2])
+#define GET_ACTION_TAG(i) (ggrulesem[i - 2])
 
 #define GAUR_SHIFT(yytoken)               \
     do                                    \
@@ -34,7 +31,7 @@ typedef struct _node_pt
         if (first == NULL)                                                 \
         {                                                                  \
             first = malloc(sizeof(struct _node_pt));                       \
-            first->rule_semantic = MARK_N(nrule);                          \
+            first->rule_action = GET_ACTION_TAG(nrule);                  \
             first->rule_number = nrule - 1;                                \
             first->next = NULL;                                            \
             current = first;                                               \
@@ -43,7 +40,7 @@ typedef struct _node_pt
         {                                                                  \
             current->next = malloc(sizeof(struct _node_pt));               \
             current = current->next;                                       \
-            current->rule_semantic = MARK_N(nrule);                        \
+            current->rule_action = GET_ACTION_TAG(nrule);                \
             current->rule_number = nrule - 1;                              \
             current->next = NULL;                                          \
         }                                                                  \
@@ -63,7 +60,7 @@ static struct
 {
     int value;
     const char *name;
-} _sem_mapping[] = {
+} _actions_mapping[] = {
     {_CREATE, "CREATE"},
     {_DELETE, "DELETE"},
     {_EXECUTE, "EXECUTE"},
@@ -78,12 +75,8 @@ static struct
  */
 void create_logentry(struct _node_pt *first, uint64_t query_id)
 {
-    FILE *f_logs;
-    const char *env_fn = getenv(LOG_ENV);
-    if (env_fn)
-        output_name = strdup(env_fn);
-
-    f_logs = fopen(output_name, "a");
+    const char *output_name = "gaur.log";
+    FILE *f_logs = fopen(output_name, "a");
     if (f_logs == NULL)
     {
         perror("Gaur: cannot open file to log file");
@@ -97,11 +90,11 @@ void create_logentry(struct _node_pt *first, uint64_t query_id)
             fprintf(f_logs, "%d:", current->rule_number);
 
             /* Then compare tag with flags and print corresponding semantic */
-            for (size_t i = 0; i < sizeof(_sem_mapping) / sizeof(_sem_mapping[0]); i++)
+            for (size_t i = 0; i < sizeof(_actions_mapping) / sizeof(_actions_mapping[0]); i++)
             {
-                if (current->rule_semantic & _sem_mapping[i].value)
+                if (current->rule_action & _actions_mapping[i].value)
                 {
-                    fprintf(f_logs, "%s", _sem_mapping[i].name);
+                    fprintf(f_logs, "%s", _actions_mapping[i].name);
                     break;
                 }
             }
@@ -113,5 +106,9 @@ void create_logentry(struct _node_pt *first, uint64_t query_id)
         }
         fprintf(f_logs, "\n");
         fclose(f_logs);
+
+        /* Reset nodes */
+        first = NULL;
+        current = NULL;
     }
 }
