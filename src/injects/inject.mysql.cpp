@@ -28,10 +28,10 @@ typedef struct _node_pt
 
 #define GAUR_REDUCE(nrule, yylen)                                               \
     do                                                                          \
-    { /* We substract 1 to nrule because of the bison accept rule offset        \
+    { /* We substract 1 to nrule because of the bison accept rule offset */     \
         if (first == NULL)                                                      \
         {                                                                       \
-            first = (struct _node_pt *)(sizeof(struct _node_pt));               \
+            first = (struct _node_pt *)malloc(sizeof(struct _node_pt));         \
             first->rule_semantic = MARK_N(nrule);                               \
             first->rule_number = nrule - 1;                                     \
             first->next = NULL;                                                 \
@@ -44,12 +44,11 @@ typedef struct _node_pt
             current->rule_semantic = MARK_N(nrule);                             \
             current->rule_number = nrule - 1;                                   \
             current->next = NULL;                                               \
-        }   */                                                                  \
+        }                                                                       \
     } while (0)
 
 enum
 {
-    // Hopefully, temporary
     _CREATE = 1 << 4,
     _DELETE = 1 << 3,
     _EXECUTE = 1 << 2,
@@ -92,26 +91,26 @@ void create_logentry(struct _node_pt *first, uint64_t query_id)
     else
     {
         struct _node_pt *current = first;
-        fprintf(f_logs, "%" PRId64 " -- \n", query_id); /* Print Input ID*/
-                                                        // while (current != NULL)
-                                                        // { /* Iterate over tree nodes, print their number (given by yyn)*/
-                                                        //     fprintf(f_logs, "%d:", current->rule_number);
+        fprintf(f_logs, "%" PRId64 " -- ", query_id); /* Print Input ID*/
+        while (current != NULL)
+        { /* Iterate over tree nodes, print their number (given by yyn)*/
+            fprintf(f_logs, "%d:", current->rule_number);
 
-        //     /* Then compare tag with flags and print corresponding semantic */
-        //     for (size_t i = 0; i < sizeof(_sem_mapping) / sizeof(_sem_mapping[0]); i++)
-        //     {
-        //         if (current->rule_semantic & _sem_mapping[i].value)
-        //         {
-        //             fprintf(f_logs, "%s", _sem_mapping[i].name);
-        //             break;
-        //         }
-        //     }
-        //     fprintf(f_logs, ", ");
+            /* Then compare tag with flags and print corresponding semantic */
+            for (size_t i = 0; i < sizeof(_sem_mapping) / sizeof(_sem_mapping[0]); i++)
+            {
+                if (current->rule_semantic & _sem_mapping[i].value)
+                {
+                    fprintf(f_logs, "%s", _sem_mapping[i].name);
+                    break;
+                }
+            }
+            fprintf(f_logs, ", ");
 
-        //     struct _node_pt *tmp = current;
-        //     current = current->next;
-        //     free(tmp);
-        // }
+            struct _node_pt *tmp = current;
+            current = current->next;
+            free(tmp);
+        }
         fprintf(f_logs, "\n");
         fclose(f_logs);
 
