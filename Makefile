@@ -66,7 +66,7 @@ output/nterm_list.txt: gaur | output
 	./gaur -e $(GRAMMARFILE) -o output/nterm_list.txt
 
 output/labels.gaur:  output/nterm_list.txt output/output.dot | output
-	$(GCLASSIFY) -o output/labels.gaur output/nterm_list.txt ~/.local/lib/python3.10/site-packages/pygaur/data/sem/tags/
+	$(GCLASSIFY) -o output/labels.gaur output/nterm_list.txt ~/.local/lib/python3.10/site-packages/pygaur/data/mysql/tags/
 
 output/output.dot: gaur | output
 	./gaur -d parse.y -o output/parse.dot

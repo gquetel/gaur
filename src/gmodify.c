@@ -198,6 +198,7 @@ void p_semantic_array_from_json()
     cJSON *flags_array = NULL;
     cJSON *rule_name = NULL;
     cJSON *flag = NULL;
+    cJSON *rules_number = NULL;
 
     /* In the first place, get how many flags are defined in file and how many rules */
     general = cJSON_GetObjectItemCaseSensitive(parsed, "GENERAL");
@@ -214,14 +215,23 @@ void p_semantic_array_from_json()
         exit(EXIT_FAILURE);
     }
 
+    rules_number = cJSON_GetObjectItemCaseSensitive(general, "rules_number");
+    if (!cJSON_IsNumber(rules_number))
+    {
+        perror("Error while reading rules_number field of JSON file");
+        exit(EXIT_FAILURE);
+    }
+
     int n_tags = flags_number->valueint;
-    int nb_rules = 0; /* Compteur pour indices du tableau injecté */
+    int n_rules = rules_number->valueint; /* Total number of rules defined in grammar, used to initialize ggrulesem */
+
+    int rules_counter = 0; /* Counter for comment in ggrulesem array */
 
     /* Given the amount of tags we will not inject the same content  */
     switch (n_tags)
     {
     case 1: /* action */
-        fprintf(f_out, "\nstatic const  int32_t ggrulesem[] = {\n");
+        fprintf(f_out, "\n\tstatic const  int32_t ggrulesem[%d] = {\n", n_rules);
 
         cJSON_ArrayForEach(rules, cJSON_GetObjectItemCaseSensitive(parsed, "RULES"))
         {
@@ -242,13 +252,44 @@ void p_semantic_array_from_json()
                 exit(EXIT_FAILURE);
             }
 
-            fprintf(f_out, "\t0b%s, /* Rule number: %03d %s */\n", flag->valuestring, nb_rules, rule_name->valuestring);
-            nb_rules++;
+            fprintf(f_out, "\t\t0b%s, /* Rule number: %03d %s */\n", flag->valuestring, rules_counter, rule_name->valuestring);
+            rules_counter++;
         }
-        fprintf(f_out, "};\n");
+        fprintf(f_out, "\t};\n");
         break;
-    case 2: /* action, datasets*/
-        // TODO
+    case 2: /* action, assets*/
+        fprintf(f_out, "\n\tstatic const  int32_t ggrulesem[%d][2] = {\n", n_rules);
+        cJSON_ArrayForEach(rules, cJSON_GetObjectItemCaseSensitive(parsed, "RULES"))
+        {
+            rule_name = cJSON_GetObjectItemCaseSensitive(rules, "name");
+
+            if (!cJSON_IsString(rule_name))
+            {
+                perror("Error while reading name field of JSON file");
+                exit(EXIT_FAILURE);
+            }
+            flags_array = cJSON_GetObjectItemCaseSensitive(rules, "flags");
+            /* We have two elements: an action at index 0 of array flags and
+             an object at index 1 of arrray flags */
+
+            flag = cJSON_GetArrayItem(flags_array, 0);
+            if (!cJSON_IsString(flag) || flag->valuestring == NULL)
+            {
+                perror("Error while reading flags field of JSON file");
+                exit(EXIT_FAILURE);
+            }
+            fprintf(f_out, "\t\t{0b%s,", flag->valuestring); /* print action flag */
+
+            flag = cJSON_GetArrayItem(flags_array, 1);
+            if (!cJSON_IsString(flag) || flag->valuestring == NULL)
+            {
+                perror("Error while reading flags field of JSON file");
+                exit(EXIT_FAILURE);
+            }
+            fprintf(f_out, "0b%s}, /* Rule number: %03d %s */\n", flag->valuestring, rules_counter, rule_name->valuestring);
+            rules_counter++;
+        }
+        fprintf(f_out, "\t};\n");
         break;
 
     default:
