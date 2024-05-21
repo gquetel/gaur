@@ -8,7 +8,7 @@ GRAMMARFILE=parse.y
 INJECTFILE=/usr/local/gaur/src/injects/inject.c
 GCLASSIFY=gclassify
 
-all: run   
+all: build  
 
 # -------------------- INSTALLATION FILES   --------------------
 install: /usr/local/gaur/src/injects/ /usr/share/bison/skeletons/
@@ -54,19 +54,7 @@ lex.yy.o: lex.yy.c gaur.tab.h
 gaur.tab.o: gaur.tab.c gaur.tab.h
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $<
 
-# -------------------- INSTRUMENT  --------------------
-
-run: gaur output/labels.gaur
-	./gaur --list output/labels.gaur $(GRAMMARFILE) -i $(INJECTFILE)  -o output/gaur.modified.y
-
-output/stopwordlist.txt: output/corpus.txt
-	mswlist output/corpus.txt -o output/stopwordlist.txt
-	
-output/nterm_list.txt: gaur | output
-	./gaur -e $(GRAMMARFILE) -o output/nterm_list.txt
-
-output/labels.gaur:  output/nterm_list.txt output/output.dot | output
-	$(GCLASSIFY) -o output/labels.gaur output/nterm_list.txt ~/.local/lib/python3.10/site-packages/pygaur/data/mysql/tags/
+# -------------------- TODO: restructurate theses rules  --------------------
 
 output/output.dot: gaur | output
 	./gaur -d parse.y -o output/parse.dot
