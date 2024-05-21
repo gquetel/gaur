@@ -10,7 +10,7 @@
 #define MAX_SIZE_RULE 100000
 #define MAX_SIZE_JSON 64000
 
-#define PATH_SKELETON "gaur_mysql.c"
+#define PATH_SKELETON "gaur_yacc.c"
 
 static FILE *f_out;         /* Modified grammar output file OR nonterminal list */
 static FILE *f_inject_code; /* Input file to inject code in prologue*/
