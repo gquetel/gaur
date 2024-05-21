@@ -283,7 +283,7 @@ int main(int argc, char **argv)
   int optc;
 
   /* Options parser */
-  while ((optc = getopt_long(argc, argv, "dehi:l:o:", long_opts, NULL)) != -1)
+  while ((optc = getopt_long(argc, argv, "dehi:l:o:s:", long_opts, NULL)) != -1)
   {
     switch (optc)
     {
@@ -308,6 +308,7 @@ int main(int argc, char **argv)
           "-i,  --inject=FILE       Path to the prologue code to inject\n"
           "-l,  --list=FILE         Path to the nonterminals semantics list\n"
           "-o,  --output=FILE       Leave output to FILE\n"
+          "-s,  --skeleton=FILE     Path to the skeleton file\n"
           "If the option -o is not used, the default output grammar filename is gaur.modified.y\n",
           stdout);
       exit(EXIT_SUCCESS);
@@ -323,6 +324,10 @@ int main(int argc, char **argv)
     case 'o':
       output_filename = strdup(optarg);
       has_defined_output = true;
+      break;
+    
+    case 's':
+      init_skeleton_file(optarg);
       break;
     }
   }

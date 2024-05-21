@@ -10,11 +10,11 @@
 #define MAX_SIZE_RULE 100000
 #define MAX_SIZE_JSON 64000
 
-#define PATH_SKELETON "gaur_yacc.c"
-
 static FILE *f_out;         /* Modified grammar output file OR nonterminal list */
 static FILE *f_inject_code; /* Input file to inject code in prologue*/
 static FILE *f_semantics;
+static char *filename_skeleton = "gaur_yacc.c";
+
 static regex_t re_sym;
 static regex_t re_terminal;
 
@@ -114,6 +114,11 @@ void init_semantic_file(char *fn_semantics)
             exit(EXIT_FAILURE);
         }
     }
+}
+
+void init_skeleton_file(char *fn_skeleton)
+{
+    filename_skeleton = strdup(fn_skeleton);
 }
 /* -------------------- GAUR MODES --------------------*/
 
@@ -304,10 +309,7 @@ void p_functions_definitions()
     if (gaur_mode == M_DEFAULT)
     {
         char ch;
-        fprintf(f_out, "\n%%skeleton \"");
-        fprintf(f_out, PATH_SKELETON);
-        fprintf(f_out, "\"\n");
-
+        fprintf(f_out, "\n%%skeleton \"%s\" \n", filename_skeleton);
         fprintf(f_out, "\n%%code{\n\n");
         /* Static inject file */
         while ((ch = fgetc(f_inject_code)) != EOF)

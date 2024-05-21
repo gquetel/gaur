@@ -41,6 +41,13 @@ void init_output_file(char *fn_out);
 void init_semantic_file(char *fn_semantics);
 
 /**
+ * @brief Init skeleton filename
+ *
+ * @param fn_skeleton filename to save
+ */
+void init_skeleton_file(char *fn_skeleton);
+
+/**
  * @brief
  *
  * @param fn_inject filename of file to inject in grammar prologue

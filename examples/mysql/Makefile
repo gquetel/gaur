@@ -9,7 +9,7 @@ GCLASSIFY=gclassify
 all: run
 
 run: labels.gaur
-	$(GAUR) --list labels.gaur $(GRAMMARFILE) -i $(INJECTFILE)  -o gaur.modified.y
+	$(GAUR) --list labels.gaur $(GRAMMARFILE) -i $(INJECTFILE) -s gaur_mysql.c -o gaur.modified.y
 
 nterm_list.txt: 
 	$(GAUR) -e $(GRAMMARFILE) -o nterm_list.txt
