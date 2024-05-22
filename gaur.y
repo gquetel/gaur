@@ -14,6 +14,7 @@
 
   extern int yylex();
   extern int yyparse();
+  extern void yylex_destroy();
   extern void yyerror(const char* s);
   extern FILE* yyin;
   char *latest_id_colon;
@@ -87,7 +88,7 @@
 
  
 input:
-  prologue {print(); p_functions_definitions();}PERCENT_PERCENT {pstr("\n%%\n\n");} grammar epilogue {print(); end_dot_file();}
+  prologue {print(); p_functions_definitions();}PERCENT_PERCENT {pstr("\n%%\n\n");} grammar epilogue {print(); end_print();}
 ;
 
 prologue: %empty
@@ -262,122 +263,128 @@ symbol: id
 int main(int argc, char **argv)
 {
 
-  #ifdef YYDEBUG
+#ifdef YYDEBUG
     yydebug = 0;
-  #endif
+#endif
 
-  const struct option long_opts[] = {
-      {"dot", no_argument, NULL, 'd'},
-      {"extract", no_argument, NULL, 'e'},
-      {"help", no_argument, NULL, 'h'},
-      {"inject", required_argument, NULL, 'i'},
-      {"list", required_argument, NULL, 'l'},
-      {"output", required_argument, NULL, 'o'},
-      {NULL, 0, NULL, 0}};
+    const struct option long_opts[] = {
+        {"dot", no_argument, NULL, 'd'},
+        {"extract", no_argument, NULL, 'e'},
+        {"help", no_argument, NULL, 'h'},
+        {"inject", required_argument, NULL, 'i'},
+        {"list", required_argument, NULL, 'l'},
+        {"output", required_argument, NULL, 'o'},
+        {NULL, 0, NULL, 0}};
 
-  char *input_filename;                       /* Grammar file to instrumentalize/extract nontemrinals. */
-  char *output_filename = OUTPUT_FILENAME;    /* Instrumentalized grammar, or for --extract, nonterminal list file. */
-  char *injected_filename = INJECT_FILENAME; /* File to inject as code in grammar prologue.  */
-  bool has_semantic_file_provided = false;
-  bool has_defined_output = false ;
-  int optc;
+    char *input_filename = NULL; /* Grammar file to instrumentalize/extract nontemrinals. */
+    char *output_filename = OUTPUT_FILENAME;  /* Instrumentalized grammar, or for --extract, nonterminal list file. */
+    char *injected_filename = INJECT_FILENAME; /* File to inject as code in grammar prologue.  */
 
-  /* Options parser */
-  while ((optc = getopt_long(argc, argv, "dehi:l:o:s:", long_opts, NULL)) != -1)
-  {
-    switch (optc)
+    bool has_semantic_file_provided = false;
+    bool has_defined_output = false;
+
+    int optc;
+
+    /* Options parser */
+    while ((optc = getopt_long(argc, argv, "dehi:l:o:s:", long_opts, NULL)) != -1)
     {
-    case 'd':
-      set_mode(M_DOT);
-      break;
+        switch (optc)
+        {
+        case 'd':
+            set_mode(M_DOT);
+            break;
 
-    case 'e':
-      // Extract mode, only need to initalize output file
-      output_filename = EXTRACT_FILENAME;
-      set_mode(M_EXTRACT);
-      break;
+        case 'e':
+            // Extract mode, only need to initalize output file
+            output_filename = EXTRACT_FILENAME;
+            set_mode(M_EXTRACT);
+            break;
 
-    case 'h':
-      fputs(
-          "Usage: gaur [options] -l file file \n"
-          "Transform a yacc grammar into an intrumentalised one.\n"
-          "Options: \n"
-          "-d,  --dot               Produce a dot file for the input grammar\n"
-          "-e,  --extract           Produce a file containing all of the grammar nonterminal\n"
-          "-h,  --help,             Display this help and exit\n"
-          "-i,  --inject=FILE       Path to the prologue code to inject\n"
-          "-l,  --list=FILE         Path to the nonterminals semantics list\n"
-          "-o,  --output=FILE       Leave output to FILE\n"
-          "-s,  --skeleton=FILE     Path to the skeleton file\n"
-          "If the option -o is not used, the default output grammar filename is gaur.modified.y\n",
-          stdout);
-      exit(EXIT_SUCCESS);
+        case 'h':
+            fputs(
+                "Usage: gaur [options] -l file file \n"
+                "Take a YACC grammar as input and output an instrumented version containing our data collector.\n"
+                "Options: \n"
+                "-d,  --dot               Produce a dot file for the input grammar\n"
+                "-e,  --extract           Produce a file where each line \n"
+                "-h,  --help,             Display this help and exit\n"
+                "-i,  --inject=FILE       Path to the prologue code to inject\n"
+                "-l,  --list=FILE         Path to the nonterminals semantics list\n"
+                "-o,  --output=FILE       Leave output to FILE\n"
+                "-s,  --skeleton=FILE     Path to the skeleton file\n"
+                "If the option -o is not used, the default output grammar filename is gaur.modified.y\n",
+                stdout);
+            exit(EXIT_SUCCESS);
 
-    case 'i':
-      injected_filename = strdup(optarg);
-      break;
+        case 'i':
+            injected_filename = optarg;
+            break;
 
-    case 'l':
-      init_semantic_file(strdup(optarg));
-      has_semantic_file_provided = true;
+        case 'l':
+            init_semantic_file(optarg);
+            has_semantic_file_provided = true;
 
-    case 'o':
-      output_filename = strdup(optarg);
-      has_defined_output = true;
-      break;
-    
-    case 's':
-      init_skeleton_file(optarg);
-      break;
+        case 'o':
+            output_filename = optarg;
+            has_defined_output = true;
+            break;
+
+        case 's':
+            init_skeleton_file(optarg);
+            break;
+        }
     }
-  }
 
-  /* Open input grammar file */
-  if (argv[optind] == NULL)
-  {
-    errno = EINVAL;
-    perror("No input grammar file provided, try 'gaur --help' for more information");
-    exit(errno);
-  }
-
-  input_filename = argv[optind];
-  yyin = fopen(input_filename, "r");
-  if (yyin == NULL)
-  {
-     fprintf(stderr, "Cannot open file: %s,  %s\n", input_filename, strerror(errno));
-    exit(errno);
-  }
-  
-  if(get_gaur_mode()== M_EXTRACT){
-    init_output_file(output_filename);
-    init_extraction();
-  }
-
-  if(get_gaur_mode() == M_DOT){
-      if(has_defined_output){
-              init_output_file(output_filename);
-      }
-      else {
-        init_output_file(DOT_FILE_NAME);
-      }
-      
-      init_dot();
-      
-  }
-
-  if (get_gaur_mode() == M_DEFAULT)
-  {
-    init_output_file(output_filename);
-    init_inject_file(injected_filename);
-    if (!has_semantic_file_provided)
+    /* Open input grammar file */
+    if (argv[optind] == NULL)
     {
-      errno = EINVAL;
-      perror("No semantic file provided, try 'gaur --help' for more information");
-      exit(errno);
+        errno = EINVAL;
+        perror("No input grammar file provided, try 'gaur --help' for more information");
+        exit(errno);
     }
-  }
-  /* Parsing */
-  int result = yyparse();
-  fclose(yyin);
-  return result;
+
+    input_filename = argv[optind];
+    yyin = fopen(input_filename, "r");
+    if (yyin == NULL)
+    {
+        fprintf(stderr, "Cannot open file: %s,  %s\n", input_filename, strerror(errno));
+        exit(errno);
+    }
+
+    if (get_gaur_mode() == M_EXTRACT)
+    {
+        init_output_file(output_filename);
+        init_extraction();
+    }
+
+    if (get_gaur_mode() == M_DOT)
+    {
+        if (has_defined_output)
+        {
+            init_output_file(output_filename);
+        }
+        else
+        {
+            init_output_file(DOT_FILE_NAME);
+        }
+
+        init_dot();
+    }
+
+    if (get_gaur_mode() == M_DEFAULT)
+    {
+        init_output_file(output_filename);
+        init_inject_file(injected_filename);
+        if (!has_semantic_file_provided)
+        {
+            errno = EINVAL;
+            perror("No semantic file provided, try 'gaur --help' for more information");
+            exit(errno);
+        }
+    }
+
+    int result = yyparse();
+    fclose(yyin);
+    yylex_destroy();    /* Function call to clean heap usage, defined by flex. */
+    return result;
 }

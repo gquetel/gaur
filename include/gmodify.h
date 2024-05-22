@@ -175,4 +175,4 @@ void add_edge(char *node1, char *node2);
  * @brief Close file
  *
  */
-void end_dot_file();
+void end_print();

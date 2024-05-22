@@ -83,6 +83,7 @@ void append_action_buffer(char *source)
 
 void init_output_file(char *fn_out)
 {
+    /* closed in p_functions_definitions */
     f_out = fopen(fn_out, "w");
     if (f_out == NULL)
     {
@@ -93,7 +94,7 @@ void init_output_file(char *fn_out)
 
 void init_inject_file(char *fn_inject)
 {
-
+    /* closed in p_functions_definitions */
     f_inject_code = fopen(fn_inject, "r");
     if (f_inject_code == NULL)
     {
@@ -107,10 +108,11 @@ void init_semantic_file(char *fn_semantics)
 {
     if (fn_semantics != NULL)
     {
+        /* Closed in read_semantic_file */
         f_semantics = fopen(fn_semantics, "r");
         if (f_semantics == NULL)
         {
-            perror("Cannot open file to inject code from");
+            perror("Cannot open semantic file");
             exit(EXIT_FAILURE);
         }
     }
@@ -167,6 +169,7 @@ char *read_semantic_file()
         perror("Error while reading JSON file");
         exit(EXIT_FAILURE);
     }
+    fclose(f_semantics);
     b_json[filesize] = '\0';
     return b_json;
 }
@@ -261,6 +264,7 @@ void p_semantic_array_from_json()
             rules_counter++;
         }
         fprintf(f_out, "\t};\n");
+        cJSON_Delete(parsed);
         break;
     case 2: /* action, assets*/
         fprintf(f_out, "\n\tstatic const  int32_t ggrulesem[%d][2] = {\n", n_rules);
@@ -295,6 +299,7 @@ void p_semantic_array_from_json()
             rules_counter++;
         }
         fprintf(f_out, "\t};\n");
+        cJSON_Delete(parsed);
         break;
 
     default:
@@ -317,6 +322,7 @@ void p_functions_definitions()
 
         p_semantic_array_from_json();
         fprintf(f_out, "}\n");
+        fclose(f_inject_code);
     }
 }
 
@@ -368,7 +374,9 @@ void end_group_rule()
     {
         fprintf(f_out, "\"%s\"[rules=%d];\n", current_lhs, counter_rule);
     }
+
     free(current_lhs);
+    current_lhs = NULL;
     counter_rule = 0;
 }
 
@@ -424,15 +432,15 @@ void add_edge(char *node1, char *node2)
     free(node2);
 }
 
-void end_dot_file()
+void end_print()
 {
     if (get_gaur_mode() == M_DOT)
     {
         fprintf(f_out, "}");
-        fclose(f_out);
     }
     regfree(&re_sym);
     regfree(&re_terminal);
+    fclose(f_out);
 }
 
 /* -------------------- NONTERMINALS EXTRACT --------------------*/
@@ -493,6 +501,9 @@ void signal_new_rule(char *nterm)
         strcpy(tmp, "\n");
         append_rule_group_buffer(tmp);
     }
+
+    free(current_lhs);
+    current_lhs = NULL;
     extract_nterm(nterm);
     is_last_item_action = false;
 }
