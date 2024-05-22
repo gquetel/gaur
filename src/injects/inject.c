@@ -25,30 +25,29 @@ typedef struct _node_pt
             create_logentry(first, ggid); \
     } while (0);
 
-#define GAUR_REDUCE(nrule, yylen)                                          \
-    do                                                                     \
-    { /* We substract 1 to nrule because of the bison accept rule offset*/ \
-        if (first == NULL)                                                 \
-        {                                                                  \
-            first = malloc(sizeof(struct _node_pt));                       \
-            first->rule_action = GET_ACTION_TAG(nrule);                  \
-            first->rule_number = nrule - 1;                                \
-            first->next = NULL;                                            \
-            current = first;                                               \
-        }                                                                  \
-        else                                                               \
-        {                                                                  \
-            current->next = malloc(sizeof(struct _node_pt));               \
-            current = current->next;                                       \
-            current->rule_action = GET_ACTION_TAG(nrule);                \
-            current->rule_number = nrule - 1;                              \
-            current->next = NULL;                                          \
-        }                                                                  \
+#define GAUR_REDUCE(nrule, yylen)                                           \
+    do                                                                      \
+    { /* We substract 1 to nrule because of the bison accept rule offset */ \
+        if (first == NULL)                                                  \
+        {                                                                   \
+            first = malloc(sizeof(struct _node_pt));                        \
+            first->rule_action = GET_ACTION_TAG(nrule);                     \
+            first->rule_number = nrule - 1;                                 \
+            first->next = NULL;                                             \
+            current = first;                                                \
+        }                                                                   \
+        else                                                                \
+        {                                                                   \
+            current->next = malloc(sizeof(struct _node_pt));                \
+            current = current->next;                                        \
+            current->rule_action = GET_ACTION_TAG(nrule);                   \
+            current->rule_number = nrule - 1;                               \
+            current->next = NULL;                                           \
+        }                                                                   \
     } while (0)
 
 enum
 {
-    // Hopefully, temporary
     _CREATE = 1 << 4,
     _DELETE = 1 << 3,
     _EXECUTE = 1 << 2,

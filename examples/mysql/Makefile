@@ -3,13 +3,14 @@ GAUR= ../../gaur
 CPPFLAGS=-I ./include
 CFLAGS=-g -Wall
 GRAMMARFILE=mysql.y
-INJECTFILE=/usr/local/gaur/src/injects/inject.assets.mysql.cpp
+INJECTFILE=/usr/local/gaur/src/injects/simple-vector.mysql.cpp
 GCLASSIFY=gclassify
+SKELETON=gaur_mysql.c
 
 all: run
 
 run: labels.gaur
-	$(GAUR) --list labels.gaur $(GRAMMARFILE) -i $(INJECTFILE) -s gaur_mysql.c -o gaur.modified.y
+	$(GAUR) --list labels.gaur $(GRAMMARFILE) -i $(INJECTFILE) -s $(SKELETON) -o gaur.modified.y
 
 nterm_list.txt: 
 	$(GAUR) -e $(GRAMMARFILE) -o nterm_list.txt
