@@ -127,7 +127,7 @@ FILE *gaur_open_file()
         f_logs = fopen(output_name, "w");
         if (f_logs != NULL)
         {
-            fprintf(f_logs, "query_id,semantic_tree,terminal_c,nonterminal_c,query\n");
+            fprintf(f_logs, "query_id,semantic_trace,terminal_c,nonterminal_c,query\n");
         }
     }
     else
