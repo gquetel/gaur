@@ -183,10 +183,15 @@ void create_logentry(struct _node_pt *first, uint64_t query_id, int terminal_c, 
             current = current->next;
             free(tmp);
         }
+        /* TODO:
+        Printing like this mimic csv files behavior. However, as input can contains double quotes,
+        and that double quotes is used to enclose strings, we have problems. To fix this double quotes within inputs
+        should be preceded by another double quote. It might be costly to parse that string, in the meantime I drop
+        the printing of the input. */
         if (input == NULL)
-            fprintf(f_logs, "\",%d,%d,NOT_SAFE_TO_DISPLAY\n", terminal_c, nonterminal_c);
+            fprintf(f_logs, "\",%d,%d,\"NOT_SAFE_TO_DISPLAY\"\n", terminal_c, nonterminal_c);
         else
-            fprintf(f_logs, "\",%d,%d,%s\n", terminal_c, nonterminal_c, input);
+            fprintf(f_logs, "\",%d,%d,\"%s\"\n", terminal_c, nonterminal_c, input);
         fclose(f_logs);
     }
     else
