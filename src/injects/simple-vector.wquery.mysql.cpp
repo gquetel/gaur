@@ -113,6 +113,33 @@ static struct
 };
 
 /**
+ * @brief Check existence of file, if not exists create it, and create header line, then return file pointer.
+ * If already exists, just return file pointer.
+ *
+ * @return FILE*
+ */
+FILE *gaur_open_file()
+{
+    const char *output_name = "gaur.log";
+    FILE *f_logs = fopen(output_name, "r");
+    if (f_logs == NULL)
+    {
+        f_logs = fopen(output_name, "w");
+        if (f_logs != NULL)
+        {
+            fprintf(f_logs, "query_id,semantic_tree,terminal_c,nonterminal_c,query\n");
+        }
+    }
+    else
+    {
+        fclose(f_logs);
+        f_logs = fopen(output_name, "a");
+    }
+
+    return f_logs;
+}
+
+/**
  * @brief Create the log entry corresponding to parsed input.
  *
  * @param first
@@ -123,13 +150,8 @@ static struct
  */
 void create_logentry(struct _node_pt *first, uint64_t query_id, int terminal_c, int nonterminal_c, const char *input)
 {
-    const char *output_name = "gaur.log";
-    FILE *f_logs = fopen(output_name, "a");
-    if (f_logs == NULL)
-    {
-        perror("Gaur: cannot open file to log file");
-    }
-    else
+    FILE *f_logs = gaur_open_file();
+    if (f_logs != NULL)
     {
         struct _node_pt *current = first;
         fprintf(f_logs, "%" PRId64 ",\"", query_id); /* Print Input ID*/
@@ -166,5 +188,9 @@ void create_logentry(struct _node_pt *first, uint64_t query_id, int terminal_c, 
         else
             fprintf(f_logs, "\",%d,%d,%s\n", terminal_c, nonterminal_c, input);
         fclose(f_logs);
+    }
+    else
+    {
+        perror("Gaur: Could not open log file.");
     }
 }
