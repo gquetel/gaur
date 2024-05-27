@@ -22,6 +22,12 @@ typedef struct _node_pt
 #define GET_ACTION_TAG(i) (ggrulesem[i - 2][0])
 #define GET_ASSET_TAG(i) (ggrulesem[i - 2][1])
 
+#define GAUR_ERROR()                                                \
+    do                                                              \
+    {                                                               \
+        create_logentry(first, ggid, terminal_c, nonterminal_c, 1); \
+    } while (0);
+
 #define GAUR_SHIFT(yytoken)                                          \
     do                                                               \
     {                                                                \
@@ -111,19 +117,41 @@ static struct
 };
 
 /**
+ * @brief Check existence of file, if not exists create it, and create header line, then return file pointer.
+ * If already exists, just return file pointer.
+ *
+ * @return FILE*
+ */
+FILE *gaur_open_file()
+{
+    const char *output_name = "gaur.log";
+    FILE *f_logs = fopen(output_name, "r");
+    if (f_logs == NULL)
+    {
+        f_logs = fopen(output_name, "w");
+        if (f_logs != NULL)
+        {
+            fprintf(f_logs, "query_id,semantic_trace,terminal_c,nonterminal_c,is_syntax_error\n");
+        }
+    }
+    else
+    {
+        fclose(f_logs);
+        f_logs = fopen(output_name, "a");
+    }
+
+    return f_logs;
+}
+
+/**
  * @brief Create the log entry corresponding to parsed input.
  *
  * @param first
  */
-void create_logentry(struct _node_pt *first, uint64_t query_id, int terminal_c, int nonterminal_c)
+void create_logentry(struct _node_pt *first, uint64_t query_id, int terminal_c, int nonterminal_c, int is_error)
 {
-    const char *output_name = "gaur.log";
-    FILE *f_logs = fopen(output_name, "a");
-    if (f_logs == NULL)
-    {
-        perror("Gaur: cannot open file to log file");
-    }
-    else
+    FILE *f_logs = gaur_open_file();
+    if (f_logs != NULL)
     {
         struct _node_pt *current = first;
         fprintf(f_logs, "%" PRId64 ",\"", query_id); /* Print Input ID*/
@@ -140,13 +168,13 @@ void create_logentry(struct _node_pt *first, uint64_t query_id, int terminal_c, 
                     break;
                 }
             }
-
             /* Same for assets */
+            fprintf(f_logs, ":");
             for (size_t i = 0; i < sizeof(_assets_mapping) / sizeof(_assets_mapping[0]); i++)
             {
                 if (current->rule_asset & _assets_mapping[i].value)
                 {
-                    fprintf(f_logs, " %s", _assets_mapping[i].name);
+                    fprintf(f_logs, "%s", _assets_mapping[i].name);
                     break;
                 }
             }
@@ -155,9 +183,11 @@ void create_logentry(struct _node_pt *first, uint64_t query_id, int terminal_c, 
             current = current->next;
             free(tmp);
         }
-
-        /* Other features */
-        fprintf(f_logs, "\",%d,%d\n", terminal_c, nonterminal_c);
+        fprintf(f_logs, "\",%d,%d,%d\n", terminal_c, nonterminal_c, is_error);
         fclose(f_logs);
+    }
+    else
+    {
+        perror("Gaur: Could not open log file.");
     }
 }

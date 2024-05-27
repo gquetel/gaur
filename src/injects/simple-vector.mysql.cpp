@@ -22,12 +22,18 @@ typedef struct _node_pt
 #define GET_ACTION_TAG(i) (ggrulesem[i - 2][0])
 #define GET_ASSET_TAG(i) (ggrulesem[i - 2][1])
 
-#define GAUR_SHIFT(yytoken)                                          \
-    do                                                               \
-    {                                                                \
-        if (yytoken == YYSYMBOL_YYEOF)                               \
-            create_logentry(first, ggid, terminal_c, nonterminal_c); \
-        terminal_c++;                                                \
+#define GAUR_ERROR()                                                \
+    do                                                              \
+    {                                                               \
+        create_logentry(first, ggid, terminal_c, nonterminal_c, 1); \
+    } while (0);
+
+#define GAUR_SHIFT(yytoken)                                             \
+    do                                                                  \
+    {                                                                   \
+        if (yytoken == YYSYMBOL_YYEOF)                                  \
+            create_logentry(first, ggid, terminal_c, nonterminal_c, 0); \
+        terminal_c++;                                                   \
     } while (0);
 
 #define GAUR_REDUCE(nrule, yylen)                                               \
@@ -125,7 +131,7 @@ FILE *gaur_open_file()
         f_logs = fopen(output_name, "w");
         if (f_logs != NULL)
         {
-            fprintf(f_logs, "query_id,semantic_trace,terminal_c,nonterminal_c,query\n");
+            fprintf(f_logs, "query_id,semantic_trace,terminal_c,nonterminal_c,is_syntax_error\n");
         }
     }
     else
@@ -142,7 +148,7 @@ FILE *gaur_open_file()
  *
  * @param first
  */
-void create_logentry(struct _node_pt *first, uint64_t query_id, int terminal_c, int nonterminal_c)
+void create_logentry(struct _node_pt *first, uint64_t query_id, int terminal_c, int nonterminal_c, int is_error)
 {
     FILE *f_logs = gaur_open_file();
     if (f_logs != NULL)
@@ -177,10 +183,10 @@ void create_logentry(struct _node_pt *first, uint64_t query_id, int terminal_c, 
             current = current->next;
             free(tmp);
         }
-        fprintf(f_logs, "\",%d,%d\n", terminal_c, nonterminal_c);
+        fprintf(f_logs, "\",%d,%d,%d\n", terminal_c, nonterminal_c, is_error);
         fclose(f_logs);
     }
-        else
+    else
     {
         perror("Gaur: Could not open log file.");
     }
