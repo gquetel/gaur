@@ -1,7 +1,7 @@
 # Inject files
 
 Directory listing of the different GAUR injection files. These files consist of the data collector code and define the routines executed when the parser performs a reduction, a shift or finishes to parse an input.
-We denote the rule number by its associated line number in the generated file `nterm_list.txt`. The semantic of a rule is the computed semantic given by `gclassify`.
+We denote the rule number by its associated line number in the generated file `rules.extracted`. The semantic of a rule is the computed semantic given by `gclassify`.
 
 | Filename                         | Description                                                                                                                                                                                 |
 | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

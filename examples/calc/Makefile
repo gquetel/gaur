@@ -10,11 +10,11 @@ NLPPATH:=/home/gquetel/Desktop/usine/NLP/
 
 all: build
 
-nterm_list.txt: parse.y 
+rules.extracted: parse.y 
 	$(GAUR) --extract parse.y 
 
-nterm_sem.txt: nterm_list.txt
-	python3 $(NLPPATH)ntcategrz.py -o nterm_sem.txt nterm_list.txt -s $(NLPPATH)outputs/stopwordlist.txt
+nterm_sem.txt: rules.extracted
+	python3 $(NLPPATH)ntcategrz.py -o nterm_sem.txt rules.extracted -s $(NLPPATH)outputs/stopwordlist.txt
 
 gaur.modified.y: parse.y nterm_sem.txt
 	$(GAUR) $(GAUR_FLAGS) parse.y 
@@ -29,6 +29,6 @@ build: parse.o
 	$(CC)  -o calc parse.o $(LDFLAGS)
 
 clean: 
-	rm -f calc gaur.modified.y parse.c parse.h parse.o parse.output *.log nterm_list.txt
+	rm -f calc gaur.modified.y parse.c parse.h parse.o parse.output *.log rules.extracted
 
 

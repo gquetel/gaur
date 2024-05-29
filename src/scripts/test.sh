@@ -5,13 +5,13 @@ NLPBIN="gclassify"
 
 for i in data/grammars/*.y; do
     echo ">>> Beginning test with: $i "
-    ./gaur -e -o "output/nterm_list.txt" "$i"
+    ./gaur -e -o "output/rules.extracted" "$i"
     errno=$?
     if [ $errno -ne 0 ]; then
         echo "Error while extracting $i - skipping next tests..."
         continue
     fi
-    ${NLPBIN} -o output/nterm_sem.txt output/nterm_list.txt
+    ${NLPBIN} -o output/nterm_sem.txt output/rules.extracted"
     errno=$?
     if [ $errno -ne 0 ]; then
         echo "Error while executing gclassify $i - skipping next tests..."
