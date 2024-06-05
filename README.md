@@ -1,7 +1,10 @@
-GAUR is a tool to instrument Bison grammar. Given an input grammar file, it injects code to automatically and transparently produce sequences of semantics. A sequence of semantics corresponds to the operations performed on the system for one parser input.  This project relies on `pygaur` to generate flag values for each grammar rule, the project is available at [pygaur](https://github.com/gquetel/pygaur).  
+GAUR is a tool to instrument Bison grammar. Given an input grammar file, it injects code to automatically and transparently produce a log with information characterizing parse inputs. Specifically, we plan to produce information about the impact of each parser input on the application/system it is part of. This impact information is induced by the rules used to parse the input, we associate labels to each one the the parser rules and construct an overall impact based on this informations.
 
 # Installation 
-Gaur requires `gcc`, `flex` and `bison`. After cloning this repository GAUR can be built as follows:
+Gaur requires `gcc`, `flex` and `bison`. The production of impact information production requires [pygaur](https://github.com/gquetel/pygaur)
+to be installed.
+
+After cloning this repository GAUR can be built as follows:
 ```
 $ git clone https://github.com/gquetel/gaur.git
 $ make build
@@ -18,72 +21,37 @@ Options:
 -i,  --inject=FILE       Path to the prologue code to inject
 -l,  --list=FILE         Path to the nonterminals semantics list
 -o,  --output=FILE       Leave output to FILE
+-s,  --skeleton=FILE     Path to the skeleton file to use to produce by bison to produce the parser code
+
 If the option -o is not used, the default output grammar filename is gaur.modified.y
 ```
 
 # Running
 
-The GAUR pipeline is divided into three steps: data extractions, semantic similarity computation, and grammar instrumentation. 
+The GAUR pipeline is divided into three steps: data extractions, rule labels association (by `pygaur`), and grammar instrumentation. 
 
 ## Data extraction 
 
-This first step aims to extract information from BISON grammars, we currently extract left-hand side nonterminal names, right-hand side terminals, and alphabetic words found in action code.  The command `./gaur --extract -o nterm_list.csv parse.y` allows extracting the nonterminals of the `parse.y` file into a `nterm_list.csv` file. The output file format is a CSV with 3 columns: rule name, terminal, and action code alphabetic string. For the grammar `examples/sem/parse.y`, we would have the following output: 
-```
-input.0,,
-input.1,,
-instructions.0,,
-instructions.1,,
-instruction.0,,
-instruction.1,,
-instruction.2,,
-instruction.3,,
-instruction.4,,
-instruction.5,,
-create_table.0,CREATE, create_table
-delete_table.0,DELETE, delete_table
-modify_table.0,MODIFY, modify_table
-show_table.0,SHOW, show_table
-modify_and_create.0,PLUS,
-execute_function.0,EXECUTE, execute_function
-newline.0,NEWLINE,
-```
+This first step aims to extract information from BISON grammars, we currently extract left-hand side nonterminal names, right-hand side terminals, and alphabetic words found in action code.  
 Rules are suffixed by a number that corresponds to the number of the extracted rule in its group of rules.
 
 ## Semantic similarity computation
 
-We use the produced CSV file to compute semantic flags using `pygaur` located at https://github.com/gquetel/pygaur. 
+We use the produced CSV file to compute semantic flags using `pygaur` which outputs a json file that must be given as input to `gaur` to instrument the parser in the next step.
 
 ## Grammar instrumentalization
 
-The output of the Python script is made to facilitate the parsing in the next phase, applying the script to the previous output would result in the following: 
+The output of the Python script is made to facilitate the parsing in the next phase. This next phase takes the labels inferred (in the form of flags by `pygaur`) and includes them in the parser code. This part involves two mechanisms: 
+- Hijacking Bison to use a custom [skeleton](https://www.gnu.org/software/bison/manual/html_node/Decl-Summary.html#index-_0025skeleton) that places C macros at specific positions to store information about the input while parsing, and produce a log entry once parsing is done. 
+- Defining the code of these macros. This is done in the `src/inject.`*` files that are injected as a prologue in the instrumentalized grammar. Each injects files defined specific characteristics to produce by the data collector / 
 
-```
-0b00000input
-0b00000instructions
-0b00000instruction
-0b00001create_table
-0b00010delete_table
-0b01000modify_table
-0b00000show_table
-0b01001modify_and_create
-0b00100execute_function
-0b00000newline
-```
-Flags are in this order: read, modify, execute, delete, create. So we can see that `input` or `instructions` don't carry any particular semantic related to our actions, therefore no flags are set. But for the `create_table` nonterminal we have the create flags set to 1. 
+To do so we use the following command: `./gaur --list filename_flags filename_grammar` where `filename_flags` corresponds to a file generated by `pygaur`. And `filename_grammar` is the grammar to instrumentalize. Some applications requires a specific parser skeleton, the option `--skeleton filepath` allows to modify associate the correct one.
 
-This part involves two mechanisms: 
-- Hijacking Bison to use a custom [skeleton](https://www.gnu.org/software/bison/manual/html_node/Decl-Summary.html#index-_0025skeleton) that places C macros at specific positions to dynamically produce a semantic sequence. 
-- Defining the code of these macros. This is done in the `src/inject.c` file which is injected as a prologue in the instrumentalized grammar. We also use the rules and their flags to create `ggntsem``: an array of flags corresponding to the rules, dynamically used to create the trace. 
-
-To do so we use the following command: `./gaur --list filename_flags filename_grammar` where `filename_flags` corresponds to a file generated by `pygaur`. And `filename_grammar` is the grammar to instrumentalize.
-
-## Makefile targets
-### Instrumenting
-We defined makefile targets to automate the instrumentation process. After installing `gaur` and `pygaur` place the grammar to modify in the current directory and name it `parse.y`. Calling `make` will create the `gaur` binary, extract grammar data, call `pygaur` to classify rules, and create a modified grammar in the `output/` folder under the name `gaur.modify.y`. 
+## Other Makefile targets
 
 ### Tree generation
 
 GAUR also allows generating a dot file corresponding to the visual representation of the given BISON grammar using the `-d` option, which results in the creation of a `output.dot` file. `make graph` can be used to display a tree for the `parse.y` grammar. 
 
 ### Corpus generation
-For the semantic inference step, GAUR creates for each grammar rule a document consisting of the name in the left-hand side, terminals in the right-hand side and the literals in the action code. For pre-processing purposes one could aim to construct a corpus of such documents. We provide a script that creates a corpus using the grammars located in the [grammar](data/grammars/). Using the `make corpus` target will generate a text file in the output directory. 
+For the semantic inference step, GAUR creates for each grammar rule a document consisting of the name in the left-hand side, terminals in the right-hand side and the literals in the action code. For pre-processing purposes, one could aim to construct a corpus of such documents. We provide a script that creates a corpus using the grammars located in the [grammar](data/grammars/). Using the `make corpus` target will generate a text file in the output directory. 

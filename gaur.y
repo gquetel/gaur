@@ -311,7 +311,7 @@ int main(int argc, char **argv)
                 "-i,  --inject=FILE       Path to the prologue code to inject\n"
                 "-l,  --list=FILE         Path to the nonterminals semantics list\n"
                 "-o,  --output=FILE       Leave output to FILE\n"
-                "-s,  --skeleton=FILE     Path to the skeleton file\n"
+                "-s,  --skeleton=FILE     Path to the skeleton file to use to produce by bison to produce the parser code\n"
                 "If the option -o is not used, the default output grammar filename is gaur.modified.y\n",
                 stdout);
             exit(EXIT_SUCCESS);

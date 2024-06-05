@@ -12,7 +12,7 @@ all: build
 nterm_list.csv: parse.y 
 	$(GAUR) --extract parse.y 
 
-nterm_sem.json: nterm_list.csv parse.dot
+nterm_sem.json: nterm_list.csv 
 	gclassify -o nterm_sem.json nterm_list.csv  ~/.local/lib/python3.10/site-packages/pygaur/data/mysql/tags/
 
 gaur.modified.y: parse.y nterm_sem.json
@@ -30,4 +30,4 @@ scan.o: scan.c
 build: parse.o scan.o
 	$(CC)  -o parse parse.o scan.o $(LDFLAGS)
 clean: 
-	rm -f parse gaur.modified.y *.c *.h *.o parse.output *.log rules.extracted nterm_list.csv nterm_sem.txt nterm_sem.json parse.dot
+	rm -f parse gaur.modified.y *.c *.h *.o parse.output *.log rules.extracted nterm_sem.txt .json parse.dot
