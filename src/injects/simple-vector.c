@@ -28,12 +28,12 @@ typedef struct _node_pt
         create_logentry(first, ggid, terminal_c, nonterminal_c, 1); \
     } while (0);
 
-#define GAUR_SHIFT(yytoken)                                          \
-    do                                                               \
-    {                                                                \
-        if (yytoken == YYSYMBOL_YYEOF)                               \
-            create_logentry(first, ggid, terminal_c, nonterminal_c); \
-        terminal_c++;                                                \
+#define GAUR_SHIFT(yytoken)                                             \
+    do                                                                  \
+    {                                                                   \
+        if (yytoken == YYSYMBOL_YYEOF)                                  \
+            create_logentry(first, ggid, terminal_c, nonterminal_c, 0); \
+        terminal_c++;                                                   \
     } while (0);
 
 #define GAUR_REDUCE(nrule, yylen)                                          \
