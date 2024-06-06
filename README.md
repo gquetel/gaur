@@ -31,6 +31,11 @@ One major GAUR objective is to provide what we call "semantic information": info
 
 Therefore the association is performed in two steps: first, we infer an action and object label to each parser's rules. Then, at runtime, the data collector integrated within the parser retrieves each rule used to process an input and construct the semantic trace that will be post-processed to infer labels. Therefore the `gaur` pipeline is organized as follows: rule data extraction, rule labels association (by `pygaur`), and grammar instrumentation. 
 
+<p align="center">
+  <img width="560" height="450" src="data/gaur-archi.png">
+</p>
+
+
 ## Data extraction 
 
 This first step aims to extract information from BISON grammars, we currently extract left-hand side nonterminal names, right-hand side terminals, and alphabetic words found in action code.  
