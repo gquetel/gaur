@@ -12,8 +12,8 @@ all: build
 nterm_list.csv: parse.y 
 	$(GAUR) --extract parse.y 
 
-nterm_sem.json: nterm_list.csv 
-	gclassify -o nterm_sem.json nterm_list.csv  ~/.local/lib/python3.10/site-packages/pygaur/data/mysql/tags/
+#nterm_sem.json: nterm_list.csv 
+#	gclassify -o nterm_sem.json nterm_list.csv  ~/.local/lib/python3.10/site-packages/pygaur/data/mysql/tags/
 
 gaur.modified.y: parse.y nterm_sem.json
 	$(GAUR) $(GAUR_FLAGS) parse.y 
