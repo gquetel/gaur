@@ -13,7 +13,9 @@
 static FILE *f_out;         /* Modified grammar output file OR nonterminal list */
 static FILE *f_inject_code; /* Input file to inject code in prologue*/
 static FILE *f_semantics;
-static char *filename_skeleton = "gaur_yacc.c";
+
+// TODO: find alternative way to not hardcode path. '~' cannot be used.
+static char *filename_skeleton = "/home/gquetel/.gaur/src/skeletons/gaur_yacc.c";
 
 static regex_t re_sym;
 static regex_t re_terminal;
@@ -189,7 +191,7 @@ void p_semantic_array_from_json()
         const char *error_ptr = cJSON_GetErrorPtr();
         if (error_ptr != NULL)
         {
-            fprintf(stderr, "Error before: %s\n", error_ptr);
+            fprintf(stderr, "Error while reading json semantic file: %s\n", error_ptr);
         }
         exit(EXIT_FAILURE);
     }

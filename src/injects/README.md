@@ -11,7 +11,7 @@ Directory listing of the different GAUR injection files. These files consist of 
 
 ## Semantic trace format: 
 In pseudo-bison code
-
+ 
 ``` 
 trace:  node "|" trace |  node ; 
 node: rule_number ":" action_tag ":" object_tag ; 

@@ -3,9 +3,9 @@ GAUR= ../../gaur
 CPPFLAGS=-I ./include
 CFLAGS=-g -Wall
 GRAMMARFILE=mysql.y
-INJECTFILE=/usr/local/gaur/src/injects/simple-vector.mysql.cpp
+INJECTFILE=~/.gaur/src/injects/simple-vector.mysql.cpp
 GCLASSIFY=gclassify
-SKELETON=gaur_mysql.c
+SKELETON=~/.gaur/src/skeletons/gaur_mysql.c
 
 all: run
 

@@ -5,27 +5,25 @@ CC = gcc
 CPPFLAGS=-I ./include
 CFLAGS=-g -Wall
 GRAMMARFILE=parse.y
-INJECTFILE=/usr/local/gaur/src/injects/inject.c
+INJECTFILE=~/.gaur/src/injects/inject.c
 GCLASSIFY=gclassify
 
 all: build  
 
 # -------------------- INSTALLATION FILES   --------------------
-install: /usr/local/gaur/src/injects/ /usr/share/bison/skeletons/
+install: ~/.gaur/src/injects/ ~/.gaur/src/skeletons/
 
 output: 
 	@mkdir -p $@
 
-/usr/local/gaur/src/injects/: src/injects/*.c src/injects/*.cpp 
-	sudo mkdir -p /usr/local/gaur/src/injects/
-	sudo cp -r src/injects/*.c $@
-	sudo cp -r src/injects/*.cpp $@
+~/.gaur/src/injects/: src/injects/*.c src/injects/*.cpp 
+	mkdir -p ~/.gaur/src/injects/
+	cp -r src/injects/*.c $@
+	cp -r src/injects/*.cpp $@
 
-/usr/local/gaur/src/:
-
-/usr/share/bison/skeletons/: src/skeletons/*.c
-	sudo cp src/skeletons/* $@
-
+~/.gaur/src/skeletons/: src/skeletons/*.c
+	mkdir -p ~/.gaur/src/skeletons/
+	cp src/skeletons/* $@
 
 # -------------------- BUILD GAUR BINARY --------------------
 build: output install gaur 
@@ -78,5 +76,5 @@ clean:
 
 # -------------------- UNINSTALL   --------------------
 uninstall:
-	@sudo rm -rf /usr/local/gaur/ 
+	rm -rf ~/.gaur/ 
 
