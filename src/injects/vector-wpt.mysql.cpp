@@ -12,12 +12,12 @@ typedef struct _node_pt
     struct _node_pt *next;
 } _Node_pt;
 
-#define GAUR_PARSE_BEGIN(size, state_stack) \
-    struct _node_pt *first = NULL;          \
-    struct _node_pt *current = NULL;        \
-    int terminal_c = 0;                     \
-    int nonterminal_c = 0;                  \
-    uint64_t ggid = (long)&state_stack[0];
+#define GAUR_PARSE_BEGIN(size, thd)  \
+    struct _node_pt *first = NULL;   \
+    struct _node_pt *current = NULL; \
+    int terminal_c = 0;              \
+    int nonterminal_c = 0;           \
+    uint64_t ggid = thd->query_id;
 
 #define GET_ACTION_TAG(i) (ggrulesem[i - 2][0])
 #define GET_ASSET_TAG(i) (ggrulesem[i - 2][1])
@@ -36,28 +36,28 @@ typedef struct _node_pt
         terminal_c++;                                                   \
     } while (0);
 
-#define GAUR_REDUCE(nrule, yylen)                                          \
-    do                                                                     \
-    { /* We substract 1 to nrule because of the bison accept rule offset*/ \
-        if (first == NULL)                                                 \
-        {                                                                  \
-            first = malloc(sizeof(struct _node_pt));                       \
-            first->rule_action = GET_ACTION_TAG(nrule);                    \
-            first->rule_number = nrule - 1;                                \
-            first->rule_asset = GET_ASSET_TAG(nrule);                      \
-            first->next = NULL;                                            \
-            current = first;                                               \
-        }                                                                  \
-        else                                                               \
-        {                                                                  \
-            current->next = malloc(sizeof(struct _node_pt));               \
-            current = current->next;                                       \
-            current->rule_action = GET_ACTION_TAG(nrule);                  \
-            current->rule_asset = GET_ASSET_TAG(nrule);                    \
-            current->rule_number = nrule - 1;                              \
-            current->next = NULL;                                          \
-        }                                                                  \
-        nonterminal_c++;                                                   \
+#define GAUR_REDUCE(nrule, yylen)                                               \
+    do                                                                          \
+    { /* We substract 1 to nrule because of the bison accept rule offset*/      \
+        if (first == NULL)                                                      \
+        {                                                                       \
+            first = (struct _node_pt *)malloc(sizeof(struct _node_pt));         \
+            first->rule_action = GET_ACTION_TAG(nrule);                         \
+            first->rule_number = nrule - 1;                                     \
+            first->rule_asset = GET_ASSET_TAG(nrule);                           \
+            first->next = NULL;                                                 \
+            current = first;                                                    \
+        }                                                                       \
+        else                                                                    \
+        {                                                                       \
+            current->next = (struct _node_pt *)malloc(sizeof(struct _node_pt)); \
+            current = current->next;                                            \
+            current->rule_action = GET_ACTION_TAG(nrule);                       \
+            current->rule_asset = GET_ASSET_TAG(nrule);                         \
+            current->rule_number = nrule - 1;                                   \
+            current->next = NULL;                                               \
+        }                                                                       \
+        nonterminal_c++;                                                        \
     } while (0)
 
 enum
@@ -116,7 +116,6 @@ static struct
     {_LOGFILE, "LOGFILE"},
     {_SERVER, "SERVER"},
     {_TRIGGER, "TRIGGER"},
-
 };
 
 /**
@@ -171,7 +170,7 @@ void create_logentry(struct _node_pt *first, uint64_t query_id, int terminal_c, 
                     break;
                 }
             }
-            /* Same for assets */
+            /* Same for assets, we want a separator: */
             fprintf(f_logs, ":");
             for (size_t i = 0; i < sizeof(_assets_mapping) / sizeof(_assets_mapping[0]); i++)
             {
