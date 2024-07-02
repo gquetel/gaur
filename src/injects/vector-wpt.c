@@ -58,7 +58,7 @@ void shift(const char *data, const int rule_id)
     tab[index_tab]->nb_child = 0;
     tab[index_tab]->data = info;
     tab[index_tab]->child = NULL;
-    tab[index_tab]->rule_id = rule_id;
+    tab[index_tab]->rule_id = rule_id - 1;
     index_tab++;
 }
 
@@ -108,7 +108,7 @@ void reduce(int nb_child, const char *data, const int rule_id)
     tab[index_tab]->data = info;
     tab[index_tab]->nb_child = nb_child_tot;
     tab[index_tab]->child = start_bro;
-    tab[index_tab]->rule_id = rule_id;
+    tab[index_tab]->rule_id = rule_id - 1;
     index_tab++;
 }
 /*                        ARBRE mon format                          */
@@ -124,7 +124,7 @@ int print_MY(int index, node_t *printed, FILE *f)
     {
         int i = index;
         // fprintf(f, "%d.%d>", printed->rule_id, index + printed->nb_child); // rule_id
-        fprintf(f, "%s.%d>", printed->data, index + printed->nb_child);
+        fprintf(f, "%s.%d.%d>", printed->data, printed->rule_id, index + printed->nb_child);
 
         child_t *child = printed->child;
 
@@ -135,7 +135,7 @@ int print_MY(int index, node_t *printed, FILE *f)
 
             i += child->child->nb_child + 1;
             // fprintf(f, "%d.%d|", child->child->rule_id, i - 1); // print rule id
-            fprintf(f, "%s.%d|", child->child->data, i - 1);
+            fprintf(f, "%s.%d.%d|", child->child->data, child->child->rule_id, i - 1);
 
             child = child->brother;
         }
@@ -157,7 +157,7 @@ int print_MY(int index, node_t *printed, FILE *f)
 // Le premier affichage sert à facilement connaitre la racine de l'abre
 void print_tree_MY(FILE *f)
 {
-    fprintf(f, ",\"|%s.%d ", tab[index_tab - 1]->data, tab[index_tab - 1]->nb_child);
+    fprintf(f, ",\"|%s.%d.%d ", tab[index_tab - 1]->data, tab[index_tab - 1]->rule_id, tab[index_tab - 1]->nb_child);
     // fprintf(f, ",\"|%d.%d ", tab[index_tab - 1]->rule_id, tab[index_tab - 1]->nb_child); // print rule id
     print_MY(0, tab[index_tab - 1], f);
     fprintf(f, "\""); // End of parse tree string
