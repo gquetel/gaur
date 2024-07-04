@@ -4,14 +4,13 @@
 #include <stdint.h>
 #include <inttypes.h>
 
-// structure de donnée nous permettant de stocker un arbre
 typedef struct child_t child_t;
 typedef struct node_t node_t;
 
+// TODO Merge node_t et node_pt
 struct node_t
 {
-    char *data;
-    int rule_id;
+    const char *data;
     int nb_child;
     struct child_t *child;
 };
@@ -32,38 +31,31 @@ child_t *end_bro = NULL;
 
 int nb_graph = 0;
 
-/*                      CONSTRUCTION DE L'ABRE                        */
-
-// Pour l'écriture en format CSV il faut abolument éviter
-// les virgules ont les replaces donc par un autre charactère
-void syntax_check(char *word)
+/**
+ * @brief Called when shift occurs, will be pushed in the pile afterwards
+ *
+ * @param data lhs name
+ */
+void shift(const char *data)
 {
 
-    for (int i = 0; i < strlen(word); i++)
-    {
-        if (word[i] == ',')
-            word[i] = '#';
-    }
-}
-
-// Lors d'un shift on ajoute une feuille qui sera
-// stocker dans un tableau jouant le role de pile
-void shift(const char *data, const int rule_id)
-{
-    char *info = malloc(strlen(data));
-    strcpy(info, data);
-    syntax_check(info);
+    // TODO replace by strdup & add action + objet fields ?
+    const char *info = malloc(strlen(data));
+    info = data;
 
     tab[index_tab] = malloc(sizeof(node_t));
     tab[index_tab]->nb_child = 0;
     tab[index_tab]->data = info;
     tab[index_tab]->child = NULL;
-    tab[index_tab]->rule_id = rule_id - 1;
     index_tab++;
 }
 
-// Partie du reduce visant à dépiler les élements nécessaire de la pile
-// Et à en profiter pour les relierà leur père
+/**
+ * @brief Part of the reduce which takes all sons and attribute them to their father
+ *
+ * @param num
+ * @return int
+ */
 int small_reduce(int num)
 {
     if (start_bro == NULL)
@@ -85,9 +77,13 @@ int small_reduce(int num)
     return tab[num]->nb_child;
 }
 
-// Fonction appellé lors d'un reduce, permettant de créer
-// l'élement noueds
-void reduce(int nb_child, const char *data, const int rule_id)
+/**
+ * @brief Create a node and populate its values
+ *
+ * @param nb_child
+ * @param data
+ */
+void reduce(int nb_child, const char *data)
 {
 
     start_bro = NULL;
@@ -100,20 +96,26 @@ void reduce(int nb_child, const char *data, const int rule_id)
         nb_child_tot += small_reduce(index_tab);
     }
 
-    char *info = malloc(strlen(data));
-    strcpy(info, data);
-    syntax_check(info);
+    const char *info = malloc(strlen(data));
+    info = data;
 
     tab[index_tab] = malloc(sizeof(node_t));
     tab[index_tab]->data = info;
     tab[index_tab]->nb_child = nb_child_tot;
     tab[index_tab]->child = start_bro;
-    tab[index_tab]->rule_id = rule_id - 1;
     index_tab++;
 }
-/*                        ARBRE mon format                          */
 
-// Un noeud déclare ces fils par '>', '|' sert à montré la fin du nom du fils
+/*                        PRINT TREE                         */
+
+/**
+ * @brief Print tree, and relationships between nodes
+ *
+ * @param index
+ * @param printed
+ * @param f
+ * @return int
+ */
 int print_MY(int index, node_t *printed, FILE *f)
 {
 
@@ -123,9 +125,7 @@ int print_MY(int index, node_t *printed, FILE *f)
     if (printed->child != NULL)
     {
         int i = index;
-        // fprintf(f, "%d.%d>", printed->rule_id, index + printed->nb_child); // rule_id
-        fprintf(f, "%s.%d.%d>", printed->data, printed->rule_id, index + printed->nb_child);
-
+        fprintf(f, "%d>", index + printed->nb_child);
         child_t *child = printed->child;
 
         while (child != NULL)
@@ -134,8 +134,7 @@ int print_MY(int index, node_t *printed, FILE *f)
                 return 1;
 
             i += child->child->nb_child + 1;
-            // fprintf(f, "%d.%d|", child->child->rule_id, i - 1); // print rule id
-            fprintf(f, "%s.%d.%d|", child->child->data, child->child->rule_id, i - 1);
+            fprintf(f, "%d:", i - 1);
 
             child = child->brother;
         }
@@ -154,13 +153,50 @@ int print_MY(int index, node_t *printed, FILE *f)
     return 0;
 }
 
-// Le premier affichage sert à facilement connaitre la racine de l'abre
+/**
+ * @brief Print node data
+ *  |index:label:action:object
+ * @param index
+ * @param printed
+ * @param f
+ * @return int
+ */
+int print_node_MY(int index, node_t *printed, FILE *f)
+{
+
+    if (printed == NULL)
+        return 1;
+
+    fprintf(f, "|%d", index + printed->nb_child);
+    fprintf(f, ":%s", printed->data);
+
+    child_t *child = printed->child;
+    int width = 0;
+    while (child != NULL)
+    {
+        width++;
+        child = child->brother;
+    }
+    fprintf(f, ":action:object ");
+
+    int i = index;
+    child = printed->child;
+    while (child != NULL)
+    {
+        print_node_MY(i, child->child, f);
+        i += child->child->nb_child + 1;
+        child = child->brother;
+    }
+
+    return 0;
+}
+
 void print_tree_MY(FILE *f)
 {
-    fprintf(f, ",\"|%s.%d.%d ", tab[index_tab - 1]->data, tab[index_tab - 1]->rule_id, tab[index_tab - 1]->nb_child);
-    // fprintf(f, ",\"|%d.%d ", tab[index_tab - 1]->rule_id, tab[index_tab - 1]->nb_child); // print rule id
+    fprintf(f, ",\"");
+    print_node_MY(0, tab[index_tab - 1], f);
     print_MY(0, tab[index_tab - 1], f);
-    fprintf(f, "\""); // End of parse tree string
+    fprintf(f, "\"");
 }
 
 /*                       PRINT PARAMETRE ARBRE                       */
@@ -187,7 +223,7 @@ int depth(node_t *evaluated)
     return max + 1;
 }
 
-int width_stage(node_t *evaluated, int stage, int stages[])
+int leaf(node_t *evaluated)
 {
     if (evaluated == NULL)
         return 0;
@@ -196,48 +232,24 @@ int width_stage(node_t *evaluated, int stage, int stages[])
         return 1;
 
     int add = 0;
-    int nb_direct_child = 0;
 
     child_t *child = evaluated->child;
     while (child != NULL)
     {
-        add += width_stage(child->child, stage + 1, stages);
+        add += leaf(child->child);
 
         child = child->brother;
-        nb_direct_child++;
     }
-    stages[stage] += nb_direct_child;
 
     return add;
 }
 
-/**
- * @brief For the time being, simply prints the depth of the tree.
- *
- * @param f
- */
+// we also print the number of leaf, number of node
+// and the depth of the tree
 void print_parameters(FILE *f)
 {
     int depth_tree = depth(tab[index_tab - 1]);
-    fprintf(f, ",%d", depth_tree); // depth column
-
-    /*
-    int total_node = tab[index_tab - 1]->nb_child + 1;  // remove compiler warnings
-    int stages[depth_tree];
-
-    for (int i = 0; i < depth_tree; i++)
-    {
-        stages[i] = 0;
-    }
-
-    int nb_leaf = width_stage(tab[index_tab-1], 0, stages); // remove compiler warnings
-
-    fprintf(f, ",%d", nb_leaf); // i.e terminal_c -> Redundant
-    fprintf(f, ",%f", ((double) total_node)/(total_node - nb_leaf)); // Leaf / Node total ratio
-
-    for(int i = 0; i < depth_tree; i++){
-        fprintf(f, ",%d",  stages[i]);
-    }*/
+    fprintf(f, ",%d", depth_tree);
 }
 
 void print_tree(FILE *f)
@@ -245,7 +257,6 @@ void print_tree(FILE *f)
     print_tree_MY(f);
     print_parameters(f);
 }
-
 typedef struct _node_pt
 {
     int rule_number;
@@ -275,7 +286,7 @@ typedef struct _node_pt
     {                                                                   \
         if (yytoken == YYSYMBOL_YYEOF)                                  \
             create_logentry(first, ggid, terminal_c, nonterminal_c, 0); \
-        shift(yysymbol_name(yytoken), yytoken);                         \
+        shift(yysymbol_name(yytoken));                                  \
         terminal_c++;                                                   \
     } while (0);
 
@@ -301,7 +312,7 @@ typedef struct _node_pt
             current->next = NULL;                                          \
         }                                                                  \
         nonterminal_c++;                                                   \
-        reduce(yylen, yysymbol_name(yyr1[nrule - 1]), nrule);              \
+        reduce(yylen, yysymbol_name(yyr1[nrule]));                         \
     } while (0)
 
 enum
