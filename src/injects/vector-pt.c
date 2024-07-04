@@ -258,7 +258,7 @@ void print_tree_features(FILE *f)
  * @param f
  * @return int
  */
-int print_MY(int index, node_t *printed, FILE *f)
+int print_edges_relation(int index, node_t *printed, FILE *f)
 {
 
     if (printed == NULL)
@@ -286,7 +286,7 @@ int print_MY(int index, node_t *printed, FILE *f)
 
         while (child != NULL)
         {
-            print_MY(i, child->child, f);
+            print_edges_relation(i, child->child, f);
             i += child->child->nb_child + 1;
             child = child->brother;
         }
@@ -295,14 +295,14 @@ int print_MY(int index, node_t *printed, FILE *f)
 }
 
 /**
- * @brief Print node data
+ * @brief Print nodes, and their attributes
  *  |index:label:action:object
  * @param index
  * @param printed
  * @param f
  * @return int
  */
-int print_node_MY(int index, node_t *printed, FILE *f)
+int print_nodes_attr(int index, node_t *printed, FILE *f)
 {
 
     if (printed == NULL)
@@ -333,7 +333,7 @@ int print_node_MY(int index, node_t *printed, FILE *f)
     int i = index;
     while (child != NULL)
     {
-        print_node_MY(i, child->child, f);
+        print_nodes_attr(i, child->child, f);
         i += child->child->nb_child + 1;
         child = child->brother;
     }
@@ -343,8 +343,9 @@ int print_node_MY(int index, node_t *printed, FILE *f)
 void print_tree_MY(FILE *f)
 {
     fprintf(f, ",\"");
-    print_node_MY(0, tab[index_tab - 1], f);
-    print_MY(0, tab[index_tab - 1], f);
+    print_nodes_attr(0, tab[index_tab - 1], f);
+    fprintf(f, "||"); /* Allows to separate node declaration from edges*/
+    print_edges_relation(0, tab[index_tab - 1], f);
     fprintf(f, "\"");
 }
 
@@ -362,7 +363,7 @@ void create_logentry(uint64_t query_id, int terminal_c, int nonterminal_c, int i
         fprintf(f_logs, "%d,%d,%d", terminal_c, nonterminal_c, is_error);
         print_tree_MY(f_logs);
         print_tree_features(f_logs);
-
+        // clean_tab();
         fprintf(f_logs, "\n");
         fclose(f_logs);
     }

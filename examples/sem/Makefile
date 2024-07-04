@@ -1,6 +1,6 @@
 
 GAUR= ../../gaur
-GAUR_FLAGS=-i  /home/gquetel/.gaur/src/injects/vector-wpt.c -l nterm_sem.json -o gaur.modified.y
+GAUR_FLAGS=-i  /home/gquetel/.gaur/src/injects/vector-pt.c -l nterm_sem.json -o gaur.modified.y
 BISON = bison -d -t
 LDFLAGS= -L/opt/local/lib -lreadline -lm 
 FLEX = flex
