@@ -9,7 +9,6 @@ typedef struct node_t node_t;
 
 struct node_t
 {
-    const char *data;
     int nb_child;
     int rule_id;
     int rule_action;
@@ -23,7 +22,7 @@ struct child_t
     child_t *brother;
 };
 
-#define MAX_LENGHT 1
+#define MAX_LENGHT 10
 
 /* tab servers as a stack of pt nodes until they are given a father
 - Each shift increments the number of element in the array
@@ -41,9 +40,8 @@ int is_collector_error = 0;
 /**
  * @brief Called when shift occurs, will be pushed in the pile afterwards
  *
- * @param data lhs name
  */
-void shift(const char *data, int rule_id)
+void shift(int rule_id)
 {
     if (index_tab >= MAX_LENGHT || is_collector_error)
     {
@@ -54,7 +52,6 @@ void shift(const char *data, int rule_id)
 
     tab[index_tab] = malloc(sizeof(node_t));
     tab[index_tab]->nb_child = 0;
-    tab[index_tab]->data = data;
     tab[index_tab]->child = NULL;
     tab[index_tab]->rule_action = 0;
     tab[index_tab]->rule_asset = 0;
@@ -93,9 +90,8 @@ int small_reduce(int num)
  * @brief Create a node and populate its values
  *
  * @param nb_child
- * @param data
  */
-void reduce(int nb_child, const char *data, int r_id, int r_asset, int r_action)
+void reduce(int nb_child, int r_id, int r_asset, int r_action)
 {
     if (is_collector_error) /* Skip reduction if tree is already messed up */
         return;
@@ -119,7 +115,6 @@ void reduce(int nb_child, const char *data, int r_id, int r_asset, int r_action)
     }
 
     tab[index_tab] = malloc(sizeof(node_t));
-    tab[index_tab]->data = data;
     tab[index_tab]->nb_child = nb_child_tot;
     tab[index_tab]->child = start_bro;
     tab[index_tab]->rule_action = r_action;
@@ -147,15 +142,15 @@ void reduce(int nb_child, const char *data, int r_id, int r_asset, int r_action)
     {                                                            \
         if (yytoken == YYSYMBOL_YYEOF)                           \
             create_logentry(ggid, terminal_c, nonterminal_c, 0); \
-        shift(yysymbol_name(yytoken), yytoken);                  \
+        shift(yytoken);                                          \
         terminal_c++;                                            \
     } while (0);
 
-#define GAUR_REDUCE(nrule, yylen)                                                                          \
-    do                                                                                                     \
-    { /* We substract 1 to nrule because of the bison accept rule offset*/                                 \
-        nonterminal_c++;                                                                                   \
-        reduce(yylen, yysymbol_name(yyr1[nrule]), nrule - 1, GET_ASSET_TAG(nrule), GET_ACTION_TAG(nrule)); \
+#define GAUR_REDUCE(nrule, yylen)                                              \
+    do                                                                         \
+    { /* We substract 1 to nrule because of the bison accept rule offset*/     \
+        nonterminal_c++;                                                       \
+        reduce(yylen, nrule - 1, GET_ASSET_TAG(nrule), GET_ACTION_TAG(nrule)); \
     } while (0)
 
 enum
@@ -341,7 +336,7 @@ int print_nodes_attr(int index, node_t *printed, FILE *f)
         return 1;
     child_t *child = printed->child;
 
-    fprintf(f, "|%d:%s:", index + printed->nb_child, printed->data);
+    fprintf(f, "|%d:node_name:", index + printed->nb_child);
 
     /* Now print action */
     for (size_t i = 0; i < sizeof(_actions_mapping) / sizeof(_actions_mapping[0]); i++)
@@ -380,7 +375,7 @@ void print_tree_MY(FILE *f)
     print_edges_relation(0, tab[index_tab - 1], f);
     fprintf(f, "\"");
 }
-d
+
 /**
  * @brief Create the log entry corresponding to parsed input.
  *
