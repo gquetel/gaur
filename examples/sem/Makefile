@@ -1,6 +1,6 @@
 
 GAUR= ../../gaur
-GAUR_FLAGS=-i  /home/gquetel/.gaur/src/injects/vector-pt.c -l nterm_sem.json -o gaur.modified.y
+GAUR_FLAGS=-i  /usr/share/gaur/src/injects/vector-pt.c -l labels.json -o gaur.modified.y
 BISON = bison -d -t
 LDFLAGS= -L/opt/local/lib -lreadline -lm 
 FLEX = flex
@@ -12,10 +12,10 @@ all: build
 nterm_list.csv: parse.y 
 	$(GAUR) --extract parse.y 
 
-nterm_sem.json: nterm_list.csv 
-	gclassify -o nterm_sem.json nterm_list.csv  ~/.local/lib/python3.10/site-packages/pygaur/data/mysql/tags/
+labels.json: nterm_list.csv 
+	gclassify -o labels.json nterm_list.csv  ~/.local/lib/python3.10/site-packages/pygaur/data/mysql/tags/
 
-gaur.modified.y: parse.y nterm_sem.json
+gaur.modified.y: parse.y labels.json
 	$(GAUR) $(GAUR_FLAGS) parse.y 
 parse.dot: 
 	../../gaur -d parse.y
@@ -30,4 +30,4 @@ scan.o: scan.c
 build: parse.o scan.o
 	$(CC)  -o parse parse.o scan.o $(LDFLAGS)
 clean: 
-	rm -f parse gaur.modified.y *.c *.h *.o parse.output *.log rules.extracted nterm_sem.txt .json parse.dot
+	rm -f parse gaur.modified.y *.c *.h *.o parse.output *.log rules.extracted nterm_sem.txt  parse.dot

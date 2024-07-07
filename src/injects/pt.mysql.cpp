@@ -9,7 +9,6 @@ typedef struct node_t node_t;
 
 struct node_t
 {
-    const char *data;
     int nb_child;
     int rule_id;
     int rule_action;
@@ -23,139 +22,51 @@ struct child_t
     child_t *brother;
 };
 
-#define MAX_LENGHT 1
+#define MAX_LENGHT 300
 
 /* tab servers as a stack of pt nodes until they are given a father
 - Each shift increments the number of element in the array
 - Each reduce reduce the number of elements by the number of rhs elements (direct childrens)
 */
-node_t *tab[MAX_LENGHT];
 
 /* index_tab stores the index of the next available position in the tab,
- index_tab - 1 corresponds to the index of the last shifted element (when index_tab > 0s) */
-int index_tab = 0;
-child_t *start_bro = NULL;
-child_t *end_bro = NULL;
-int is_collector_error = 0;
+index_tab - 1 corresponds to the index of the last shifted element (when index_tab > 0s) */
 
-/**
- * @brief Called when shift occurs, will be pushed in the pile afterwards
- *
- * @param data lhs name
- */
-void shift(const char *data, int rule_id)
-{
-    if (index_tab >= MAX_LENGHT || is_collector_error)
-    {
-        fprintf(stderr, "gaur data collector - shift(): incorrect index_tab: %d\n", index_tab);
-        is_collector_error = 1;
-        return;
-    }
-
-    tab[index_tab] = malloc(sizeof(node_t));
-    tab[index_tab]->nb_child = 0;
-    tab[index_tab]->data = data;
-    tab[index_tab]->child = NULL;
-    tab[index_tab]->rule_action = 0;
-    tab[index_tab]->rule_asset = 0;
-    tab[index_tab]->rule_id = rule_id;
-    index_tab++;
-}
-
-/**
- * @brief Part of the reduce which takes all sons and attribute them to their father
- *
- * @param num children index in tab
- * @return int
- */
-int small_reduce(int num)
-{
-    if (start_bro == NULL)
-    {
-        start_bro = malloc(sizeof(child_t));
-
-        start_bro->child = tab[num];
-        start_bro->brother = NULL;
-        end_bro = start_bro;
-    }
-    else
-    {
-        end_bro->brother = malloc(sizeof(child_t));
-        end_bro->brother->child = tab[num];
-        end_bro->brother->brother = NULL;
-        end_bro = end_bro->brother;
-    }
-
-    return tab[num]->nb_child;
-}
-
-/**
- * @brief Create a node and populate its values
- *
- * @param nb_child
- * @param data
- */
-void reduce(int nb_child, const char *data, int r_id, int r_asset, int r_action)
-{
-    if (is_collector_error) /* Skip reduction if tree is already messed up */
-        return;
-
-    start_bro = NULL;
-    end_bro = NULL;
-    int nb_child_tot = nb_child;
-
-    /* collect nb_child last values of array tab and associate them to their father */
-    for (int i = 0; i < nb_child; i++)
-    {
-        index_tab--;
-        if (index_tab < 0 || index_tab >= MAX_LENGHT)
-        {
-            fprintf(stderr, "gaur data collector - reduce(): incorrect index_tab: %d\n", index_tab);
-
-            is_collector_error = 1;
-            return;
-        }
-        nb_child_tot += small_reduce(index_tab);
-    }
-
-    tab[index_tab] = malloc(sizeof(node_t));
-    tab[index_tab]->data = data;
-    tab[index_tab]->nb_child = nb_child_tot;
-    tab[index_tab]->child = start_bro;
-    tab[index_tab]->rule_action = r_action;
-    tab[index_tab]->rule_asset = r_asset;
-    tab[index_tab]->rule_id = r_id;
-    index_tab++;
-}
-
-#define GAUR_PARSE_BEGIN(size, state_stack) \
-    int terminal_c = 0;                     \
-    int nonterminal_c = 0;                  \
-    uint64_t ggid = (long)&state_stack[0];
+#define GAUR_PARSE_BEGIN(size, thd) \
+    int terminal_c = 0;             \
+    int nonterminal_c = 0;          \
+    uint64_t ggid = thd->query_id;  \
+    int index_tab = 0;              \
+    child_t *start_bro = NULL;      \
+    child_t *end_bro = NULL;        \
+    int is_collector_error = 0;     \
+    node_t *tab[MAX_LENGHT];
 
 #define GET_ACTION_TAG(i) (ggrulesem[i - 2][0])
 #define GET_ASSET_TAG(i) (ggrulesem[i - 2][1])
 
-#define GAUR_ERROR()                                                \
-    do                                                              \
-    {                                                               \
-        create_logentry(first, ggid, terminal_c, nonterminal_c, 1); \
+#define GAUR_ERROR()                                                                             \
+    do                                                                                           \
+    {                                                                                            \
+        create_logentry(ggid, terminal_c, nonterminal_c, 1, is_collector_error, tab, index_tab); \
     } while (0);
 
 #define GAUR_SHIFT(yytoken)                                      \
     do                                                           \
     {                                                            \
         if (yytoken == YYSYMBOL_YYEOF)                           \
-            create_logentry(ggid, terminal_c, nonterminal_c, 0); \
-        shift(yysymbol_name(yytoken), yytoken);                  \
+            create_logentry(ggid, terminal_c, nonterminal_c, 0,  \
+                            is_collector_error, tab, index_tab); \
+        shift(yytoken, index_tab, is_collector_error, tab);      \
         terminal_c++;                                            \
     } while (0);
 
-#define GAUR_REDUCE(nrule, yylen)                                                                          \
-    do                                                                                                     \
-    { /* We substract 1 to nrule because of the bison accept rule offset*/                                 \
-        nonterminal_c++;                                                                                   \
-        reduce(yylen, yysymbol_name(yyr1[nrule]), nrule - 1, GET_ASSET_TAG(nrule), GET_ACTION_TAG(nrule)); \
+#define GAUR_REDUCE(nrule, yylen)                                             \
+    do                                                                        \
+    { /* We substract 1 to nrule because of the bison accept rule offset*/    \
+        nonterminal_c++;                                                      \
+        reduce(yylen, nrule - 1, GET_ASSET_TAG(nrule), GET_ACTION_TAG(nrule), \
+               index_tab, tab, is_collector_error, start_bro, end_bro);       \
     } while (0)
 
 enum
@@ -217,6 +128,114 @@ static struct
 };
 
 /**
+ * @brief Called when shift occurs, will be pushed in the pile afterwards
+ *
+ */
+void shift(int rule_id, int index_tab, int is_collector_error, node_t *tab[])
+{
+    if (index_tab >= MAX_LENGHT || is_collector_error)
+    {
+        fprintf(stderr, "gaur data collector - shift(): incorrect index_tab: %d\n", index_tab);
+
+        is_collector_error = 1;
+        return;
+    }
+
+    tab[index_tab] = (struct node_t *)malloc(sizeof(node_t));
+    tab[index_tab]->nb_child = 0;
+    tab[index_tab]->child = NULL;
+    tab[index_tab]->rule_action = 0;
+    tab[index_tab]->rule_asset = 0;
+    tab[index_tab]->rule_id = rule_id;
+    index_tab++;
+}
+
+/**
+ * @brief Part of the reduce which takes all sons and attribute them to their father
+ *
+ * @param num
+ * @return int
+ */
+int small_reduce(int num, child_t *start_bro, child_t *end_bro, node_t *tab[])
+{
+    if (start_bro == NULL)
+    {
+        start_bro = (struct child_t *)malloc(sizeof(child_t));
+
+        start_bro->child = tab[num];
+        start_bro->brother = NULL;
+        end_bro = start_bro;
+    }
+    else
+    {
+        end_bro->brother = (struct child_t *)malloc(sizeof(child_t));
+        end_bro->brother->child = tab[num];
+        end_bro->brother->brother = NULL;
+        end_bro = end_bro->brother;
+    }
+
+    return tab[num]->nb_child;
+}
+
+/**
+ * @brief Create a node and populate its values
+ *
+ * @param nb_child
+ */
+void reduce(int nb_child, int r_id, int r_asset, int r_action, int index_tab, node_t *tab[], int is_collector_error, child_t *start_bro, child_t *end_bro)
+{
+
+    if (is_collector_error) /* Skip reduction if tree is already messed up */
+        return;
+    start_bro = NULL;
+    end_bro = NULL;
+    int nb_child_tot = nb_child;
+
+    for (int i = 0; i < nb_child; i++)
+    {
+        index_tab--;
+        if (index_tab < 0 || index_tab >= MAX_LENGHT)
+        {
+            fprintf(stderr, "gaur data collector - reduce(): incorrect index_tab: %d\n", index_tab);
+
+            is_collector_error = 1;
+            return;
+        }
+        nb_child_tot += small_reduce(index_tab, start_bro, end_bro, tab);
+    }
+
+    tab[index_tab] = (struct node_t *)malloc(sizeof(node_t));
+    tab[index_tab]->nb_child = nb_child_tot;
+    tab[index_tab]->child = start_bro;
+    tab[index_tab]->rule_action = r_action;
+    tab[index_tab]->rule_asset = r_asset;
+    tab[index_tab]->rule_id = r_id;
+    index_tab++;
+}
+
+int get_tree_depth(node_t *evaluated)
+{
+    if (evaluated == NULL)
+        return 0;
+
+    int max = 0;
+    int actual;
+
+    child_t *child = evaluated->child;
+    while (child != NULL)
+    {
+        actual = get_tree_depth(child->child);
+
+        if (actual > max)
+            max = actual;
+
+        child = child->brother;
+    }
+
+    return max + 1;
+}
+
+/**
  * @brief Check existence of file, if not exists create it, and create header line, then return file pointer.
  * If already exists, just return file pointer.
  *
@@ -244,44 +263,16 @@ FILE *gaur_open_file()
 }
 
 /**
- * @brief Get the tree depth
- * Should only be called if input is syntactically valid: the tree is complete
- * @param evaluated
- * @return int
- */
-int get_tree_depth(node_t *evaluated)
-{
-    if (evaluated == NULL)
-        return 0;
-
-    int max = 0;
-    int actual;
-
-    child_t *child = evaluated->child;
-    while (child != NULL)
-    {
-        actual = get_tree_depth(child->child);
-
-        if (actual > max)
-            max = actual;
-
-        child = child->brother;
-    }
-
-    return max + 1;
-}
-
-/**
  * @brief Function to print additionnal tree features:
  * Depth of the tree
  * @param f
  */
-void print_tree_features(FILE *f)
+void print_tree_features(FILE *f, node_t *tab[], int index_tab)
 {
-    // TODO, pourquoi index_tab - 1 ?
     int depth_tree = get_tree_depth(tab[index_tab - 1]);
     fprintf(f, ",%d", depth_tree);
 }
+
 /**
  * @brief Print tree, and relationships between nodes
  *
@@ -341,7 +332,7 @@ int print_nodes_attr(int index, node_t *printed, FILE *f)
         return 1;
     child_t *child = printed->child;
 
-    fprintf(f, "|%d:%s:", index + printed->nb_child, printed->data);
+    fprintf(f, "|%d:node_name:", index + printed->nb_child);
 
     /* Now print action */
     for (size_t i = 0; i < sizeof(_actions_mapping) / sizeof(_actions_mapping[0]); i++)
@@ -372,7 +363,7 @@ int print_nodes_attr(int index, node_t *printed, FILE *f)
     return 0;
 }
 
-void print_tree_MY(FILE *f)
+void print_tree_MY(FILE *f, node_t *tab[], int index_tab)
 {
     fprintf(f, ",\"");
     print_nodes_attr(0, tab[index_tab - 1], f);
@@ -380,26 +371,23 @@ void print_tree_MY(FILE *f)
     print_edges_relation(0, tab[index_tab - 1], f);
     fprintf(f, "\"");
 }
-d
+
 /**
  * @brief Create the log entry corresponding to parsed input.
- *
- * @param first
  */
-void create_logentry(uint64_t query_id, int terminal_c, int nonterminal_c, int is_error)
+void create_logentry(uint64_t query_id, int terminal_c, int nonterminal_c, int is_error, int is_collector_error, node_t *tab[], int index_tab)
 {
     FILE *f_logs = gaur_open_file();
     if (f_logs != NULL)
     {
         fprintf(f_logs, "%" PRId64 ",", query_id); /* Print Input ID*/
         fprintf(f_logs, "%d,%d,%d", terminal_c, nonterminal_c, is_error);
-
-        if (is_collector_error)
+        if (is_collector_error || index_tab < 1)
             fprintf(f_logs, ",,\n"); // One for pt, one for depth
         else
         {
-            print_tree_MY(f_logs);
-            print_tree_features(f_logs);
+            print_tree_MY(f_logs, tab, index_tab);
+            print_tree_features(f_logs, tab, index_tab);
             fprintf(f_logs, "\n");
         }
         // clean_tab();

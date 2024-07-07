@@ -15,7 +15,7 @@ static FILE *f_inject_code; /* Input file to inject code in prologue*/
 static FILE *f_semantics;
 
 // TODO: find alternative way to not hardcode path. '~' cannot be used.
-static char *filename_skeleton = "/home/gquetel/.gaur/src/skeletons/gaur_yacc.c";
+static char *filename_skeleton = "gaur_yacc.c";
 
 static regex_t re_sym;
 static regex_t re_terminal;

@@ -22,7 +22,6 @@ m4_pushdef([b4_copyright_years],
 
 m4_include(b4_skeletonsdir/[c.m4])
 
-
 ## ---------- ##
 ## api.pure.  ##
 ## ---------- ##
