@@ -326,8 +326,9 @@ int print_edges_relation(int index, node_t *printed, FILE *f)
 }
 
 /**
+/**
  * @brief Print nodes, and their attributes
- *  |index:label:action:object
+ *  | appearance_int:rule_id:action:object
  * @param index
  * @param printed
  * @param f
@@ -340,7 +341,7 @@ int print_nodes_attr(int index, node_t *printed, FILE *f)
         return 1;
     child_t *child = printed->child;
 
-    fprintf(f, "|%d:node_name:", index + printed->nb_child);
+    fprintf(f, "|%d:%d:", index + printed->nb_child, printed->rule_id);
 
     /* Now print action */
     for (size_t i = 0; i < sizeof(_actions_mapping) / sizeof(_actions_mapping[0]); i++)
@@ -371,6 +372,11 @@ int print_nodes_attr(int index, node_t *printed, FILE *f)
     return 0;
 }
 
+/**
+ * @brief Wrapper for nodes and edges printing
+ *
+ * @param f
+ */
 void print_tree_MY(FILE *f)
 {
     fprintf(f, ",\"");
