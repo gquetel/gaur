@@ -169,9 +169,6 @@ void shift(int rule_id, YYSTYPE const *const yyvaluep)
     case YYSYMBOL_TEXT_STRING_hash:
     case YYSYMBOL_TEXT_STRING_validated:
     {
-        FILE *f_tmp = fopen("/tmp/gaurlog", "a");
-        fprintf(f_tmp, "Token type: %d, Token value : %s\n", rule_id, yyvaluep->lexer.lex_str.str);
-        fclose(f_tmp);
         tab[index_tab]->sem_val = strdup(yyvaluep->lexer.lex_str.str);
         break;
     }
