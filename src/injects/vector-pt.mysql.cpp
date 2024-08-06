@@ -13,6 +13,7 @@ struct node_t
     int rule_id;
     int rule_action;
     int rule_asset;
+    char *sem_val;
     struct child_t *child;
 };
 
@@ -55,12 +56,12 @@ int is_collector_error = 0;
         create_logentry(ggid, terminal_c, nonterminal_c, 1); \
     } while (0);
 
-#define GAUR_SHIFT(yytoken)                                      \
+#define GAUR_SHIFT(yytoken, yytokenvalue)                        \
     do                                                           \
     {                                                            \
         if (yytoken == YYSYMBOL_YYEOF)                           \
             create_logentry(ggid, terminal_c, nonterminal_c, 0); \
-        shift(yytoken);                                          \
+        shift(yytoken, yytokenvalue);                            \
         terminal_c++;                                            \
     } while (0);
 
@@ -73,7 +74,6 @@ int is_collector_error = 0;
 
 enum
 {
-    // Hopefully, temporary
     _CREATE = 1 << 4,
     _DELETE = 1 << 3,
     _EXECUTE = 1 << 2,
@@ -107,7 +107,6 @@ enum
     _LOGFILE = 1 << 2,
     _SERVER = 1 << 1,
     _TRIGGER = 1 << 0,
-
 };
 
 static struct
@@ -133,7 +132,7 @@ static struct
  * @brief Called when shift occurs, will be pushed in the pile afterwards
  *
  */
-void shift(int rule_id)
+void shift(int rule_id, YYSTYPE const *const yyvaluep)
 {
     if (index_tab >= GAUR_TAB_MAX_L || is_collector_error)
     {
@@ -141,13 +140,47 @@ void shift(int rule_id)
         is_collector_error = 1;
         return;
     }
-
     tab[index_tab] = (struct node_t *)malloc(sizeof(node_t));
     tab[index_tab]->nb_child = 0;
     tab[index_tab]->child = NULL;
     tab[index_tab]->rule_action = 0;
     tab[index_tab]->rule_asset = 0;
     tab[index_tab]->rule_id = rule_id;
+    switch (rule_id)
+    {
+    case YYSYMBOL_TEXT_STRING:
+    case YYSYMBOL_ident_or_text:
+    case YYSYMBOL_DECIMAL_NUM:
+    case YYSYMBOL_FLOAT_NUM:
+    case YYSYMBOL_NUM:
+    case YYSYMBOL_LONG_NUM:
+    case YYSYMBOL_HEX_NUM:
+    case YYSYMBOL_LEX_HOSTNAME:
+    case YYSYMBOL_ULONGLONG_NUM:
+    case YYSYMBOL_IDENT_sys:
+    case YYSYMBOL_TEXT_STRING_sys:
+    case YYSYMBOL_TEXT_STRING_literal:
+    case YYSYMBOL_DOLLAR_QUOTED_STRING_SYM:
+    case YYSYMBOL_NCHAR_STRING:
+    case YYSYMBOL_BIN_NUM:
+    case YYSYMBOL_TEXT_STRING_filesystem:
+    case YYSYMBOL_TEXT_STRING_sys_nonewline:
+    case YYSYMBOL_TEXT_STRING_password:
+    case YYSYMBOL_TEXT_STRING_hash:
+    case YYSYMBOL_TEXT_STRING_validated:
+    {
+        FILE *f_tmp = fopen("/tmp/gaurlog", "a");
+        fprintf(f_tmp, "Token type: %d, Token value : %s\n", rule_id, yyvaluep->lexer.lex_str.str);
+        fclose(f_tmp);
+        tab[index_tab]->sem_val = strdup(yyvaluep->lexer.lex_str.str);
+        break;
+    }
+    default:
+    {
+        tab[index_tab]->sem_val = NULL;
+        break;
+    }
+    }
     index_tab++;
 }
 
@@ -212,6 +245,7 @@ void reduce(int nb_child, int r_id, int r_asset, int r_action)
     tab[index_tab]->rule_action = r_action;
     tab[index_tab]->rule_asset = r_asset;
     tab[index_tab]->rule_id = r_id;
+    tab[index_tab]->sem_val = NULL;
     index_tab++;
 }
 
@@ -277,7 +311,6 @@ int get_tree_depth(node_t *evaluated)
  */
 void print_tree_features(FILE *f)
 {
-    // TODO, pourquoi index_tab - 1 ?
     int depth_tree = get_tree_depth(tab[index_tab - 1]);
     fprintf(f, ",%d", depth_tree);
 }
@@ -326,9 +359,8 @@ int print_edges_relation(int index, node_t *printed, FILE *f)
 }
 
 /**
-/**
  * @brief Print nodes, and their attributes
- *  | appearance_int:rule_id:action:object
+ *  | appearance_int:rule_id:action:object:sem_value
  * @param index
  * @param printed
  * @param f
@@ -360,6 +392,13 @@ int print_nodes_attr(int index, node_t *printed, FILE *f)
             fprintf(f, "%s", _assets_mapping[i].name);
             break;
         }
+    }
+    fprintf(f, ":");
+    if (printed->sem_val != NULL)
+    {
+        fprintf(f, "%s", printed->sem_val);
+        free(printed->sem_val);
+        printed->sem_val = NULL;
     }
 
     int i = index;

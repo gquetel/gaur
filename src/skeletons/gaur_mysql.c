@@ -1888,13 +1888,12 @@ yyread_pushed_token:]])[
      status.  */
   if (yyerrstatus)
     yyerrstatus--;
-
+ 
   /* Shift the lookahead token.  */
   YY_SYMBOL_PRINT ("Shifting", yytoken, &yylval, &yylloc);
   yystate = yyn;
   /* GAUR */
-  GAUR_SHIFT(yytoken);
-
+  GAUR_SHIFT(yytoken,&yylval);
   YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN
   *++yyvsp = yylval;
   YY_IGNORE_MAYBE_UNINITIALIZED_END]b4_locations_if([
