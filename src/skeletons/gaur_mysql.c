@@ -1922,7 +1922,7 @@ yyreduce:
   /* yyn is the number of a rule to reduce with.  */
   yylen = yyr2[yyn];
   /* GAUR */ 
-  GAUR_REDUCE(yyn, yylen); 
+  GAUR_REDUCE(yyn, yylen,yyr1[yyn]); 
 
   /* If YYLEN is nonzero, implement the default value of the action:
      '$$ = $1'.

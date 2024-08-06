@@ -10,6 +10,7 @@ typedef struct node_t node_t;
 struct node_t
 {
     int nb_child;
+    int yykind;
     int rule_id;
     int rule_action;
     int rule_asset;
@@ -61,15 +62,15 @@ int is_collector_error = 0;
     {                                                            \
         if (yytoken == YYSYMBOL_YYEOF)                           \
             create_logentry(ggid, terminal_c, nonterminal_c, 0); \
-        shift(yytoken, yytokenvalue);                            \
+        shift(yytoken, yytokenvalue, ggid);                      \
         terminal_c++;                                            \
     } while (0);
 
-#define GAUR_REDUCE(nrule, yylen)                                              \
-    do                                                                         \
-    { /* We substract 1 to nrule because of the bison accept rule offset*/     \
-        nonterminal_c++;                                                       \
-        reduce(yylen, nrule - 1, GET_ASSET_TAG(nrule), GET_ACTION_TAG(nrule)); \
+#define GAUR_REDUCE(nrule, yylen, yykind)                                              \
+    do                                                                                 \
+    { /* We substract 1 to nrule because of the bison accept rule offset*/             \
+        nonterminal_c++;                                                               \
+        reduce(yylen, nrule - 1, GET_ASSET_TAG(nrule), GET_ACTION_TAG(nrule), yykind); \
     } while (0)
 
 enum
@@ -132,11 +133,11 @@ static struct
  * @brief Called when shift occurs, will be pushed in the pile afterwards
  *
  */
-void shift(int rule_id, YYSTYPE const *const yyvaluep)
+void shift(int yykind, YYSTYPE const *const yyvaluep, int ggid)
 {
     if (index_tab >= GAUR_TAB_MAX_L || is_collector_error)
     {
-        fprintf(stderr, "gaur data collector - shift(): incorrect index_tab: %d\n", index_tab);
+        fprintf(stderr, "gaur data collector - shift(): incorrect index_tab: %d for query %d\n", index_tab, ggid);
         is_collector_error = 1;
         return;
     }
@@ -145,11 +146,12 @@ void shift(int rule_id, YYSTYPE const *const yyvaluep)
     tab[index_tab]->child = NULL;
     tab[index_tab]->rule_action = 0;
     tab[index_tab]->rule_asset = 0;
-    tab[index_tab]->rule_id = rule_id;
-    switch (rule_id)
+    tab[index_tab]->yykind = yykind;
+    tab[index_tab]->rule_id = -1;
+
+    switch (yykind)
     {
     case YYSYMBOL_TEXT_STRING:
-    case YYSYMBOL_ident_or_text:
     case YYSYMBOL_DECIMAL_NUM:
     case YYSYMBOL_FLOAT_NUM:
     case YYSYMBOL_NUM:
@@ -157,23 +159,30 @@ void shift(int rule_id, YYSTYPE const *const yyvaluep)
     case YYSYMBOL_HEX_NUM:
     case YYSYMBOL_LEX_HOSTNAME:
     case YYSYMBOL_ULONGLONG_NUM:
-    case YYSYMBOL_IDENT_sys:
-    case YYSYMBOL_TEXT_STRING_sys:
-    case YYSYMBOL_TEXT_STRING_literal:
     case YYSYMBOL_DOLLAR_QUOTED_STRING_SYM:
     case YYSYMBOL_NCHAR_STRING:
     case YYSYMBOL_BIN_NUM:
-    case YYSYMBOL_TEXT_STRING_filesystem:
-    case YYSYMBOL_TEXT_STRING_sys_nonewline:
-    case YYSYMBOL_TEXT_STRING_password:
-    case YYSYMBOL_TEXT_STRING_hash:
-    case YYSYMBOL_TEXT_STRING_validated:
     {
+        FILE *f_tmp = fopen("/tmp/gaurlog", "a");
+        fprintf(f_tmp, "Token kind: %d, Token value : %s\n", yykind, yyvaluep->lexer.lex_str.str);
+        fclose(f_tmp);
         tab[index_tab]->sem_val = strdup(yyvaluep->lexer.lex_str.str);
         break;
     }
+    // case YYSYMBOL_ident_or_text: -> is a nterm
+    // case YYSYMBOL_IDENT_sys: -> is a nterm
+    // case YYSYMBOL_TEXT_STRING_sys:-> is a nterm
+    // case YYSYMBOL_TEXT_STRING_literal:-> is a nterm
+    // case YYSYMBOL_TEXT_STRING_filesystem:-> is a nterm
+    // case YYSYMBOL_TEXT_STRING_sys_nonewline: -> is a nterm
+    // case YYSYMBOL_TEXT_STRING_password: -> is a nterm
+    // case YYSYMBOL_TEXT_STRING_hash:-> is a nterm
+    // case YYSYMBOL_TEXT_STRING_validated:-> is a nterm
     default:
     {
+        FILE *f_tmp = fopen("/tmp/gaurlog", "a");
+        fprintf(f_tmp, "Token type: %d\n", yykind);
+        fclose(f_tmp);
         tab[index_tab]->sem_val = NULL;
         break;
     }
@@ -213,7 +222,7 @@ int small_reduce(int num)
  *
  * @param nb_child
  */
-void reduce(int nb_child, int r_id, int r_asset, int r_action)
+void reduce(int nb_child, int r_id, int r_asset, int r_action, int yykind)
 {
     if (is_collector_error) /* Skip reduction if tree is already messed up */
         return;
@@ -242,6 +251,7 @@ void reduce(int nb_child, int r_id, int r_asset, int r_action)
     tab[index_tab]->rule_action = r_action;
     tab[index_tab]->rule_asset = r_asset;
     tab[index_tab]->rule_id = r_id;
+    tab[index_tab]->yykind = yykind;
     tab[index_tab]->sem_val = NULL;
     index_tab++;
 }
@@ -357,7 +367,7 @@ int print_edges_relation(int index, node_t *printed, FILE *f)
 
 /**
  * @brief Print nodes, and their attributes
- *  | appearance_int:rule_id:action:object:sem_value
+ *  | appearance_int:symbol_kind:rule_id:action:object:sem_value
  * @param index
  * @param printed
  * @param f
@@ -370,7 +380,7 @@ int print_nodes_attr(int index, node_t *printed, FILE *f)
         return 1;
     child_t *child = printed->child;
 
-    fprintf(f, "|%d:%d:", index + printed->nb_child, printed->rule_id);
+    fprintf(f, "|%d:%d:%d:", index + printed->nb_child, printed->yykind, printed->rule_id);
 
     /* Now print action */
     for (size_t i = 0; i < sizeof(_actions_mapping) / sizeof(_actions_mapping[0]); i++)
