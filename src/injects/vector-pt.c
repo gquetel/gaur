@@ -4,22 +4,17 @@
 #include <stdint.h>
 #include <inttypes.h>
 
-typedef struct child_t child_t;
 typedef struct node_t node_t;
 
 struct node_t
 {
     int nb_child;
     int rule_id;
+    int rule_order;
     int rule_action;
     int rule_asset;
-    struct child_t *child;
-};
-
-struct child_t
-{
-    node_t *child;
-    child_t *brother;
+    struct node_t *first_child;
+    struct node_t *next_brother;
 };
 
 #define MAX_LENGHT 10
@@ -32,10 +27,10 @@ node_t *tab[MAX_LENGHT];
 
 /* index_tab stores the index of the next available position in the tab,
  index_tab - 1 corresponds to the index of the last shifted element (when index_tab > 0s) */
+
 int index_tab = 0;
-child_t *start_bro = NULL;
-child_t *end_bro = NULL;
 int is_collector_error = 0;
+int rule_counter = 0;
 
 /**
  * @brief Called when shift occurs, will be pushed in the pile afterwards
@@ -52,74 +47,58 @@ void shift(int rule_id)
 
     tab[index_tab] = malloc(sizeof(node_t));
     tab[index_tab]->nb_child = 0;
-    tab[index_tab]->child = NULL;
+    tab[index_tab]->first_child = NULL;
+    tab[index_tab]->next_brother = NULL;
     tab[index_tab]->rule_action = 0;
     tab[index_tab]->rule_asset = 0;
     tab[index_tab]->rule_id = rule_id;
+    tab[index_tab]->rule_order = rule_counter++;
     index_tab++;
 }
 
 /**
- * @brief Part of the reduce which takes all sons and attribute them to their father
+ * @brief Create a node and retrieve its children
  *
- * @param num children index in tab
- * @return int
- */
-int small_reduce(int num)
-{
-    if (start_bro == NULL)
-    {
-        start_bro = malloc(sizeof(child_t));
-
-        start_bro->child = tab[num];
-        start_bro->brother = NULL;
-        end_bro = start_bro;
-    }
-    else
-    {
-        end_bro->brother = malloc(sizeof(child_t));
-        end_bro->brother->child = tab[num];
-        end_bro->brother->brother = NULL;
-        end_bro = end_bro->brother;
-    }
-
-    return tab[num]->nb_child;
-}
-
-/**
- * @brief Create a node and populate its values
- *
- * @param nb_child
+ * @param nb_child Number of node children (rule rhs)
  */
 void reduce(int nb_child, int r_id, int r_asset, int r_action)
 {
     if (is_collector_error) /* Skip reduction if tree is already messed up */
         return;
 
-    start_bro = NULL;
-    end_bro = NULL;
-    int nb_child_tot = nb_child;
+    node_t *father_node = malloc(sizeof(node_t));
+    father_node->rule_id = r_id;
+    father_node->rule_action = r_action;
+    father_node->rule_asset = r_asset;
+    father_node->rule_order = rule_counter++;
+    father_node->nb_child = nb_child;
 
-    /* collect nb_child last values of array tab and associate them to their father */
-    for (int i = 0; i < nb_child; i++)
+    if (nb_child > 0)
     {
+        /* We have at least a child: retrieve first node child (tab[index_tab - 1]) */
         index_tab--;
-        if (index_tab < 0 || index_tab >= MAX_LENGHT)
+        int remaining_children = nb_child - 1; // Store number of remaining children to associate to father.
+        father_node->first_child = tab[index_tab];
+
+        node_t *last_children = father_node->first_child; // Store children on which to append next brother
+
+        /* collect nb_child last values of array tab and associate them to their father */
+        for (int i = 0; i < remaining_children; i++)
         {
-            fprintf(stderr, "gaur data collector - reduce(): incorrect index_tab: %d\n", index_tab);
+            index_tab--;
+            if (index_tab < 0 || index_tab >= MAX_LENGHT)
+            {
+                fprintf(stderr, "gaur data collector - reduce(): incorrect index_tab: %d\n", index_tab);
+                is_collector_error = 1;
+                return;
+            }
 
-            is_collector_error = 1;
-            return;
+            last_children->next_brother = tab[index_tab];
+            last_children = last_children->next_brother;
         }
-        nb_child_tot += small_reduce(index_tab);
     }
-
-    tab[index_tab] = malloc(sizeof(node_t));
-    tab[index_tab]->nb_child = nb_child_tot;
-    tab[index_tab]->child = start_bro;
-    tab[index_tab]->rule_action = r_action;
-    tab[index_tab]->rule_asset = r_asset;
-    tab[index_tab]->rule_id = r_id;
+    /* When no child, first_child stays at NULL. */
+    tab[index_tab] = father_node;
     index_tab++;
 }
 
@@ -155,7 +134,6 @@ void reduce(int nb_child, int r_id, int r_asset, int r_action)
 
 enum
 {
-    // Hopefully, temporary
     _CREATE = 1 << 4,
     _DELETE = 1 << 3,
     _EXECUTE = 1 << 2,
@@ -239,30 +217,30 @@ FILE *gaur_open_file()
 }
 
 /**
- * @brief Get the tree depth
- * Should only be called if input is syntactically valid: the tree is complete
- * @param evaluated
- * @return int
+ * @brief Compute the depth of a tree starting from a given node.
+ *
+ *  Should only be called if input is syntactically valid: the tree is complete
+ * @param tree_root
+ * @return int Depth of tree.
  */
-int get_tree_depth(node_t *evaluated)
+int get_tree_depth(node_t *tree_root)
 {
-    if (evaluated == NULL)
+    if (tree_root == NULL)
         return 0;
 
     int max = 0;
-    int actual;
+    int current;
 
-    child_t *child = evaluated->child;
-    while (child != NULL)
+    node_t *next_child = tree_root->first_child;
+    while (next_child != NULL)
     {
-        actual = get_tree_depth(child->child);
+        current = get_tree_depth(next_child);
 
-        if (actual > max)
-            max = actual;
+        if (current > max)
+            max = current;
 
-        child = child->brother;
+        next_child = next_child->next_brother;
     }
-
     return max + 1;
 }
 
@@ -273,75 +251,62 @@ int get_tree_depth(node_t *evaluated)
  */
 void print_tree_features(FILE *f)
 {
-    // TODO, pourquoi index_tab - 1 ?
     int depth_tree = get_tree_depth(tab[index_tab - 1]);
     fprintf(f, ",%d", depth_tree);
 }
+
 /**
- * @brief Print tree, and relationships between nodes
+ * @brief Print in given file the edges between nodes in the given tree.
  *
- * @param index
- * @param printed
- * @param f
- * @return int
+ * Each root node edges relations are represented with the following
+ * custom format: X>Y:Y':Y''...:  where X is the root node rule order, and Y, Y', Y''...
+ * are the rule order of the children of the root node.
+ *
+ * @param root_node First node of the tree
+ * @param f File to output to
  */
-int print_edges_relation(int index, node_t *printed, FILE *f)
+void print_edges_relation(node_t *root_node, FILE *f)
 {
+    /* If root node is null or no children we return */
+    if (root_node == NULL || root_node->first_child == NULL)
+        return;
 
-    if (printed == NULL)
-        return 1;
-
-    if (printed->child != NULL)
+    fprintf(f, " %d>", root_node->rule_order);
+    node_t *current_node = root_node->first_child;
+    /* Print edges between root_node and its children. */
+    while (current_node != NULL)
     {
-        int i = index;
-        child_t *child = printed->child;
-        fprintf(f, " %d>", index + printed->nb_child);
-
-        while (child != NULL)
-        {
-            if (child->child == NULL)
-                return 1;
-
-            i += child->child->nb_child + 1;
-            fprintf(f, "%d:", i - 1);
-
-            child = child->brother;
-        }
-
-        i = index;
-        child = printed->child;
-
-        while (child != NULL)
-        {
-            print_edges_relation(i, child->child, f);
-            i += child->child->nb_child + 1;
-            child = child->brother;
-        }
+        fprintf(f, "%d:", current_node->rule_order);
+        current_node = current_node->next_brother;
     }
-    return 0;
+    /* Now iterate over children to display their edges */
+    current_node = root_node->first_child;
+    while (current_node != NULL)
+    {
+        print_edges_relation(current_node, f);
+        current_node = current_node->next_brother;
+    }
 }
 
 /**
  * @brief Print nodes, and their attributes
  *  | appearance_int:rule_id:action:object
- * @param index
  * @param printed
  * @param f
- * @return int
  */
-int print_nodes_attr(int index, node_t *printed, FILE *f)
+void print_nodes_attr(node_t *root_node, FILE *f)
 {
+    // TODO: append all text to a buffer and only print once
 
-    if (printed == NULL)
-        return 1;
-    child_t *child = printed->child;
+    if (root_node == NULL)
+        return;
 
-    fprintf(f, "|%d:%d:", index + printed->nb_child, printed->rule_id);
+    fprintf(f, "|%d:%d:", root_node->rule_order, root_node->rule_id);
 
-    /* Now print action */
+    /* Print action tag */
     for (size_t i = 0; i < sizeof(_actions_mapping) / sizeof(_actions_mapping[0]); i++)
     {
-        if (printed->rule_action & _actions_mapping[i].value)
+        if (root_node->rule_action & _actions_mapping[i].value)
         {
             fprintf(f, "%s", _actions_mapping[i].name);
             break;
@@ -350,37 +315,50 @@ int print_nodes_attr(int index, node_t *printed, FILE *f)
     fprintf(f, ":");
     for (size_t i = 0; i < sizeof(_assets_mapping) / sizeof(_assets_mapping[0]); i++)
     {
-        if (printed->rule_asset & _assets_mapping[i].value)
+        if (root_node->rule_asset & _assets_mapping[i].value)
         {
             fprintf(f, "%s", _assets_mapping[i].name);
             break;
         }
     }
 
-    int i = index;
-    while (child != NULL)
+    node_t *current_node = root_node->first_child;
+    while (current_node != NULL)
     {
-        print_nodes_attr(i, child->child, f);
-        i += child->child->nb_child + 1;
-        child = child->brother;
+        print_nodes_attr(current_node, f);
+        current_node = current_node->next_brother;
     }
-    return 0;
 }
 
 /**
  * @brief Wrapper for nodes and edges printing
- * 
- * @param f 
+ *
+ * @param f
  */
 void print_tree_MY(FILE *f)
 {
     fprintf(f, ",\"");
-    print_nodes_attr(0, tab[index_tab - 1], f);
+    print_nodes_attr(tab[index_tab - 1], f);
     fprintf(f, "||"); /* Allows to separate node declaration from edges*/
-    print_edges_relation(0, tab[index_tab - 1], f);
+    print_edges_relation(tab[index_tab - 1], f);
     fprintf(f, "\"");
 }
 
+void free_node(node_t *evaluated)
+{
+}
+
+/**
+ * @brief Callable to clean tree nodes.
+ *
+ */
+void free_tree()
+{
+    for (int index = 0; index < index_tab; index++)
+    {
+        free_node(tab[index]);
+    }
+}
 /**
  * @brief Create the log entry corresponding to parsed input.
  *

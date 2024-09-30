@@ -152,6 +152,7 @@ void shift(int yykind, YYSTYPE const *const yyvaluep, int ggid)
     switch (yykind)
     {
     case YYSYMBOL_TEXT_STRING:
+    case YYSYMBOL_IDENT_QUOTED:
     case YYSYMBOL_DECIMAL_NUM:
     case YYSYMBOL_FLOAT_NUM:
     case YYSYMBOL_NUM:
@@ -163,12 +164,10 @@ void shift(int yykind, YYSTYPE const *const yyvaluep, int ggid)
     case YYSYMBOL_NCHAR_STRING:
     case YYSYMBOL_BIN_NUM:
     {
-        FILE *f_tmp = fopen("/tmp/gaurlog", "a");
-        fprintf(f_tmp, "Token kind: %d, Token value : %s\n", yykind, yyvaluep->lexer.lex_str.str);
-        fclose(f_tmp);
         tab[index_tab]->sem_val = strdup(yyvaluep->lexer.lex_str.str);
         break;
     }
+
     // case YYSYMBOL_ident_or_text: -> is a nterm
     // case YYSYMBOL_IDENT_sys: -> is a nterm
     // case YYSYMBOL_TEXT_STRING_sys:-> is a nterm
@@ -180,9 +179,6 @@ void shift(int yykind, YYSTYPE const *const yyvaluep, int ggid)
     // case YYSYMBOL_TEXT_STRING_validated:-> is a nterm
     default:
     {
-        FILE *f_tmp = fopen("/tmp/gaurlog", "a");
-        fprintf(f_tmp, "Token type: %d\n", yykind);
-        fclose(f_tmp);
         tab[index_tab]->sem_val = NULL;
         break;
     }
@@ -271,7 +267,7 @@ FILE *gaur_open_file()
         f_logs = fopen(output_name, "w");
         if (f_logs != NULL)
         {
-            fprintf(f_logs, "query_id,terminal_c,nonterminal_c,is_syntax_error,parse_tree,depth\n");
+            fprintf(f_logs, "query_id,terminal_c,nonterminal_c,is_syntax_error,semantic_tree,depth\n");
         }
     }
     else
@@ -366,6 +362,32 @@ int print_edges_relation(int index, node_t *printed, FILE *f)
 }
 
 /**
+ * @brief Function that makes sure printing the sem_value does not mess with our logfile format
+ * - We enclosed the whole semantic tree in double quotes: every occurence of double quotes must be doubled within the string
+ * - We also need to make sure no ":" is present, For now we replace them by GAUR_SEMICOLON which is replaced back when post-processing the log file until we find a cleaner way
+ * - We also need to make sure no "|" is present
+ * @param sem_val
+ * @param f
+ */
+void safe_sem_value_print(char *sem_val, FILE *f)
+{
+    if (sem_val != NULL)
+    {
+        for (size_t i = 0; i < strlen(sem_val); i++)
+        {
+            if (sem_val[i] == '"')
+                fprintf(f, "\"\"");
+            else if (sem_val[i] == '|')
+                fprintf(f, "G_PIPE");
+            else if (sem_val[i] == ':')
+                fprintf(f, "G_SEMICOLON");
+            else
+                fprintf(f, "%c", sem_val[i]);
+        }
+    }
+}
+
+/**
  * @brief Print nodes, and their attributes
  *  | appearance_int:symbol_kind:rule_id:action:object:sem_value
  * @param index
@@ -403,7 +425,7 @@ int print_nodes_attr(int index, node_t *printed, FILE *f)
     fprintf(f, ":");
     if (printed->sem_val != NULL)
     {
-        fprintf(f, "%s", printed->sem_val);
+        safe_sem_value_print(printed->sem_val, f);
         free(printed->sem_val);
         printed->sem_val = NULL;
     }
@@ -427,7 +449,7 @@ void print_tree_MY(FILE *f)
 {
     fprintf(f, ",\"");
     print_nodes_attr(0, tab[index_tab - 1], f);
-    fprintf(f, "||"); /* Allows to separate node declaration from edges*/
+    fprintf(f, "||-||"); /* Allows to separate node declaration from edges*/
     print_edges_relation(0, tab[index_tab - 1], f);
     fprintf(f, "\"");
 }
