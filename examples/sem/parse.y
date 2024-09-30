@@ -32,23 +32,22 @@ void execute_function(char * str){
     char *str;
 }
 
-%token <str> CREATE DELETE MODIFY SHOW EXECUTE PLUS NEWLINE;
+%token <str> CREATE DELETE MODIFY SHOW EXECUTE PLUS;
 %type  create_table;
 %type  delete_table;
 %type  modify_table;
 %type  execute_function;
 %type  show_table;
-%type  newline;
 %type  modify_and_create;
 %type  instruction;
 
 
 %%
 
-input: newline | instructions newline ;
+input: instructions ;
 
-instructions: instruction
-| instructions instruction
+instructions: instruction 
+| instructions instruction 
 ;
 
 instruction:  create_table |  delete_table |  modify_table 
@@ -60,7 +59,6 @@ modify_table: MODIFY {modify_table($1);}
 show_table: SHOW {show_table($1);}
 modify_and_create: modify_table PLUS create_table    
 execute_function: EXECUTE {execute_function($1);}
-newline: %empty | NEWLINE  {newline($1);}
 
 %% 
 void

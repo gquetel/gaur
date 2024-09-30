@@ -45,7 +45,7 @@ void shift(int rule_id)
         return;
     }
 
-    tab[index_tab] = malloc(sizeof(node_t));
+    tab[index_tab] = malloc(sizeof(struct node_t));
     tab[index_tab]->nb_child = 0;
     tab[index_tab]->first_child = NULL;
     tab[index_tab]->next_brother = NULL;
@@ -66,7 +66,7 @@ void reduce(int nb_child, int r_id, int r_asset, int r_action)
     if (is_collector_error) /* Skip reduction if tree is already messed up */
         return;
 
-    node_t *father_node = malloc(sizeof(node_t));
+    node_t *father_node = malloc(sizeof(struct node_t));
     father_node->rule_id = r_id;
     father_node->rule_action = r_action;
     father_node->rule_asset = r_asset;
@@ -110,19 +110,22 @@ void reduce(int nb_child, int r_id, int r_asset, int r_action)
 #define GET_ACTION_TAG(i) (ggrulesem[i - 2][0])
 #define GET_ASSET_TAG(i) (ggrulesem[i - 2][1])
 
-#define GAUR_ERROR()                                                \
-    do                                                              \
-    {                                                               \
-        create_logentry(first, ggid, terminal_c, nonterminal_c, 1); \
+#define GAUR_ERROR()                                                  \
+    do                                                                \
+    {                                                                 \
+        collect_and_clean(first, ggid, terminal_c, nonterminal_c, 1); \
     } while (0);
 
-#define GAUR_SHIFT(yytoken)                                      \
-    do                                                           \
-    {                                                            \
-        if (yytoken == YYSYMBOL_YYEOF)                           \
-            create_logentry(ggid, terminal_c, nonterminal_c, 0); \
-        shift(yytoken);                                          \
-        terminal_c++;                                            \
+#define GAUR_SHIFT(yytoken)                                        \
+    do                                                             \
+    {                                                              \
+        if (yytoken == YYSYMBOL_YYEOF)                             \
+            collect_and_clean(ggid, terminal_c, nonterminal_c, 0); \
+        else                                                       \
+        {                                                          \
+            shift(yytoken);                                        \
+            terminal_c++;                                          \
+        }                                                          \
     } while (0);
 
 #define GAUR_REDUCE(nrule, yylen)                                              \
@@ -232,7 +235,8 @@ int get_tree_depth(node_t *tree_root)
     int current;
 
     node_t *next_child = tree_root->first_child;
-    while (next_child != NULL)
+
+    for (int i = 0; i < tree_root->nb_child; i++)
     {
         current = get_tree_depth(next_child);
 
@@ -274,14 +278,14 @@ void print_edges_relation(node_t *root_node, FILE *f)
     fprintf(f, " %d>", root_node->rule_order);
     node_t *current_node = root_node->first_child;
     /* Print edges between root_node and its children. */
-    while (current_node != NULL)
+    for (int i = 0; i < root_node->nb_child; i++)
     {
         fprintf(f, "%d:", current_node->rule_order);
         current_node = current_node->next_brother;
     }
     /* Now iterate over children to display their edges */
     current_node = root_node->first_child;
-    while (current_node != NULL)
+    for (int i = 0; i < root_node->nb_child; i++)
     {
         print_edges_relation(current_node, f);
         current_node = current_node->next_brother;
@@ -323,7 +327,7 @@ void print_nodes_attr(node_t *root_node, FILE *f)
     }
 
     node_t *current_node = root_node->first_child;
-    while (current_node != NULL)
+    for (int i = 0; i < root_node->nb_child; i++)
     {
         print_nodes_attr(current_node, f);
         current_node = current_node->next_brother;
@@ -344,27 +348,31 @@ void print_tree_MY(FILE *f)
     fprintf(f, "\"");
 }
 
-void free_node(node_t *evaluated)
-{
-}
-
 /**
- * @brief Callable to clean tree nodes.
+ * @brief Callable to clean the whole tree
  *
  */
-void free_tree()
+void free_node_and_child(node_t *node)
 {
-    for (int index = 0; index < index_tab; index++)
+    if (node == NULL)
+        return;
+
+    node_t *current_node = node->first_child;
+    for (int i = 0; i < node->nb_child; i++)
     {
-        free_node(tab[index]);
+        node_t *next = current_node->next_brother;
+        free_node_and_child(current_node);
+        current_node = next;
     }
+    free(node);
 }
+
 /**
  * @brief Create the log entry corresponding to parsed input.
  *
  * @param first
  */
-void create_logentry(uint64_t query_id, int terminal_c, int nonterminal_c, int is_error)
+void collect_and_clean(uint64_t query_id, int terminal_c, int nonterminal_c, int is_error)
 {
     FILE *f_logs = gaur_open_file();
     if (f_logs != NULL)
@@ -380,11 +388,12 @@ void create_logentry(uint64_t query_id, int terminal_c, int nonterminal_c, int i
             print_tree_features(f_logs);
             fprintf(f_logs, "\n");
         }
-        // clean_tab();
         fclose(f_logs);
     }
     else
     {
         perror("Gaur: Could not open log file.");
     }
+
+    free_node_and_child(tab[index_tab - 1]);
 }
