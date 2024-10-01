@@ -4,24 +4,31 @@
 #include <stdint.h>
 #include <inttypes.h>
 
-typedef struct child_t child_t;
 typedef struct node_t node_t;
 
+/**
+ * struct node_t - A node of our semantic tree
+ * @n_children: Number of children nodes.
+ * @yykind: Kind of the node (given by flex / bison).
+ * @rule_id: Rule id of node (given by bison), -1 if node is a terminal.
+ * @rule_action: Action tag associated with the node.
+ * @rule_object: Object tag associated with the node.
+ * @rule_order: Order of appearance of the node when parsing.
+ * @sem_val: Semantic value associated with the node, NULL if none.
+ * @first_child: Pointer to the first child node.
+ * @next_brother: Pointer to the next sibling node.
+ */
 struct node_t
 {
-    int nb_child;
+    int n_children;
     int yykind;
     int rule_id;
     int rule_action;
-    int rule_asset;
+    int rule_object;
+    int rule_order;
     char *sem_val;
-    struct child_t *child;
-};
-
-struct child_t
-{
-    node_t *child;
-    child_t *brother;
+    struct node_t *first_child;
+    struct node_t *next_brother;
 };
 
 #define GAUR_TAB_MAX_L 10000
@@ -35,41 +42,42 @@ node_t *tab[GAUR_TAB_MAX_L];
 /* index_tab stores the index of the next available position in the tab,
  index_tab - 1 corresponds to the index of the last shifted element (when index_tab > 0s) */
 int index_tab = 0;
-child_t *start_bro = NULL;
-child_t *end_bro = NULL;
 int is_collector_error = 0;
+int rule_counter = 0;
 
 #define GAUR_PARSE_BEGIN(size, thd) \
-    int terminal_c = 0;             \
-    int nonterminal_c = 0;          \
+    int n_terminal = 0;             \
+    int n_nonterminal = 0;          \
     uint64_t ggid = thd->query_id;  \
     index_tab = 0;                  \
-    start_bro = NULL;               \
-    end_bro = NULL;                 \
+    rule_counter = 0;               \
     is_collector_error = 0;
 
 #define GET_ACTION_TAG(i) (ggrulesem[i - 2][0])
 #define GET_ASSET_TAG(i) (ggrulesem[i - 2][1])
 
-#define GAUR_ERROR()                                         \
-    do                                                       \
-    {                                                        \
-        create_logentry(ggid, terminal_c, nonterminal_c, 1); \
+#define GAUR_ERROR()                                           \
+    do                                                         \
+    {                                                          \
+        collect_and_clean(ggid, n_terminal, n_nonterminal, 1); \
     } while (0);
 
-#define GAUR_SHIFT(yytoken, yytokenvalue)                        \
-    do                                                           \
-    {                                                            \
-        if (yytoken == YYSYMBOL_YYEOF)                           \
-            create_logentry(ggid, terminal_c, nonterminal_c, 0); \
-        shift(yytoken, yytokenvalue, ggid);                      \
-        terminal_c++;                                            \
+#define GAUR_SHIFT(yytoken, yytokenvalue)                          \
+    do                                                             \
+    {                                                              \
+        if (yytoken == YYSYMBOL_YYEOF)                             \
+            collect_and_clean(ggid, n_terminal, n_nonterminal, 0); \
+        else                                                       \
+        {                                                          \
+            shift(yytoken, yytokenvalue, ggid);                    \
+            n_terminal++;                                          \
+        }                                                          \
     } while (0);
 
 #define GAUR_REDUCE(nrule, yylen, yykind)                                              \
     do                                                                                 \
     { /* We substract 1 to nrule because of the bison accept rule offset*/             \
-        nonterminal_c++;                                                               \
+        n_nonterminal++;                                                               \
         reduce(yylen, nrule - 1, GET_ASSET_TAG(nrule), GET_ACTION_TAG(nrule), yykind); \
     } while (0)
 
@@ -141,13 +149,15 @@ void shift(int yykind, YYSTYPE const *const yyvaluep, int ggid)
         is_collector_error = 1;
         return;
     }
-    tab[index_tab] = (struct node_t *)malloc(sizeof(node_t));
-    tab[index_tab]->nb_child = 0;
-    tab[index_tab]->child = NULL;
+    tab[index_tab] = (struct node_t *)malloc(sizeof(struct node_t));
+    tab[index_tab]->n_children = 0;
+    tab[index_tab]->first_child = NULL;
+    tab[index_tab]->next_brother = NULL;
     tab[index_tab]->rule_action = 0;
-    tab[index_tab]->rule_asset = 0;
+    tab[index_tab]->rule_object = 0;
     tab[index_tab]->yykind = yykind;
     tab[index_tab]->rule_id = -1;
+    tab[index_tab]->rule_order = rule_counter++;
 
     switch (yykind)
     {
@@ -187,68 +197,50 @@ void shift(int yykind, YYSTYPE const *const yyvaluep, int ggid)
 }
 
 /**
- * @brief Part of the reduce which takes all sons and attribute them to their father
- *
- * @param num children index in tab
- * @return int
- */
-int small_reduce(int num)
-{
-    if (start_bro == NULL)
-    {
-        start_bro = (struct child_t *)malloc(sizeof(child_t));
-
-        start_bro->child = tab[num];
-        start_bro->brother = NULL;
-        end_bro = start_bro;
-    }
-    else
-    {
-        end_bro->brother = (struct child_t *)malloc(sizeof(child_t));
-        end_bro->brother->child = tab[num];
-        end_bro->brother->brother = NULL;
-        end_bro = end_bro->brother;
-    }
-
-    return tab[num]->nb_child;
-}
-
-/**
  * @brief Create a node and populate its values
  *
- * @param nb_child
+ * @param n_children
  */
-void reduce(int nb_child, int r_id, int r_asset, int r_action, int yykind)
+void reduce(int n_children, int r_id, int rule_object, int r_action, int yykind)
 {
     if (is_collector_error) /* Skip reduction if tree is already messed up */
         return;
 
-    start_bro = NULL;
-    end_bro = NULL;
-    int nb_child_tot = nb_child;
+    node_t *father_node = (struct node_t *)malloc(sizeof(struct node_t));
+    father_node->rule_id = r_id;
+    father_node->rule_action = r_action;
+    father_node->rule_object = rule_object;
+    father_node->rule_order = rule_counter++;
+    father_node->n_children = n_children;
+    father_node->yykind = yykind;
+    father_node->sem_val = NULL;
 
-    /* collect nb_child last values of array tab and associate them to their father */
-    for (int i = 0; i < nb_child; i++)
+    if (n_children > 0)
     {
+        /* We have at least a child: retrieve first node child (tab[index_tab - 1]) */
         index_tab--;
-        if (index_tab < 0 || index_tab >= GAUR_TAB_MAX_L)
-        {
-            fprintf(stderr, "gaur data collector - reduce(): incorrect index_tab: %d\n", index_tab);
+        int remaining_children = n_children - 1; // Store number of remaining children to associate to father.
+        father_node->first_child = tab[index_tab];
 
-            is_collector_error = 1;
-            return;
+        node_t *last_children = father_node->first_child; // Store children on which to append next brother
+
+        /* collect n_children last values of array tab and associate them to their father */
+        for (int i = 0; i < remaining_children; i++)
+        {
+            index_tab--;
+            if (index_tab < 0 || index_tab >= GAUR_TAB_MAX_L)
+            {
+                fprintf(stderr, "gaur data collector - reduce(): incorrect index_tab: %d\n", index_tab);
+
+                is_collector_error = 1;
+                return;
+            }
+            last_children->next_brother = tab[index_tab];
+            last_children = last_children->next_brother;
         }
-        nb_child_tot += small_reduce(index_tab);
     }
 
-    tab[index_tab] = (struct node_t *)malloc(sizeof(node_t));
-    tab[index_tab]->nb_child = nb_child_tot;
-    tab[index_tab]->child = start_bro;
-    tab[index_tab]->rule_action = r_action;
-    tab[index_tab]->rule_asset = r_asset;
-    tab[index_tab]->rule_id = r_id;
-    tab[index_tab]->yykind = yykind;
-    tab[index_tab]->sem_val = NULL;
+    tab[index_tab] = father_node;
     index_tab++;
 }
 
@@ -267,7 +259,7 @@ FILE *gaur_open_file()
         f_logs = fopen(output_name, "w");
         if (f_logs != NULL)
         {
-            fprintf(f_logs, "query_id,terminal_c,nonterminal_c,is_syntax_error,semantic_tree,depth\n");
+            fprintf(f_logs, "query_id,n_terminal,n_nonterminal,is_syntax_error,semantic_tree,depth\n");
         }
     }
     else
@@ -280,30 +272,31 @@ FILE *gaur_open_file()
 }
 
 /**
- * @brief Get the tree depth
- * Should only be called if input is syntactically valid: the tree is complete
- * @param evaluated
- * @return int
+ * @brief Compute the depth of a tree starting from a given node.
+ *
+ *  Should only be called if input is syntactically valid: the tree is complete
+ * @param tree_root
+ * @return int Depth of tree.
  */
-int get_tree_depth(node_t *evaluated)
+int get_tree_depth(node_t *tree_root)
 {
-    if (evaluated == NULL)
+    if (tree_root == NULL)
         return 0;
 
     int max = 0;
-    int actual;
+    int current;
 
-    child_t *child = evaluated->child;
-    while (child != NULL)
+    node_t *next_child = tree_root->first_child;
+
+    for (int i = 0; i < tree_root->n_children; i++)
     {
-        actual = get_tree_depth(child->child);
+        current = get_tree_depth(next_child);
 
-        if (actual > max)
-            max = actual;
+        if (current > max)
+            max = current;
 
-        child = child->brother;
+        next_child = next_child->next_brother;
     }
-
     return max + 1;
 }
 
@@ -317,48 +310,38 @@ void print_tree_features(FILE *f)
     int depth_tree = get_tree_depth(tab[index_tab - 1]);
     fprintf(f, ",%d", depth_tree);
 }
+
 /**
- * @brief Print tree, and relationships between nodes
+ * @brief Print in given file the edges between nodes in the given tree.
  *
- * @param index
- * @param printed
- * @param f
- * @return int
+ * Each root node edges relations are represented with the following
+ * custom format: X>Y:Y':Y''...:  where X is the root node rule order, and Y, Y', Y''...
+ * are the rule order of the children of the root node.
+ *
+ * @param root_node First node of the tree
+ * @param f File to output to
  */
-int print_edges_relation(int index, node_t *printed, FILE *f)
+void print_edges_relation(node_t *root_node, FILE *f)
 {
+    /* If root node is null or no children we return */
+    if (root_node == NULL || root_node->n_children == 0)
+        return;
 
-    if (printed == NULL)
-        return 1;
-
-    if (printed->child != NULL)
+    fprintf(f, " %d>", root_node->rule_order);
+    node_t *current_node = root_node->first_child;
+    /* Print edges between root_node and its children. */
+    for (int i = 0; i < root_node->n_children; i++)
     {
-        int i = index;
-        child_t *child = printed->child;
-        fprintf(f, " %d>", index + printed->nb_child);
-
-        while (child != NULL)
-        {
-            if (child->child == NULL)
-                return 1;
-
-            i += child->child->nb_child + 1;
-            fprintf(f, "%d:", i - 1);
-
-            child = child->brother;
-        }
-
-        i = index;
-        child = printed->child;
-
-        while (child != NULL)
-        {
-            print_edges_relation(i, child->child, f);
-            i += child->child->nb_child + 1;
-            child = child->brother;
-        }
+        fprintf(f, "%d:", current_node->rule_order);
+        current_node = current_node->next_brother;
     }
-    return 0;
+    /* Now iterate over children to display their edges */
+    current_node = root_node->first_child;
+    for (int i = 0; i < root_node->n_children; i++)
+    {
+        print_edges_relation(current_node, f);
+        current_node = current_node->next_brother;
+    }
 }
 
 /**
@@ -390,24 +373,21 @@ void safe_sem_value_print(char *sem_val, FILE *f)
 /**
  * @brief Print nodes, and their attributes
  *  | appearance_int:symbol_kind:rule_id:action:object:sem_value
- * @param index
- * @param printed
+ * @param root_node
  * @param f
- * @return int
  */
-int print_nodes_attr(int index, node_t *printed, FILE *f)
+void print_nodes_attr(node_t *root_node, FILE *f)
 {
+    // TODO: append all text to a buffer and only print once
+    if (root_node == NULL)
+        return;
 
-    if (printed == NULL)
-        return 1;
-    child_t *child = printed->child;
-
-    fprintf(f, "|%d:%d:%d:", index + printed->nb_child, printed->yykind, printed->rule_id);
+    fprintf(f, "|%d:%d:%d:", root_node->rule_order, root_node->yykind, root_node->rule_id);
 
     /* Now print action */
     for (size_t i = 0; i < sizeof(_actions_mapping) / sizeof(_actions_mapping[0]); i++)
     {
-        if (printed->rule_action & _actions_mapping[i].value)
+        if (root_node->rule_action & _actions_mapping[i].value)
         {
             fprintf(f, "%s", _actions_mapping[i].name);
             break;
@@ -416,28 +396,45 @@ int print_nodes_attr(int index, node_t *printed, FILE *f)
     fprintf(f, ":");
     for (size_t i = 0; i < sizeof(_assets_mapping) / sizeof(_assets_mapping[0]); i++)
     {
-        if (printed->rule_asset & _assets_mapping[i].value)
+        if (root_node->rule_object & _assets_mapping[i].value)
         {
             fprintf(f, "%s", _assets_mapping[i].name);
             break;
         }
     }
     fprintf(f, ":");
-    if (printed->sem_val != NULL)
+    if (root_node->sem_val != NULL)
     {
-        safe_sem_value_print(printed->sem_val, f);
-        free(printed->sem_val);
-        printed->sem_val = NULL;
+        safe_sem_value_print(root_node->sem_val, f);
     }
 
-    int i = index;
-    while (child != NULL)
+    node_t *current_node = root_node->first_child;
+    for (int i = 0; i < root_node->n_children; i++)
     {
-        print_nodes_attr(i, child->child, f);
-        i += child->child->nb_child + 1;
-        child = child->brother;
+        print_nodes_attr(current_node, f);
+        current_node = current_node->next_brother;
     }
-    return 0;
+}
+
+/**
+ * @brief Free the memory allocated for a node and its children
+ *
+ * @param node Tree node to free
+ */
+void free_node_and_child(node_t *node)
+{
+    if (node == NULL)
+        return;
+
+    node_t *current_node = node->first_child;
+    for (int i = 0; i < node->n_children; i++)
+    {
+        node_t *next = current_node->next_brother;
+        free_node_and_child(current_node);
+        current_node = next;
+    }
+    free(node->sem_val);
+    free(node);
 }
 
 /**
@@ -448,22 +445,27 @@ int print_nodes_attr(int index, node_t *printed, FILE *f)
 void print_tree_MY(FILE *f)
 {
     fprintf(f, ",\"");
-    print_nodes_attr(0, tab[index_tab - 1], f);
+    print_nodes_attr(tab[index_tab - 1], f);
     fprintf(f, "||-||"); /* Allows to separate node declaration from edges*/
-    print_edges_relation(0, tab[index_tab - 1], f);
+    print_edges_relation(tab[index_tab - 1], f);
     fprintf(f, "\"");
 }
 
 /**
- * @brief Create the log entry corresponding to parsed input.
+ * @brief Create the log entry corresponding to parsed input and clean the semantic tree data structure
+ *
+ * @param query_id id to identify query, generated by MySQL
+ * @param n_terminal number of terminal nodes in semantic tree
+ * @param n_nonterminal number of non-terminal nodes in semantic tree
+ * @param is_error presence of syntax error
  */
-void create_logentry(uint64_t query_id, int terminal_c, int nonterminal_c, int is_error)
+void collect_and_clean(uint64_t query_id, int n_terminal, int n_nonterminal, int is_error)
 {
     FILE *f_logs = gaur_open_file();
     if (f_logs != NULL)
     {
         fprintf(f_logs, "%" PRId64 ",", query_id); /* Print Input ID*/
-        fprintf(f_logs, "%d,%d,%d", terminal_c, nonterminal_c, is_error);
+        fprintf(f_logs, "%d,%d,%d", n_terminal, n_nonterminal, is_error);
 
         if (is_collector_error)
             fprintf(f_logs, ",,\n"); // One for pt, one for depth
@@ -473,11 +475,12 @@ void create_logentry(uint64_t query_id, int terminal_c, int nonterminal_c, int i
             print_tree_features(f_logs);
             fprintf(f_logs, "\n");
         }
-        // clean_tab();
         fclose(f_logs);
     }
     else
     {
         perror("Gaur: Could not open log file.");
     }
+
+    free_node_and_child(tab[index_tab - 1]);
 }

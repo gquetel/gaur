@@ -8,8 +8,8 @@ typedef struct node_t node_t;
 
 struct node_t
 {
-    int nb_child;
-    int rule_id;
+    int n_child;
+    int yykind;
     int rule_order;
     int rule_action;
     int rule_asset;
@@ -31,76 +31,6 @@ node_t *tab[MAX_LENGHT];
 int index_tab = 0;
 int is_collector_error = 0;
 int rule_counter = 0;
-
-/**
- * @brief Called when shift occurs, will be pushed in the pile afterwards
- *
- */
-void shift(int rule_id)
-{
-    if (index_tab >= MAX_LENGHT || is_collector_error)
-    {
-        fprintf(stderr, "gaur data collector - shift(): incorrect index_tab: %d\n", index_tab);
-        is_collector_error = 1;
-        return;
-    }
-
-    tab[index_tab] = malloc(sizeof(struct node_t));
-    tab[index_tab]->nb_child = 0;
-    tab[index_tab]->first_child = NULL;
-    tab[index_tab]->next_brother = NULL;
-    tab[index_tab]->rule_action = 0;
-    tab[index_tab]->rule_asset = 0;
-    tab[index_tab]->rule_id = rule_id;
-    tab[index_tab]->rule_order = rule_counter++;
-    index_tab++;
-}
-
-/**
- * @brief Create a node and retrieve its children
- *
- * @param nb_child Number of node children (rule rhs)
- */
-void reduce(int nb_child, int r_id, int r_asset, int r_action)
-{
-    if (is_collector_error) /* Skip reduction if tree is already messed up */
-        return;
-
-    node_t *father_node = malloc(sizeof(struct node_t));
-    father_node->rule_id = r_id;
-    father_node->rule_action = r_action;
-    father_node->rule_asset = r_asset;
-    father_node->rule_order = rule_counter++;
-    father_node->nb_child = nb_child;
-
-    if (nb_child > 0)
-    {
-        /* We have at least a child: retrieve first node child (tab[index_tab - 1]) */
-        index_tab--;
-        int remaining_children = nb_child - 1; // Store number of remaining children to associate to father.
-        father_node->first_child = tab[index_tab];
-
-        node_t *last_children = father_node->first_child; // Store children on which to append next brother
-
-        /* collect nb_child last values of array tab and associate them to their father */
-        for (int i = 0; i < remaining_children; i++)
-        {
-            index_tab--;
-            if (index_tab < 0 || index_tab >= MAX_LENGHT)
-            {
-                fprintf(stderr, "gaur data collector - reduce(): incorrect index_tab: %d\n", index_tab);
-                is_collector_error = 1;
-                return;
-            }
-
-            last_children->next_brother = tab[index_tab];
-            last_children = last_children->next_brother;
-        }
-    }
-    /* When no child, first_child stays at NULL. */
-    tab[index_tab] = father_node;
-    index_tab++;
-}
 
 #define GAUR_PARSE_BEGIN(size, state_stack) \
     int terminal_c = 0;                     \
@@ -193,6 +123,77 @@ static struct
 };
 
 /**
+ * @brief  Called when shift occurs, will be pushed in the pile afterwards
+ *
+ * @param yykind Token kind of shifted item.
+ */
+void shift(int yykind)
+{
+    if (index_tab >= MAX_LENGHT || is_collector_error)
+    {
+        fprintf(stderr, "gaur data collector - shift(): incorrect index_tab: %d\n", index_tab);
+        is_collector_error = 1;
+        return;
+    }
+
+    tab[index_tab] = malloc(sizeof(struct node_t));
+    tab[index_tab]->n_child = 0;
+    tab[index_tab]->first_child = NULL;
+    tab[index_tab]->next_brother = NULL;
+    tab[index_tab]->rule_action = 0;
+    tab[index_tab]->rule_asset = 0;
+    tab[index_tab]->yykind = yykind;
+    tab[index_tab]->rule_order = rule_counter++;
+    index_tab++;
+}
+
+/**
+ * @brief Create a node and retrieve its children
+ *
+ * @param n_child Number of node children (rule rhs)
+ */
+void reduce(int n_child, int r_id, int r_asset, int r_action)
+{
+    if (is_collector_error) /* Skip reduction if tree is already messed up */
+        return;
+
+    node_t *father_node = malloc(sizeof(struct node_t));
+    father_node->yykind = r_id;
+    father_node->rule_action = r_action;
+    father_node->rule_asset = r_asset;
+    father_node->rule_order = rule_counter++;
+    father_node->n_child = n_child;
+
+    if (n_child > 0)
+    {
+        /* We have at least a child: retrieve first node child (tab[index_tab - 1]) */
+        index_tab--;
+        int remaining_children = n_child - 1; // Store number of remaining children to associate to father.
+        father_node->first_child = tab[index_tab];
+
+        node_t *last_children = father_node->first_child; // Store children on which to append next brother
+
+        /* collect n_child last values of array tab and associate them to their father */
+        for (int i = 0; i < remaining_children; i++)
+        {
+            index_tab--;
+            if (index_tab < 0 || index_tab >= MAX_LENGHT)
+            {
+                fprintf(stderr, "gaur data collector - reduce(): incorrect index_tab: %d\n", index_tab);
+                is_collector_error = 1;
+                return;
+            }
+
+            last_children->next_brother = tab[index_tab];
+            last_children = last_children->next_brother;
+        }
+    }
+    /* When no child, first_child stays at NULL. */
+    tab[index_tab] = father_node;
+    index_tab++;
+}
+
+/**
  * @brief Check existence of file, if not exists create it, and create header line, then return file pointer.
  * If already exists, just return file pointer.
  *
@@ -236,7 +237,7 @@ int get_tree_depth(node_t *tree_root)
 
     node_t *next_child = tree_root->first_child;
 
-    for (int i = 0; i < tree_root->nb_child; i++)
+    for (int i = 0; i < tree_root->n_child; i++)
     {
         current = get_tree_depth(next_child);
 
@@ -272,20 +273,20 @@ void print_tree_features(FILE *f)
 void print_edges_relation(node_t *root_node, FILE *f)
 {
     /* If root node is null or no children we return */
-    if (root_node == NULL || root_node->first_child == NULL)
+    if (root_node == NULL || root_node->n_child == 0)
         return;
 
     fprintf(f, " %d>", root_node->rule_order);
     node_t *current_node = root_node->first_child;
     /* Print edges between root_node and its children. */
-    for (int i = 0; i < root_node->nb_child; i++)
+    for (int i = 0; i < root_node->n_child; i++)
     {
         fprintf(f, "%d:", current_node->rule_order);
         current_node = current_node->next_brother;
     }
     /* Now iterate over children to display their edges */
     current_node = root_node->first_child;
-    for (int i = 0; i < root_node->nb_child; i++)
+    for (int i = 0; i < root_node->n_child; i++)
     {
         print_edges_relation(current_node, f);
         current_node = current_node->next_brother;
@@ -294,8 +295,8 @@ void print_edges_relation(node_t *root_node, FILE *f)
 
 /**
  * @brief Print nodes, and their attributes
- *  | appearance_int:rule_id:action:object
- * @param printed
+ *  | appearance_int:yykind:action:object
+ * @param root_node
  * @param f
  */
 void print_nodes_attr(node_t *root_node, FILE *f)
@@ -305,7 +306,7 @@ void print_nodes_attr(node_t *root_node, FILE *f)
     if (root_node == NULL)
         return;
 
-    fprintf(f, "|%d:%d:", root_node->rule_order, root_node->rule_id);
+    fprintf(f, "|%d:%d:", root_node->rule_order, root_node->yykind);
 
     /* Print action tag */
     for (size_t i = 0; i < sizeof(_actions_mapping) / sizeof(_actions_mapping[0]); i++)
@@ -327,7 +328,7 @@ void print_nodes_attr(node_t *root_node, FILE *f)
     }
 
     node_t *current_node = root_node->first_child;
-    for (int i = 0; i < root_node->nb_child; i++)
+    for (int i = 0; i < root_node->n_child; i++)
     {
         print_nodes_attr(current_node, f);
         current_node = current_node->next_brother;
@@ -358,7 +359,7 @@ void free_node_and_child(node_t *node)
         return;
 
     node_t *current_node = node->first_child;
-    for (int i = 0; i < node->nb_child; i++)
+    for (int i = 0; i < node->n_child; i++)
     {
         node_t *next = current_node->next_brother;
         free_node_and_child(current_node);
