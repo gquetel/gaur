@@ -2,7 +2,7 @@
 GAUR= ../../gaur
 CPPFLAGS=-I ./include
 CFLAGS=-g -Wall
-GRAMMARFILE=mysql.y
+GRAMMARFILE=sql_yacc.yy
 INJECTFILE=/usr/share/gaur/src/injects/vector-pt.mysql.cpp
 GCLASSIFY=gclassify
 SKELETON=gaur_mysql.c
