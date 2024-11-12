@@ -37,7 +37,8 @@
 
 %token <epilogue>     STRING_EPILOGUE
 %token <prologue>     STRING_PROLOGUE
-%token <code>         STRING_CODE
+%token <code>         ID_CODE_LPAR
+%token <code>         ID_CODE
 %token <code>         SYMBOL_CODE
 %token <string_lit>   TAG
 %token <id>           ID  
@@ -117,11 +118,12 @@ grammar_declaration: symbol_declaration
 code:  %empty
 | code NEWLINE  {pstr("\n");}
 | code L_BRACKET {pstr("{");}  code R_BRACKET {pstr("}");}
-| code STRING_CODE {pstr($2); extract_action($2); free($2);}
-| code SYMBOL_CODE {pstr($2);free($2);}
+| code ID_CODE {pstr($2); free($2);}
+| code SYMBOL_CODE {pstr($2);  free($2);}
 | code STRING {pstr_f("\"%s\"", $2); free($2);}
 | code CHAR_LITERAL {pstr_f("\'%s\'", $2);free($2);}
 | code DOLLAR_DOLLAR {pstr("$$"); detected_lhs();}
+| code ID_CODE_LPAR {pstr($2); extract_function_calls($2); free($2);}
 ;
 
 code_props_type: PERCENT_DESTRUCTOR {pstr("%destructor");}
@@ -306,7 +308,7 @@ int main(int argc, char **argv)
                 "Take a YACC grammar as input and output an instrumented version containing our data collector.\n"
                 "Options: \n"
                 "-d,  --dot               Produce a dot file for the input grammar\n"
-                "-e,  --extract           Produce a file where each line \n"
+                "-e,  --extract           Produce a file used for rule labelisation\n"
                 "-h,  --help,             Display this help and exit\n"
                 "-i,  --inject=FILE       Path to the prologue code to inject\n"
                 "-l,  --list=FILE         Path to the nonterminals semantics list\n"

@@ -40,6 +40,8 @@ id        {letter}({letter}|[-0-9])*
 word      [abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_]+
 eol       \n|\r\n
 space     [ \n\t\r]
+id_lpar  {id}\(
+  
 %%
 
 %{
@@ -273,6 +275,11 @@ static int current_state = 0;
 }
 
 <SC_BRACED_CODE>{
+  /* TODO:
+  Action code can be of different languages which can be recognized using the %language directive, see
+  https://www.gnu.org/software/bison/manual/html_node/Decl-Summary.html#index-_0025language. Ultimately 
+  we might want to pass all action code to a dedicated parser (either C, C++, Java, etc.) to properly 
+  extract function calls and other interseting data. */
   "{"    {
     bracket_count++;
     return L_BRACKET;
@@ -302,9 +309,15 @@ static int current_state = 0;
 		BEGIN(SC_CHAR_LITERAL);
 	}
 
+  {id_lpar} {
+    yyless(yyleng-1); /* return the '('  ti the input stream */
+    yylval.code = strdup(yytext);
+    return ID_CODE_LPAR;
+  }
+
   {word} { 
     yylval.code = strdup(yytext);
-    return STRING_CODE;
+    return ID_CODE;
   }
 
   . {   

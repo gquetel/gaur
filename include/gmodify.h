@@ -126,7 +126,7 @@ void extract_nterm(char *nterm);
  *
  * @param action_literal
  */
-void extract_action(char *action_literal);
+void extract_function_calls(char *action_literal);
 
 /**
  * @brief

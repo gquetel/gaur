@@ -22,4 +22,7 @@ modify-sql: run
 	cp gaur.modified.y /home/gquetel/repos/mysql-server/sql/sql_yacc.yy 
 
 clean: 
-	rm -f parse gaur.modified.y *.c *.h *.o *.log rules.extracted labels.json
+	rm -f parse gaur.modified.y *.c *.h *.o *.log rules.extracted labels.json sql_yacc.patch
+
+patch: modify-sql
+	cd /home/gquetel/repos/mysql-server && git diff > "$(CURDIR)/sql_yacc.patch"

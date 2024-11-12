@@ -235,7 +235,7 @@ void p_semantic_array_from_json()
     int n_tags = flags_number->valueint;
     int n_rules = rules_number->valueint; /* Total number of rules defined in grammar, used to initialize ggrulesem */
 
-    int rules_counter = 0; /* Counter for comment in ggrulesem array */
+    int rules_counter = 1; /* Counter for comment in ggrulesem array */
 
     /* Given the amount of tags we will not inject the same content  */
     switch (n_tags)
@@ -472,7 +472,7 @@ void extract_nterm(char *nterm)
     counter_rule++;
 }
 
-void extract_action(char *action_literal)
+void extract_function_calls(char *action_literal)
 {
     if (gaur_mode == M_EXTRACT)
     {

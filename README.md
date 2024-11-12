@@ -41,9 +41,9 @@ The instrumentation of a parser by GAUR is therefore divided into 3 steps: **rul
 
 ## Data extraction 
 
-This first step aims to extract information (right now we focus on lexical information) from BISON grammars which will be fed to NLP techniques to associate labels to each rule. We currently extract left-hand side nonterminal names, right-hand side terminals, and alphabetic words found in the action code. The extraction output format is a comma-separated file where each line corresponds to a grammar rule. Rules are suffixed by a number that corresponds to the number of the extracted rule in its group of rules. Here is what is extracted for the update_stmt rule from the MySQL grammar: 
+This first step aims to extract information (right now we focus on lexical information) from BISON grammars which will be fed to NLP mechanisms to associate labels to each rule. We currently extract left-hand side nonterminal names, right-hand side terminals, and attempt to extract any function call in the action code. The extraction output format is a comma-separated file where each line corresponds to a grammar rule. Rules are suffixed by a number that corresponds to the number of the extracted rule in its group of rules. Here is what is extracted for the update_stmt rule from the MySQL grammar: 
 ```
-update_stmt.0,UPDATE_SYM SET_SYM , NEW_PTN PT_update column_list value_list
+column_attribute.5,ON_SYM UPDATE_SYM , PT_on_update_column_attr
 ```
 
 ## Semantic similarity computation
