@@ -20,6 +20,7 @@
 #define M_DEFAULT 1
 #define M_DOT 2
 #define M_EXTRACT 3
+#define M_EXTRACT_FULL 4 // Also extract nonterminals in rhs.
 
 #define DOT_FILE_NAME "parse.dot"
 
@@ -119,7 +120,7 @@ int get_gaur_mode();
  *
  * @param nterm nonterminial to write
  */
-void extract_nterm(char *nterm);
+void extract_lhs(char *nterm);
 
 /**
  * @brief In extract mode, prints actions to output file
@@ -133,7 +134,7 @@ void extract_function_calls(char *action_literal);
  *
  * @param string
  */
-void extract_terminal(char *string);
+void extract_rhs_content(char *string);
 
 /**
  * @brief

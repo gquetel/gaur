@@ -360,7 +360,7 @@ void end_group_rule()
     is_lhs_type_defined = false;
     is_last_item_action = false;
 
-    if (gaur_mode == M_EXTRACT)
+    if (gaur_mode == M_EXTRACT || gaur_mode == M_EXTRACT_FULL)
     {
         append_rule_group_buffer(action_buffer);
 
@@ -460,10 +460,10 @@ void init_extraction()
     }
 }
 
-void extract_nterm(char *nterm)
+void extract_lhs(char *nterm)
 {
     current_lhs = strdup(nterm);
-    if (gaur_mode == M_EXTRACT)
+    if (gaur_mode == M_EXTRACT || gaur_mode == M_EXTRACT_FULL)
     {
         char tmp[MAX_SIZE_NTERM];
         snprintf(tmp, sizeof(tmp), "%s.%d,", nterm, counter_rule);
@@ -474,7 +474,7 @@ void extract_nterm(char *nterm)
 
 void extract_function_calls(char *action_literal)
 {
-    if (gaur_mode == M_EXTRACT)
+    if (gaur_mode == M_EXTRACT || gaur_mode == M_EXTRACT_FULL)
     {
         char tmp[MAX_SIZE_CODE];
         snprintf(tmp, sizeof(tmp), " %s", action_literal);
@@ -482,19 +482,21 @@ void extract_function_calls(char *action_literal)
     }
 }
 
-void extract_terminal(char *string)
+void extract_rhs_content(char *string)
 {
-    if (gaur_mode == M_EXTRACT && match_terminals(string))
+    if ((gaur_mode == M_EXTRACT && match_terminals(string)) || gaur_mode == M_EXTRACT_FULL)
     {
         char tmp[MAX_SIZE_CODE];
         snprintf(tmp, sizeof(tmp), "%s ", string);
         append_rule_group_buffer(tmp);
     }
+
+
 }
 
 void signal_new_rule(char *nterm)
 {
-    if (gaur_mode == M_EXTRACT)
+    if (gaur_mode == M_EXTRACT || gaur_mode == M_EXTRACT_FULL)
     {
         char tmp[2];
         append_rule_group_buffer(action_buffer);
@@ -506,7 +508,7 @@ void signal_new_rule(char *nterm)
 
     free(current_lhs);
     current_lhs = NULL;
-    extract_nterm(nterm);
+    extract_lhs(nterm);
     is_last_item_action = false;
 }
 
@@ -517,7 +519,7 @@ void signal_action()
 
 void check_midrule_action()
 {
-    if (gaur_mode == M_EXTRACT)
+    if (gaur_mode == M_EXTRACT || gaur_mode == M_EXTRACT_FULL)
     {
         if (is_last_item_action)
         {

@@ -223,7 +223,7 @@ rules_or_grammar_declaration: rules {pstr("\n\n");}
 rules: ID_COLON { 
         pstr($1);
         latest_id_colon = strdup($1); 
-        extract_nterm(latest_id_colon);
+        extract_lhs(latest_id_colon);
         free($1);} 
   named_ref COLON  {pstr(":\n");} 
   rhses.1  {free(latest_id_colon);end_group_rule();}
@@ -238,7 +238,7 @@ rhses.1:  rhs
 /*Recognize the components of one rule*/
 rhs: %empty 
 | rhs tag.opt L_BRACKET {pstr("{"); } code R_BRACKET {signal_action(); pstr("}");} named_ref
-| rhs symbol named_ref {extract_terminal(latest_symbol); add_edge(latest_id_colon,latest_symbol);check_midrule_action();}
+| rhs symbol named_ref {extract_rhs_content(latest_symbol); add_edge(latest_id_colon,latest_symbol);check_midrule_action();}
 | rhs PERCENT_EMPTY {pstr("%empty ");check_midrule_action();} 
 | rhs PERCENT_PREC {pstr("%prec ");} symbol  {free(latest_symbol);check_midrule_action();}
 | rhs PERCENT_MERGE LESS_THAN {pstr("<");} TAG {pstr($5);} MORE_THAN {pstr(">");check_midrule_action();}  
@@ -288,7 +288,7 @@ int main(int argc, char **argv)
     int optc;
 
     /* Options parser */
-    while ((optc = getopt_long(argc, argv, "dehi:l:o:s:", long_opts, NULL)) != -1)
+    while ((optc = getopt_long(argc, argv, "defhi:l:o:s:", long_opts, NULL)) != -1)
     {
         switch (optc)
         {
@@ -300,6 +300,11 @@ int main(int argc, char **argv)
             // Extract mode, only need to initalize output file
             output_filename = EXTRACT_FILENAME;
             set_mode(M_EXTRACT);
+            break;
+        
+        case 'f':
+            output_filename = EXTRACT_FILENAME;
+            set_mode(M_EXTRACT_FULL);
             break;
 
         case 'h':
@@ -353,7 +358,7 @@ int main(int argc, char **argv)
         exit(errno);
     }
 
-    if (get_gaur_mode() == M_EXTRACT)
+    if (get_gaur_mode() == M_EXTRACT || get_gaur_mode() == M_EXTRACT_FULL)
     {
         init_output_file(output_filename);
         init_extraction();
