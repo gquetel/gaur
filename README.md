@@ -1,10 +1,9 @@
-GAUR is a tool to instrument Bison grammar. Given an input grammar file, it injects code to automatically and transparently produce a log with information characterizing parse inputs. Specifically, we plan to produce information about the impact of each parser input on the application/system it is part of. This impact information is induced by the rules used to parse the input, we associate labels to each one the the parser rules and construct an overall impact based on this information.
-
+GAUR is a tool to integrate security-oriented data collectors in Bison generated parsers.  Given an input grammar file, it injects code to transparently produce a log with information characterizing parsed inputs. Specifically, using the [pygaur](./pygaur/) module, we statically associate semantic tags to each parser rule. At runtime, we produce a **semantic tree** caracterizing each application input. 
+ 
 # Installation 
-Gaur requires `gcc`, `flex` and `bison`. The production of impact information production requires [pygaur](https://github.com/gquetel/pygaur)
-to be installed.
+To be built, GAUR requires `gcc`, `make`, `flex` and `bison`. At runtime, the pipeline requires python packages (defined in [pygaur/requirements.txt](./pygaur/requirements.txt)). We provide a [shell.nix](./shell.nix) that creates an environement with all necessary dependencies.
 
-After cloning this repository GAUR can be built as follows:
+After cloning this repository GAUR can be built using make:
 ```
 $ git clone https://github.com/gquetel/gaur.git
 $ make build
@@ -66,12 +65,3 @@ The output of the Python script is made to facilitate the parsing in the next ph
 
 To inject the code, you need to provide the output of `pygaur` through the `--list` option. 
 Some applications require a specific parser skeleton, and the option `--skeleton filepath` allows to associate the correct one.
-
-## Other Makefile targets
-
-### Tree generation
-
-GAUR also allows generating a dot file corresponding to the visual representation of the given BISON grammar using the `-d` option, which results in the creation of a `output.dot` file. `make graph` can be used to display a tree for the `parse.y` grammar. 
-
-### Corpus generation
-For the semantic inference step, GAUR creates for each grammar rule a document consisting of the name in the left-hand side, terminals in the right-hand side and the literals in the action code. For pre-processing purposes, one could aim to construct a corpus of such documents. We provide a script that creates a corpus using the grammar located in the [grammar](data/grammars/). Using the `make corpus` target will generate a text file in the output directory. 
