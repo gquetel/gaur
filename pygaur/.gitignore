@@ -1,0 +1,14 @@
+outputs/*
+data/models/*
+results/*
+**/__pycache__/*
+__pycache__/*
+*.pkl
+*.bin
+*.log
+*.log
+.vscode/*   
+dist/*
+venv/*
+output/*
+nterm_list.txt
