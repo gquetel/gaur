@@ -4,8 +4,9 @@ CC = gcc
 
 CPPFLAGS=-I ./include
 CFLAGS=-g -Wall
-GRAMMARFILE=parse.y
+
 INJECTFILE=/usr/share/gaur/src/injects/inject.c
+
 GCLASSIFY=gclassify
 
 all: build  
@@ -54,18 +55,18 @@ gaur.tab.o: gaur.tab.c gaur.tab.h
 
 # -------------------- TODO: restructurate theses rules  --------------------
 
-output/output.dot: gaur | output
-	./gaur -d parse.y -o output/parse.dot
+# output/output.dot: gaur | output
+# 	./gaur -d parse.y -o output/parse.dot
 
-graph:  output/output.dot
-	dot -Tsvg  output/output.dot -o output/parse.svg
-	xdg-open output/parse.svg
+# graph:  output/output.dot
+# 	dot -Tsvg  output/output.dot -o output/parse.svg
+# 	xdg-open output/parse.svg
 
 # -------------------- TEST & Clean --------------------
-output/corpus.txt: gaur | output
-	src/scripts/mcorpus.sh
+# output/corpus.txt: gaur | output
+# 	src/scripts/mcorpus.sh
 	
-corpus: output/corpus.txt
+# corpus: output/corpus.txt
 
 clean: 
 	@rm -f gaur gaur.tab.c lex.yy.c gaur.tab.h gaur.modified.y
