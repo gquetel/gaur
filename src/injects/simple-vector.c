@@ -62,7 +62,6 @@ typedef struct _node_pt
 
 enum
 {
-    // Hopefully, temporary
     _CREATE = 1 << 4,
     _DELETE = 1 << 3,
     _EXECUTE = 1 << 2,
@@ -171,7 +170,7 @@ void create_logentry(struct _node_pt *first, uint64_t query_id, int terminal_c, 
                     break;
                 }
             }
-            /* Same for assets */
+            /* Same for objects */
             fprintf(f_logs, ":");
             for (size_t i = 0; i < sizeof(_assets_mapping) / sizeof(_assets_mapping[0]); i++)
             {
