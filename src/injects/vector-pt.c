@@ -17,13 +17,13 @@ struct node_t
     struct node_t *next_brother;
 };
 
-#define MAX_LENGHT 10
+#define MAX_LENGTH 10
 
 /* tab servers as a stack of pt nodes until they are given a father
 - Each shift increments the number of element in the array
 - Each reduce reduce the number of elements by the number of rhs elements (direct childrens)
 */
-node_t *tab[MAX_LENGHT];
+node_t *tab[MAX_LENGTH];
 
 /* index_tab stores the index of the next available position in the tab,
  index_tab - 1 corresponds to the index of the last shifted element (when index_tab > 0s) */
@@ -65,42 +65,16 @@ int rule_counter = 0;
         reduce(yylen, nrule - 1, GET_ASSET_TAG(nrule), GET_ACTION_TAG(nrule)); \
     } while (0)
 
-enum
-{
-    _CREATE = 1 << 4,
-    _DELETE = 1 << 3,
-    _EXECUTE = 1 << 2,
-    _MODIFY = 1 << 1,
-    _READ = 1 << 0,
-};
-
 static struct
 {
     int value;
     const char *name;
 } _actions_mapping[] = {
-    {_CREATE, "CREATE"},
-    {_DELETE, "DELETE"},
-    {_EXECUTE, "EXECUTE"},
-    {_MODIFY, "MODIFY"},
-    {_READ, "READ"},
-};
-
-enum
-{
-    _TABLESPACE = 1 << 11,
-    _TABLE = 1 << 10,
-    _INDEX = 1 << 9,
-    _VIEW = 1 << 8,
-    _USER = 1 << 7,
-    _PROCEDURE = 1 << 6,
-    _DATABASE = 1 << 5,
-    _FUNCTION = 1 << 4,
-    _INSTANCE = 1 << 3,
-    _LOGFILE = 1 << 2,
-    _SERVER = 1 << 1,
-    _TRIGGER = 1 << 0,
-
+    {1 << 4, "CREATE"},
+    {1 << 3, "DELETE"},
+    {1 << 2, "EXECUTE"},
+    {1 << 1, "MODIFY"},
+    {1 << 0, "READ"},
 };
 
 static struct
@@ -108,18 +82,18 @@ static struct
     int value;
     const char *name;
 } _assets_mapping[] = {
-    {_TABLESPACE, "TABLESPACE"},
-    {_TABLE, "TABLE"},
-    {_INDEX, "INDEX"},
-    {_VIEW, "VIEW"},
-    {_USER, "USER"},
-    {_PROCEDURE, "PROCEDURE"},
-    {_DATABASE, "DATABASE"},
-    {_FUNCTION, "FUNCTION"},
-    {_INSTANCE, "INSTANCE"},
-    {_LOGFILE, "LOGFILE"},
-    {_SERVER, "SERVER"},
-    {_TRIGGER, "TRIGGER"},
+    {1 << 11, "TABLESPACE"},
+    {1 << 10, "TABLE"},
+    {1 << 9, "INDEX"},
+    {1 << 8, "VIEW"},
+    {1 << 7, "USER"},
+    {1 << 6, "PROCEDURE"},
+    {1 << 5, "DATABASE"},
+    {1 << 4, "FUNCTION"},
+    {1 << 3, "INSTANCE"},
+    {1 << 2, "LOGFILE"},
+    {1 << 1, "SERVER"},
+    {1 << 0, "TRIGGER"},
 };
 
 /**
@@ -129,7 +103,7 @@ static struct
  */
 void shift(int yykind)
 {
-    if (index_tab >= MAX_LENGHT || is_collector_error)
+    if (index_tab >= MAX_LENGTH || is_collector_error)
     {
         fprintf(stderr, "gaur data collector - shift(): incorrect index_tab: %d\n", index_tab);
         is_collector_error = 1;
@@ -177,7 +151,7 @@ void reduce(int n_child, int r_id, int r_asset, int r_action)
         for (int i = 0; i < remaining_children; i++)
         {
             index_tab--;
-            if (index_tab < 0 || index_tab >= MAX_LENGHT)
+            if (index_tab < 0 || index_tab >= MAX_LENGTH)
             {
                 fprintf(stderr, "gaur data collector - reduce(): incorrect index_tab: %d\n", index_tab);
                 is_collector_error = 1;
