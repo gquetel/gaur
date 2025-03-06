@@ -1,21 +1,37 @@
-let
-  inputs = import ./npins; 
-  pkgs =  import inputs.nixpkgs { };
-in
-pkgs.python311Packages.buildPythonPackage {
+# Use structure from: https://github.com/NixOS/nixpkgs/blob/master/doc/languages-frameworks/python.section.md#python-python
+{
+  buildPythonPackage,
+
+  # Build system dependencies
+  setuptools,
+
+  # Runtime dependencies
+  pandas,
+  gensim,
+  numpy,
+  sentence-transformers,
+  transformers,
+  torch,
+}:
+
+buildPythonPackage rec {
   pname = "pygaur";
   version = "0.1.0";
+  pyproject = true;
+
   src = ./.;
-  
-  propagatedBuildInputs = with pkgs.python311Packages; [
+
+  buildInputs = [setuptools];
+  dependencies = [
     pandas
     gensim
     numpy
-    matplotlib
     sentence-transformers
-    networkx
-    scipy
+    transformers
+    torch
   ];
+
+  pythonImportsCheck = [ "pygaur" ];  
 
   doCheck = false;
 }

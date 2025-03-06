@@ -8,6 +8,7 @@ import os
 
 from pygaur import gnlp
 
+
 def compute_threshold_semantic(tags: list) -> list:
     """Simple function that returns a list of tresholds for each tag
 
@@ -108,52 +109,6 @@ def write_semantic_file(list_df: list, filepath: str, mode: str = "json"):
         raise Exception("Indexes of the dataframes are not the same")
 
 
-def create_semantic_file(
-    model_name: str,
-    filepath: str,
-    filepath_output: str,
-    tagspath: str,
-    stop_words_set: set,
-):
-    """Main function that iterates over each tag file (.tag extension) in the tags folder and
-        and attributes labels to each rule from the input file.
-
-    Args:
-        model_name (str): Sentence BERT model name
-        filepath (str): Filepath to file which contains rule informations
-        tagspath (str): Filepath to folder containing the different tag files
-        filepath_output (str): Filepath for result file
-        stop_words_set (set): Set of stop words to ignore for similarity computation
-    """
-    model = gnlp.init_sentence_model(model_name)
-
-    df_labels = []
-    for tag_file in os.listdir(os.fsencode(tagspath)):
-        if tag_file.endswith(b".tags"):
-            filename = os.fsdecode(tag_file)
-            tag_filepath = "".join([tagspath, filename])
-
-            list_keywords, possible_tags = gnlp.build_tags_and_keywords_lists(
-                model, tag_filepath
-            )
-            print("> Defined", filename, " tags:", possible_tags)
-            df_pred = gnlp.compute_nterm_semantic_max(
-                filepath, model, possible_tags, stop_words_set, list_keywords
-            )
-            tresholds = compute_threshold_semantic(possible_tags)
-
-            # For now we want at most a single label
-            df_pred = gnlp.keep_maximum_score(df_pred)
-
-            gnlp.apply_treshold_nterm(df_pred, tresholds, possible_tags)
-
-            # Save tags category (given by filename without extension .tags) to dataframes index name.
-            df_pred.index.name = os.path.splitext(filename)[0]
-            df_labels.append(df_pred)
-
-    write_semantic_file(df_labels, filepath_output, mode="json")
-
-
 def create_semantic_file_mysql(
     model_name: str,
     filepath: str,
@@ -197,13 +152,13 @@ def create_semantic_file_mysql(
 
     tag_files = [full_path_actions, full_path_objects]
     for tag_file in tag_files:
-        list_keywords, possible_tags = gnlp.build_tags_and_keywords_lists(
-            model, tag_file
-        )
+        df_keywords = gnlp.get_df_tags_keywords(model, tag_file)
+        possible_tags = df_keywords["tag"].unique()
         tag_type = tag_file.split("/")[-1].rstrip(".tags")
+
         print(f"> Defined {tag_type} tags:{possible_tags}")
         df_pred = gnlp.compute_nterm_semantic_max(
-            filepath, model, possible_tags, stop_words_set, list_keywords
+            filepath, model, possible_tags, stop_words_set, df_keywords
         )
         tresholds = compute_threshold_semantic(possible_tags)
 
