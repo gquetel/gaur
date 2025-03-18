@@ -1,0 +1,3192 @@
+start_entry.0,,
+start_entry.1,GRAMMAR_SELECTOR_EXPR END_OF_INPUT , ITEMIZE
+start_entry.2,GRAMMAR_SELECTOR_PART END_OF_INPUT , CONTEXTUALIZE
+start_entry.3,GRAMMAR_SELECTOR_GCOL IDENT_sys END_OF_INPUT , is_identifier ITEMIZE
+start_entry.4,GRAMMAR_SELECTOR_CTE END_OF_INPUT ,
+start_entry.5,GRAMMAR_SELECTOR_DERIVED_EXPR END_OF_INPUT , ITEMIZE
+$@1
+sql_statement.0,END_OF_INPUT , is_bootstrap_system_thread has_comment my_error MYF
+sql_statement.1,, get_protocol has_client_capability eof get_ptr
+sql_statement.2,END_OF_INPUT ,
+opt_end_of_input.0,,
+opt_end_of_input.1,END_OF_INPUT ,
+simple_statement_or_begin.0,,
+simple_statement_or_begin.1,,
+simple_statement.0,,
+simple_statement.1,,
+simple_statement.2,,
+simple_statement.3,,
+simple_statement.4,,
+simple_statement.5,,
+simple_statement.6,,
+simple_statement.7,,
+simple_statement.8,,
+simple_statement.9,,
+simple_statement.10,,
+simple_statement.11,,
+simple_statement.12,,
+simple_statement.13,,
+simple_statement.14,,
+simple_statement.15,,
+simple_statement.16,,
+simple_statement.17,,
+simple_statement.18,,
+simple_statement.19,,
+simple_statement.20,,
+simple_statement.21,,
+simple_statement.22,,
+simple_statement.23,,
+simple_statement.24,,
+simple_statement.25,,
+simple_statement.26,,
+simple_statement.27,,
+simple_statement.28,,
+simple_statement.29,,
+simple_statement.30,,
+simple_statement.31,,
+simple_statement.32,,
+simple_statement.33,,
+simple_statement.34,,
+simple_statement.35,,
+simple_statement.36,,
+simple_statement.37,,
+simple_statement.38,,
+simple_statement.39,,
+simple_statement.40,,
+simple_statement.41,,
+simple_statement.42,,
+simple_statement.43,,
+simple_statement.44,,
+simple_statement.45,,
+simple_statement.46,,
+simple_statement.47,,
+simple_statement.48,,
+simple_statement.49,,
+simple_statement.50,,
+simple_statement.51,,
+simple_statement.52,,
+simple_statement.53,,
+simple_statement.54,,
+simple_statement.55,,
+simple_statement.56,,
+simple_statement.57,,
+simple_statement.58,,
+simple_statement.59,,
+simple_statement.60,,
+simple_statement.61,,
+simple_statement.62,,
+simple_statement.63,,
+simple_statement.64,,
+simple_statement.65,,
+simple_statement.66,,
+simple_statement.67,,
+simple_statement.68,,
+simple_statement.69,,
+simple_statement.70,,
+simple_statement.71,,
+simple_statement.72,,
+simple_statement.73,,
+simple_statement.74,,
+simple_statement.75,,
+simple_statement.76,,
+simple_statement.77,, CONTEXTUALIZE
+simple_statement.78,,
+simple_statement.79,,
+simple_statement.80,,
+simple_statement.81,,
+simple_statement.82,,
+simple_statement.83,,
+simple_statement.84,,
+simple_statement.85,,
+simple_statement.86,,
+simple_statement.87,,
+simple_statement.88,,
+simple_statement.89,,
+simple_statement.90,,
+simple_statement.91,,
+simple_statement.92,,
+simple_statement.93,,
+simple_statement.94,,
+simple_statement.95,,
+simple_statement.96,,
+simple_statement.97,,
+simple_statement.98,,
+simple_statement.99,,
+simple_statement.100,,
+simple_statement.101,,
+simple_statement.102,,
+simple_statement.103,,
+simple_statement.104,,
+simple_statement.105,,
+simple_statement.106,,
+simple_statement.107,,
+simple_statement.108,,
+simple_statement.109,,
+simple_statement.110,,
+simple_statement.111,,
+simple_statement.112,,
+simple_statement.113,,
+simple_statement.114,,
+simple_statement.115,,
+simple_statement.116,,
+simple_statement.117,,
+simple_statement.118,,
+simple_statement.119,,
+simple_statement.120,,
+simple_statement.121,,
+simple_statement.122,,
+simple_statement.123,,
+simple_statement.124,,
+simple_statement.125,,
+simple_statement.126,,
+simple_statement.127,,
+simple_statement.128,,
+simple_statement.129,,
+simple_statement.130,,
+simple_statement.131,,
+simple_statement.132,,
+simple_statement.133,,
+simple_statement.134,,
+simple_statement.135,,
+deallocate.0,PREPARE_SYM , to_lex_cstring
+deallocate_or_drop.0,DEALLOCATE_SYM ,
+deallocate_or_drop.1,DROP ,
+prepare.0,PREPARE_SYM FROM , to_lex_cstring
+prepare_src.0,TEXT_STRING_sys ,
+prepare_src.1,,
+$@2
+execute.0,EXECUTE_SYM , to_lex_cstring
+execute_using.0,,
+execute_using.1,USING ,
+execute_var_list.0,,
+execute_var_list.1,,
+execute_var_ident.0,, sql_memdup sizeof prepared_stmt_params.push_back
+$@3
+help.0,HELP_SYM , my_error MYF
+$@4
+$@5
+change_replication_stmt.0,CHANGE REPLICATION SOURCE_SYM TO_SYM , assert mi.repl_ignore_server_ids.empty mi.set_unspecified set_channel_name
+change_replication_stmt.1,CHANGE REPLICATION FILTER_SYM , assert Sql_cmd_change_repl_filter set_channel_name
+filter_defs.0,,
+filter_defs.1,,
+filter_def.0,REPLICATE_DO_DB EQ , assert set_filter_value
+filter_def.1,REPLICATE_IGNORE_DB EQ , assert set_filter_value
+filter_def.2,REPLICATE_DO_TABLE EQ , assert set_filter_value
+filter_def.3,REPLICATE_IGNORE_TABLE EQ , assert set_filter_value
+filter_def.4,REPLICATE_WILD_DO_TABLE EQ , assert set_filter_value
+filter_def.5,REPLICATE_WILD_IGNORE_TABLE EQ , assert set_filter_value
+filter_def.6,REPLICATE_REWRITE_DB EQ , assert set_filter_value
+opt_filter_db_list.0,,
+opt_filter_db_list.1,,
+filter_db_list.0,, push_back
+filter_db_list.1,, push_back
+filter_db_ident.0,, Item_string charset
+opt_filter_db_pair_list.0,,
+opt_filter_db_pair_list.1,,
+filter_db_pair_list.0,, push_back push_back
+filter_db_pair_list.1,, push_back push_back
+opt_filter_table_list.0,,
+opt_filter_table_list.1,,
+filter_table_list.0,, push_back
+filter_table_list.1,, push_back
+filter_table_ident.0,, Item_string charset append strmake append
+opt_filter_string_list.0,,
+opt_filter_string_list.1,,
+filter_string_list.0,, push_back
+filter_string_list.1,, push_back
+filter_string.0,, Item_string charset
+source_defs.0,,
+source_defs.1,,
+source_def.0,SOURCE_HOST_SYM EQ TEXT_STRING_sys_nonewline ,
+source_def.1,NETWORK_NAMESPACE_SYM EQ TEXT_STRING_sys_nonewline ,
+source_def.2,SOURCE_BIND_SYM EQ TEXT_STRING_sys_nonewline ,
+source_def.3,SOURCE_USER_SYM EQ TEXT_STRING_sys_nonewline ,
+source_def.4,SOURCE_PASSWORD_SYM EQ TEXT_STRING_sys_nonewline , strlen my_error MYF
+source_def.5,SOURCE_PORT_SYM EQ ,
+source_def.6,SOURCE_CONNECT_RETRY_SYM EQ ,
+source_def.7,SOURCE_RETRY_COUNT_SYM EQ ,
+source_def.8,SOURCE_DELAY_SYM EQ , strmake my_error MYF
+source_def.9,SOURCE_SSL_SYM EQ ,
+source_def.10,SOURCE_SSL_CA_SYM EQ TEXT_STRING_sys_nonewline ,
+source_def.11,SOURCE_SSL_CAPATH_SYM EQ TEXT_STRING_sys_nonewline ,
+source_def.12,SOURCE_TLS_VERSION_SYM EQ TEXT_STRING_sys_nonewline ,
+source_def.13,SOURCE_TLS_CIPHERSUITES_SYM EQ ,
+source_def.14,SOURCE_SSL_CERT_SYM EQ TEXT_STRING_sys_nonewline ,
+source_def.15,SOURCE_SSL_CIPHER_SYM EQ TEXT_STRING_sys_nonewline ,
+source_def.16,SOURCE_SSL_KEY_SYM EQ TEXT_STRING_sys_nonewline ,
+source_def.17,SOURCE_SSL_VERIFY_SERVER_CERT_SYM EQ ,
+source_def.18,SOURCE_SSL_CRL_SYM EQ TEXT_STRING_sys_nonewline ,
+source_def.19,SOURCE_SSL_CRLPATH_SYM EQ TEXT_STRING_sys_nonewline ,
+source_def.20,SOURCE_PUBLIC_KEY_PATH_SYM EQ TEXT_STRING_sys_nonewline ,
+source_def.21,GET_SOURCE_PUBLIC_KEY_SYM EQ ,
+source_def.22,SOURCE_HEARTBEAT_PERIOD_SYM EQ NUM_literal , ITEMIZE val_real sizeof sizeof sprintf my_error MYF push_warning ER_THD push_warning ER_THD
+source_def.23,IGNORE_SERVER_IDS_SYM EQ ,
+source_def.24,SOURCE_COMPRESSION_ALGORITHM_SYM EQ TEXT_STRING_sys ,
+source_def.25,SOURCE_ZSTD_COMPRESSION_LEVEL_SYM EQ ,
+source_def.26,SOURCE_AUTO_POSITION_SYM EQ ,
+source_def.27,PRIVILEGE_CHECKS_USER_SYM EQ ,
+source_def.28,REQUIRE_ROW_FORMAT_SYM EQ , switch strmake .raw.length my_error MYF
+source_def.29,REQUIRE_TABLE_PRIMARY_KEY_CHECK_SYM EQ ,
+source_def.30,SOURCE_CONNECTION_AUTO_FAILOVER_SYM EQ , switch syntax_error_at
+source_def.31,ASSIGN_GTIDS_TO_ANONYMOUS_TRANSACTIONS_SYM EQ ,
+source_def.32,GTID_ONLY_SYM EQ , switch syntax_error_at
+source_def.33,,
+ignore_server_id_list.0,,
+ignore_server_id_list.1,,
+ignore_server_id_list.2,,
+ignore_server_id.0,, mi.repl_ignore_server_ids.push_back
+privilege_check_def.0,,
+privilege_check_def.1,NULL_SYM ,
+table_primary_key_check_def.0,STREAM_SYM ,
+table_primary_key_check_def.1,ON_SYM ,
+table_primary_key_check_def.2,OFF_SYM ,
+table_primary_key_check_def.3,GENERATE_SYM ,
+assign_gtids_to_anonymous_transactions_def.0,OFF_SYM ,
+assign_gtids_to_anonymous_transactions_def.1,LOCAL_SYM ,
+assign_gtids_to_anonymous_transactions_def.2,TEXT_STRING , is_valid my_error MYF
+source_tls_ciphersuites_def.0,TEXT_STRING_sys_nonewline ,
+source_tls_ciphersuites_def.1,NULL_SYM ,
+source_file_def.0,SOURCE_LOG_FILE_SYM EQ TEXT_STRING_sys_nonewline ,
+source_file_def.1,SOURCE_LOG_POS_SYM EQ ,
+source_file_def.2,RELAY_LOG_FILE_SYM EQ TEXT_STRING_sys_nonewline ,
+source_file_def.3,RELAY_LOG_POS_SYM EQ ,
+opt_channel.0,,
+opt_channel.1,FOR_SYM CHANNEL_SYM TEXT_STRING_sys_nonewline , to_lex_cstring
+create_table_stmt.0,CREATE TABLE_SYM , PT_create_table_stmt
+create_table_stmt.1,CREATE TABLE_SYM , PT_create_table_stmt
+create_table_stmt.2,CREATE TABLE_SYM LIKE , PT_create_table_stmt
+create_table_stmt.3,CREATE TABLE_SYM LIKE , PT_create_table_stmt
+create_role_stmt.0,CREATE ROLE_SYM , PT_create_role
+create_resource_group_stmt.0,CREATE RESOURCE_SYM GROUP_SYM TYPE_SYM , PT_create_resource_group to_lex_cstring
+$@6
+create.0,CREATE DATABASE ,
+create.1,CREATE ,
+create.2,CREATE USER , MAKE_CMD_DCL_DUMMY
+create.3,CREATE LOGFILE_SYM GROUP_SYM ADD , is_error contextualize_array
+create.4,CREATE TABLESPACE_SYM , is_error contextualize_array
+create.5,CREATE UNDO_SYM TABLESPACE_SYM ADD , is_error contextualize_array
+create.6,CREATE SERVER_SYM FOREIGN DATA_SYM WRAPPER_SYM OPTIONS_SYM , my_error MYF server_options.set_scheme Sql_cmd_create_server
+create_srs_stmt.0,CREATE OR_SYM REPLACE_SYM SPATIAL_SYM REFERENCE_SYM SYSTEM_SYM , PT_create_srs
+create_srs_stmt.1,CREATE SPATIAL_SYM REFERENCE_SYM SYSTEM_SYM , PT_create_srs
+srs_attributes.0,, Sql_cmd_srs_attributes MYSQL_YYABORT_ERROR MYF
+srs_attributes.1,NAME_SYM TEXT_STRING_sys_nonewline , MYSQL_YYABORT_ERROR MYF
+srs_attributes.2,DEFINITION_SYM TEXT_STRING_sys_nonewline , MYSQL_YYABORT_ERROR MYF
+srs_attributes.3,ORGANIZATION_SYM TEXT_STRING_sys_nonewline IDENTIFIED_SYM BY , MYSQL_YYABORT_ERROR MYF
+srs_attributes.4,DESCRIPTION_SYM TEXT_STRING_sys_nonewline , MYSQL_YYABORT_ERROR MYF
+default_role_clause.0,,
+default_role_clause.1,DEFAULT_SYM ROLE_SYM ,
+create_index_stmt.0,CREATE INDEX_SYM ON_SYM , PT_create_index_stmt .algo.get_or_default .lock.get_or_default
+create_index_stmt.1,CREATE FULLTEXT_SYM INDEX_SYM ON_SYM , PT_create_index_stmt .algo.get_or_default .lock.get_or_default
+create_index_stmt.2,CREATE SPATIAL_SYM INDEX_SYM ON_SYM , PT_create_index_stmt .algo.get_or_default .lock.get_or_default
+server_options_list.0,,
+server_options_list.1,,
+server_option.0,USER TEXT_STRING_sys , server_options.set_username
+server_option.1,HOST_SYM TEXT_STRING_sys , server_options.set_host
+server_option.2,DATABASE TEXT_STRING_sys , server_options.set_db
+server_option.3,OWNER_SYM TEXT_STRING_sys , server_options.set_owner
+server_option.4,PASSWORD TEXT_STRING_sys , server_options.set_password
+server_option.5,SOCKET_SYM TEXT_STRING_sys , server_options.set_socket
+server_option.6,PORT_SYM , server_options.set_port
+$@7
+event_tail.0,EVENT_SYM ON_SYM SCHEDULE_SYM DO_SYM , Event_parse_data MAKE_CMD_DDL_DUMMY assert sql_cmd_type assert sql_command_code
+$@8
+ev_schedule_time.0,EVERY_SYM , ITEMIZE
+ev_schedule_time.1,AT_SYM , ITEMIZE
+opt_ev_status.0,,
+opt_ev_status.1,ENABLE_SYM ,
+opt_ev_status.2,DISABLE_SYM ON_SYM SLAVE , push_deprecated_warn
+opt_ev_status.3,DISABLE_SYM ON_SYM REPLICA_SYM ,
+opt_ev_status.4,DISABLE_SYM ,
+ev_starts.0,, Item_func_now_local
+ev_starts.1,STARTS_SYM , ITEMIZE
+ev_ends.0,,
+ev_ends.1,ENDS_SYM , ITEMIZE
+opt_ev_on_completion.0,,
+opt_ev_on_completion.1,,
+ev_on_completion.0,ON_SYM COMPLETION_SYM PRESERVE_SYM ,
+ev_on_completion.1,ON_SYM COMPLETION_SYM NOT_SYM PRESERVE_SYM ,
+opt_ev_comment.0,,
+opt_ev_comment.1,COMMENT_SYM TEXT_STRING_sys ,
+$@9
+ev_sql_stmt.0,, my_error MYF sp_start_parsing memset sizeof set_body_start sp_finish_parsing
+ev_sql_stmt_inner.0,,
+ev_sql_stmt_inner.1,,
+ev_sql_stmt_inner.2,,
+ev_sql_stmt_inner.3,,
+ev_sql_stmt_inner.4,,
+ev_sql_stmt_inner.5,,
+ev_sql_stmt_inner.6,,
+ev_sql_stmt_inner.7,,
+ev_sql_stmt_inner.8,,
+ev_sql_stmt_inner.9,,
+ev_sql_stmt_inner.10,,
+ev_sql_stmt_inner.11,,
+ev_sql_stmt_inner.12,,
+sp_name.0,, check_and_convert_db_name sp_check_name sp_name to_lex_cstring init_qname
+sp_name.1,, sp_check_name copy_db_to sp_name init_qname
+sp_a_chistics.0,,
+sp_a_chistics.1,,
+sp_c_chistics.0,,
+sp_c_chistics.1,,
+sp_chistic.0,COMMENT_SYM TEXT_STRING_sys , to_lex_cstring
+sp_chistic.1,LANGUAGE_SYM SQL_SYM ,
+sp_chistic.2,LANGUAGE_SYM , to_lex_cstring
+sp_chistic.3,NO_SYM SQL_SYM ,
+sp_chistic.4,CONTAINS_SYM SQL_SYM ,
+sp_chistic.5,READS_SYM SQL_SYM DATA_SYM ,
+sp_chistic.6,MODIFIES_SYM SQL_SYM DATA_SYM ,
+sp_chistic.7,,
+sp_c_chistic.0,,
+sp_c_chistic.1,DETERMINISTIC_SYM ,
+sp_c_chistic.2,DETERMINISTIC_SYM ,
+sp_suid.0,SQL_SYM SECURITY_SYM DEFINER_SYM ,
+sp_suid.1,SQL_SYM SECURITY_SYM INVOKER_SYM ,
+call_stmt.0,CALL_SYM , PT_call
+opt_paren_expr_list.0,,
+opt_paren_expr_list.1,,
+sp_fdparam_list.0,,
+sp_fdparam_list.1,,
+sp_fdparams.0,,
+sp_fdparams.1,,
+sp_fdparam.0,, CONTEXTUALIZE get_charset merge_sp_var_charset_and_collation get_sp_current_parsing_ctx sp_check_name find_variable my_error MYF add_variable field_def.init get_length get_dec get_type_flags get_interval_list get_uint_geom_type prepare_sp_create_field
+sp_pdparam_list.0,,
+sp_pdparam_list.1,,
+sp_pdparams.0,,
+sp_pdparams.1,,
+sp_pdparam.0,, get_sp_current_parsing_ctx sp_check_name find_variable my_error MYF CONTEXTUALIZE get_charset merge_sp_var_charset_and_collation add_variable field_def.init get_length get_dec get_type_flags get_interval_list get_uint_geom_type prepare_sp_create_field
+sp_opt_inout.0,,
+sp_opt_inout.1,IN_SYM ,
+sp_opt_inout.2,OUT_SYM ,
+sp_opt_inout.3,INOUT_SYM ,
+sp_proc_stmts.0,,
+sp_proc_stmts.1,,
+sp_proc_stmts1.0,,
+sp_proc_stmts1.1,,
+sp_decls.0,,
+sp_decls.1,, my_error MYF my_error MYF
+$@10
+$@11
+sp_decl.0,DECLARE_SYM , get_sp_current_parsing_ctx reset_lex declare_var_boundary CONTEXTUALIZE get_charset merge_sp_var_charset_and_collation context_var_count ITEMIZE is_metadata_used make_string Item_null var_context2runtime find_variable field_def.init get_length get_dec get_type_flags get_interval_list get_uint_geom_type prepare_sp_create_field sp_instr_set instructions add_instr declare_var_boundary restore_lex
+sp_decl.1,DECLARE_SYM CONDITION_SYM FOR_SYM , get_sp_current_parsing_ctx find_condition my_error MYF if add_condition
+sp_decl.2,DECLARE_SYM HANDLER_SYM FOR_SYM , get_sp_current_parsing_ctx push_context add_handler set_sp_current_parsing_ctx sp_instr_hpush_jump instructions add_instr m_parser_data.add_backpatch_entry last_label m_parser_data.add_backpatch_entry push_label get_sp_current_parsing_ctx pop_label sp_instr_hreturn instructions add_instr sp_instr_hreturn instructions add_instr m_parser_data.add_backpatch_entry last_label m_parser_data.do_backpatch instructions set_sp_current_parsing_ctx pop_context
+sp_decl.3,DECLARE_SYM CURSOR_SYM FOR_SYM , reset_lex m_parser_data.set_current_stmt_start_ptr MAKE_CMD assert my_error MYF set_as_part_of_sp restore_lex get_sp_current_parsing_ctx find_cursor my_error MYF is_metadata_used make_string m_parser_data.get_current_stmt_start_ptr sp_instr_cpush instructions current_cursor_count add_instr add_cursor
+sp_handler_type.0,EXIT_SYM ,
+sp_handler_type.1,CONTINUE_SYM ,
+sp_hcond_list.0,,
+sp_hcond_list.1,,
+sp_hcond_element.0,, get_sp_current_parsing_ctx parent_context check_duplicate_handler my_error MYF last_instruction add_condition
+sp_cond.0,, my_error MYF sp_condition_value
+sp_cond.1,,
+sqlstate.0,SQLSTATE_SYM TEXT_STRING_literal , is_sqlstate_valid is_sqlstate_completion my_error MYF sp_condition_value
+opt_value.0,,
+opt_value.1,VALUE_SYM ,
+sp_hcond.0,,
+sp_hcond.1,, get_sp_current_parsing_ctx find_condition my_error MYF
+sp_hcond.2,SQLWARNING_SYM , sp_condition_value
+sp_hcond.3,FOUND_SYM , sp_condition_value
+sp_hcond.4,SQLEXCEPTION_SYM , sp_condition_value
+signal_stmt.0,SIGNAL_SYM , Sql_cmd_signal
+signal_value.0,, get_sp_current_parsing_ctx my_error MYF find_condition my_error MYF my_error MYF
+signal_value.1,,
+opt_signal_value.0,,
+opt_signal_value.1,,
+opt_set_signal_information.0,, Set_signal_information
+opt_set_signal_information.1,SET_SYM ,
+signal_information_item_list.0,EQ , Set_signal_information set_item
+signal_information_item_list.1,EQ , set_item
+signal_allowed_expr.0,, ITEMIZE
+signal_allowed_expr.1,, ITEMIZE
+signal_allowed_expr.2,, ITEMIZE
+signal_condition_information_item_name.0,CLASS_ORIGIN_SYM ,
+signal_condition_information_item_name.1,SUBCLASS_ORIGIN_SYM ,
+signal_condition_information_item_name.2,CONSTRAINT_CATALOG_SYM ,
+signal_condition_information_item_name.3,CONSTRAINT_SCHEMA_SYM ,
+signal_condition_information_item_name.4,CONSTRAINT_NAME_SYM ,
+signal_condition_information_item_name.5,CATALOG_NAME_SYM ,
+signal_condition_information_item_name.6,SCHEMA_NAME_SYM ,
+signal_condition_information_item_name.7,TABLE_NAME_SYM ,
+signal_condition_information_item_name.8,COLUMN_NAME_SYM ,
+signal_condition_information_item_name.9,CURSOR_NAME_SYM ,
+signal_condition_information_item_name.10,MESSAGE_TEXT_SYM ,
+signal_condition_information_item_name.11,MYSQL_ERRNO_SYM ,
+resignal_stmt.0,RESIGNAL_SYM , Sql_cmd_resignal
+get_diagnostics.0,GET_SYM DIAGNOSTICS_SYM , set_which_da Sql_cmd_get_diagnostics
+which_area.0,,
+which_area.1,CURRENT_SYM ,
+which_area.2,STACKED_SYM ,
+diagnostics_information.0,, Statement_information
+diagnostics_information.1,CONDITION_SYM , Condition_information
+statement_information.0,, push_back
+statement_information.1,, push_back
+statement_information_item.0,EQ , Statement_information_item
+simple_target_specification.0,, my_error MYF create_item_for_sp_var to_lex_cstring m_parser_data.get_current_stmt_start_ptr
+simple_target_specification.1,, Item_func_get_user_var ITEMIZE
+statement_information_item_name.0,NUMBER_SYM ,
+statement_information_item_name.1,ROW_COUNT_SYM ,
+condition_number.0,,
+condition_information.0,, push_back
+condition_information.1,, push_back
+condition_information_item.0,EQ , Condition_information_item
+condition_information_item_name.0,CLASS_ORIGIN_SYM ,
+condition_information_item_name.1,SUBCLASS_ORIGIN_SYM ,
+condition_information_item_name.2,CONSTRAINT_CATALOG_SYM ,
+condition_information_item_name.3,CONSTRAINT_SCHEMA_SYM ,
+condition_information_item_name.4,CONSTRAINT_NAME_SYM ,
+condition_information_item_name.5,CATALOG_NAME_SYM ,
+condition_information_item_name.6,SCHEMA_NAME_SYM ,
+condition_information_item_name.7,TABLE_NAME_SYM ,
+condition_information_item_name.8,COLUMN_NAME_SYM ,
+condition_information_item_name.9,CURSOR_NAME_SYM ,
+condition_information_item_name.10,MESSAGE_TEXT_SYM ,
+condition_information_item_name.11,MYSQL_ERRNO_SYM ,
+condition_information_item_name.12,RETURNED_SQLSTATE_SYM ,
+sp_decl_idents.0,, get_sp_current_parsing_ctx find_variable my_error MYF add_variable
+sp_decl_idents.1,, get_sp_current_parsing_ctx find_variable my_error MYF add_variable
+sp_opt_default.0,,
+sp_opt_default.1,DEFAULT_SYM ,
+sp_proc_stmt.0,,
+sp_proc_stmt.1,,
+sp_proc_stmt.2,,
+sp_proc_stmt.3,,
+sp_proc_stmt.4,,
+sp_proc_stmt.5,,
+sp_proc_stmt.6,,
+sp_proc_stmt.7,,
+sp_proc_stmt.8,,
+sp_proc_stmt.9,,
+sp_proc_stmt.10,,
+sp_proc_stmt.11,,
+sp_proc_stmt.12,,
+$@12
+sp_proc_stmt_if.0,IF END IF , m_parser_data.new_cont_backpatch m_parser_data.do_cont_backpatch instructions
+$@13
+sp_proc_stmt_statement.0,, reset_lex m_parser_data.set_current_stmt_start_ptr MAKE_CMD sp_get_flags_for_command set_as_part_of_sp assert var_list.is_empty make_string m_parser_data.get_current_stmt_start_ptr sp_instr_stmt instructions add_instr restore_lex
+$@14
+sp_proc_stmt_return.0,RETURN_SYM , reset_lex ITEMIZE is_metadata_used make_string my_error MYF sp_instr_freturn instructions add_instr restore_lex
+$@15
+sp_proc_stmt_unlabeled.0,, get_sp_current_parsing_ctx push_label instructions get_sp_current_parsing_ctx m_parser_data.do_backpatch pop_label instructions
+sp_proc_stmt_leave.0,LEAVE_SYM , get_sp_current_parsing_ctx find_label my_error MYF instructions diff_handlers sp_instr_hpop add_instr diff_cursors sp_instr_cpop add_instr sp_instr_jump m_parser_data.add_backpatch_entry add_instr
+sp_proc_stmt_iterate.0,ITERATE_SYM , get_sp_current_parsing_ctx find_label my_error MYF instructions diff_handlers sp_instr_hpop add_instr diff_cursors sp_instr_cpop add_instr sp_instr_jump add_instr
+sp_proc_stmt_open.0,OPEN_SYM , get_sp_current_parsing_ctx find_cursor my_error MYF sp_instr_copen instructions add_instr
+$@16
+sp_proc_stmt_fetch.0,FETCH_SYM INTO , get_sp_current_parsing_ctx find_cursor my_error MYF sp_instr_cfetch instructions add_instr
+sp_proc_stmt_close.0,CLOSE_SYM , get_sp_current_parsing_ctx find_cursor my_error MYF sp_instr_cclose instructions add_instr
+sp_opt_fetch_noise.0,,
+sp_opt_fetch_noise.1,NEXT_SYM FROM ,
+sp_opt_fetch_noise.2,FROM ,
+sp_fetch_list.0,, get_sp_current_parsing_ctx find_variable my_error MYF last_instruction add_to_varlist
+sp_fetch_list.1,, get_sp_current_parsing_ctx find_variable my_error MYF last_instruction add_to_varlist
+$@17
+$@18
+$@19
+sp_if.0,THEN_SYM , reset_lex ITEMIZE get_sp_current_parsing_ctx is_metadata_used make_string sp_instr_jump_if_not instructions m_parser_data.add_backpatch_entry push_label m_parser_data.add_cont_backpatch_entry add_instr restore_lex get_sp_current_parsing_ctx sp_instr_jump instructions add_instr m_parser_data.do_backpatch pop_label instructions m_parser_data.add_backpatch_entry push_label get_sp_current_parsing_ctx m_parser_data.do_backpatch pop_label instructions
+sp_elseifs.0,,
+sp_elseifs.1,ELSEIF_SYM ,
+sp_elseifs.2,ELSE ,
+case_stmt_specification.0,,
+case_stmt_specification.1,,
+$@20
+$@21
+simple_case_stmt.0,CASE_SYM END CASE_SYM , case_stmt_action_case reset_lex ITEMIZE is_metadata_used make_string get_sp_current_parsing_ctx push_case_expr_id sp_instr_set_case_expr instructions m_parser_data.add_cont_backpatch_entry add_instr restore_lex case_stmt_action_end_case
+$@22
+searched_case_stmt.0,CASE_SYM END CASE_SYM , case_stmt_action_case case_stmt_action_end_case
+simple_when_clause_list.0,,
+simple_when_clause_list.1,,
+searched_when_clause_list.0,,
+searched_when_clause_list.1,,
+$@23
+$@24
+simple_when_clause.0,WHEN_SYM THEN_SYM , reset_lex ITEMIZE get_sp_current_parsing_ctx is_metadata_used make_string sp_instr_jump_case_when instructions get_current_case_expr_id on_after_expr_parsing m_parser_data.add_backpatch_entry push_label m_parser_data.add_cont_backpatch_entry add_instr restore_lex case_stmt_action_then
+$@25
+$@26
+searched_when_clause.0,WHEN_SYM THEN_SYM , reset_lex ITEMIZE get_sp_current_parsing_ctx is_metadata_used make_string sp_instr_jump_if_not instructions m_parser_data.add_backpatch_entry push_label m_parser_data.add_cont_backpatch_entry add_instr restore_lex case_stmt_action_then
+else_clause_opt.0,, get_sp_current_parsing_ctx sp_instr_error instructions add_instr
+else_clause_opt.1,ELSE ,
+$@27
+sp_labeled_control.0,, get_sp_current_parsing_ctx find_label my_error MYF push_label instructions get_sp_current_parsing_ctx pop_label my_strcasecmp my_error MYF m_parser_data.do_backpatch instructions
+sp_opt_label.0,,
+sp_opt_label.1,,
+$@28
+sp_labeled_block.0,, get_sp_current_parsing_ctx find_label my_error MYF push_label instructions get_sp_current_parsing_ctx pop_label my_strcasecmp my_error MYF
+$@29
+sp_unlabeled_block.0,, get_sp_current_parsing_ctx push_label instructions get_sp_current_parsing_ctx pop_label
+$@30
+sp_block_content.0,BEGIN_SYM END , get_sp_current_parsing_ctx push_context set_sp_current_parsing_ctx get_sp_current_parsing_ctx m_parser_data.do_backpatch last_label instructions sp_instr_hpop instructions add_instr sp_instr_cpop instructions add_instr set_sp_current_parsing_ctx pop_context
+$@31
+$@32
+$@33
+$@34
+sp_unlabeled_control.0,LOOP_SYM END LOOP_SYM , get_sp_current_parsing_ctx sp_instr_jump instructions last_label add_instr
+sp_unlabeled_control.1,WHILE_SYM DO_SYM END WHILE_SYM , reset_lex ITEMIZE get_sp_current_parsing_ctx is_metadata_used make_string sp_instr_jump_if_not instructions m_parser_data.add_backpatch_entry last_label m_parser_data.new_cont_backpatch m_parser_data.add_cont_backpatch_entry add_instr restore_lex get_sp_current_parsing_ctx sp_instr_jump instructions last_label add_instr m_parser_data.do_cont_backpatch instructions
+sp_unlabeled_control.2,REPEAT_SYM UNTIL_SYM END REPEAT_SYM , reset_lex ITEMIZE get_sp_current_parsing_ctx instructions is_metadata_used make_string sp_instr_jump_if_not last_label add_instr restore_lex set_cont_dest
+trg_action_time.0,BEFORE_SYM ,
+trg_action_time.1,AFTER_SYM ,
+trg_event.0,INSERT_SYM ,
+trg_event.1,UPDATE_SYM ,
+trg_event.2,DELETE_SYM ,
+opt_ts_datafile_name.0,,
+opt_ts_datafile_name.1,ADD ,
+opt_logfile_group_name.0,,
+opt_logfile_group_name.1,USE_SYM LOGFILE_SYM GROUP_SYM ,
+opt_tablespace_options.0,,
+opt_tablespace_options.1,,
+tablespace_option_list.0,, push_back
+tablespace_option_list.1,, push_back
+tablespace_option.0,,
+tablespace_option.1,,
+tablespace_option.2,,
+tablespace_option.3,,
+tablespace_option.4,,
+tablespace_option.5,,
+tablespace_option.6,,
+tablespace_option.7,,
+tablespace_option.8,,
+tablespace_option.9,,
+tablespace_option.10,,
+opt_alter_tablespace_options.0,,
+opt_alter_tablespace_options.1,,
+alter_tablespace_option_list.0,, push_back
+alter_tablespace_option_list.1,, push_back
+alter_tablespace_option.0,,
+alter_tablespace_option.1,,
+alter_tablespace_option.2,,
+alter_tablespace_option.3,,
+alter_tablespace_option.4,,
+alter_tablespace_option.5,,
+alter_tablespace_option.6,,
+opt_undo_tablespace_options.0,,
+opt_undo_tablespace_options.1,,
+undo_tablespace_option_list.0,, push_back
+undo_tablespace_option_list.1,, push_back
+undo_tablespace_option.0,,
+opt_logfile_group_options.0,,
+opt_logfile_group_options.1,,
+logfile_group_option_list.0,, push_back
+logfile_group_option_list.1,, push_back
+logfile_group_option.0,,
+logfile_group_option.1,,
+logfile_group_option.2,,
+logfile_group_option.3,,
+logfile_group_option.4,,
+logfile_group_option.5,,
+logfile_group_option.6,,
+opt_alter_logfile_group_options.0,,
+opt_alter_logfile_group_options.1,,
+alter_logfile_group_option_list.0,, push_back
+alter_logfile_group_option_list.1,, push_back
+alter_logfile_group_option.0,,
+alter_logfile_group_option.1,,
+alter_logfile_group_option.2,,
+ts_datafile.0,DATAFILE_SYM TEXT_STRING_sys ,
+undo_tablespace_state.0,ACTIVE_SYM ,
+undo_tablespace_state.1,INACTIVE_SYM ,
+lg_undofile.0,UNDOFILE_SYM TEXT_STRING_sys ,
+ts_option_initial_size.0,INITIAL_SIZE_SYM , PT_alter_tablespace_option_initial_size
+ts_option_autoextend_size.0,, PT_alter_tablespace_option_autoextend_size
+option_autoextend_size.0,AUTOEXTEND_SIZE_SYM ,
+ts_option_max_size.0,MAX_SIZE_SYM , PT_alter_tablespace_option_max_size
+ts_option_extent_size.0,EXTENT_SIZE_SYM , PT_alter_tablespace_option_extent_size
+ts_option_undo_buffer_size.0,UNDO_BUFFER_SIZE_SYM , PT_alter_tablespace_option_undo_buffer_size
+ts_option_redo_buffer_size.0,REDO_BUFFER_SIZE_SYM , PT_alter_tablespace_option_redo_buffer_size
+ts_option_nodegroup.0,NODEGROUP_SYM , PT_alter_tablespace_option_nodegroup
+ts_option_comment.0,COMMENT_SYM TEXT_STRING_sys , PT_alter_tablespace_option_comment
+ts_option_engine.0,ENGINE_SYM , PT_alter_tablespace_option_engine to_lex_cstring
+ts_option_file_block_size.0,FILE_BLOCK_SIZE_SYM , PT_alter_tablespace_option_file_block_size
+ts_option_wait.0,WAIT_SYM , PT_alter_tablespace_option_wait_until_completed
+ts_option_wait.1,NO_WAIT_SYM , PT_alter_tablespace_option_wait_until_completed
+ts_option_encryption.0,ENCRYPTION_SYM TEXT_STRING_sys , PT_alter_tablespace_option_encryption
+ts_option_engine_attribute.0,ENGINE_ATTRIBUTE_SYM , make_tablespace_engine_attribute
+size_number.0,,
+size_number.1,IDENT_sys , my_strtoll10 my_error MYF my_error MYF my_error MYF
+opt_create_table_options_etc.0,,
+opt_create_table_options_etc.1,,
+opt_create_partitioning_etc.0,,
+opt_create_partitioning_etc.1,,
+opt_duplicate_as_qe.0,,
+opt_duplicate_as_qe.1,,
+opt_duplicate_as_qe.2,,
+as_create_query_expression.0,AS ,
+as_create_query_expression.1,,
+partition_clause.0,PARTITION_SYM BY , PT_partition
+part_type_def.0,KEY_SYM , PT_part_type_def_key
+part_type_def.1,HASH_SYM , PT_part_type_def_hash
+part_type_def.2,RANGE_SYM , PT_part_type_def_range_expr
+part_type_def.3,RANGE_SYM COLUMNS , PT_part_type_def_range_columns
+part_type_def.4,LIST_SYM , PT_part_type_def_list_expr
+part_type_def.5,LIST_SYM COLUMNS , PT_part_type_def_list_columns
+opt_linear.0,,
+opt_linear.1,LINEAR_SYM ,
+opt_key_algo.0,,
+opt_key_algo.1,ALGORITHM_SYM EQ , syntax_error
+opt_num_parts.0,,
+opt_num_parts.1,PARTITIONS_SYM , my_error MYF
+opt_sub_part.0,,
+opt_sub_part.1,SUBPARTITION_SYM BY HASH_SYM , PT_sub_partition_by_hash
+opt_sub_part.2,SUBPARTITION_SYM BY KEY_SYM , PT_sub_partition_by_key
+opt_name_list.0,,
+opt_name_list.1,,
+name_list.0,, push_back
+name_list.1,, push_back
+opt_num_subparts.0,,
+opt_num_subparts.1,SUBPARTITIONS_SYM , my_error MYF
+opt_part_defs.0,,
+opt_part_defs.1,,
+part_def_list.0,, push_back
+part_def_list.1,, push_back
+part_definition.0,PARTITION_SYM , PT_part_definition
+opt_part_values.0,,
+opt_part_values.1,VALUES LESS_SYM THAN_SYM ,
+opt_part_values.2,VALUES IN_SYM ,
+part_func_max.0,MAX_VALUE_SYM ,
+part_func_max.1,,
+part_values_in.0,, PT_part_values_in_item
+part_values_in.1,, PT_part_values_in_list
+part_value_list.0,, push_back
+part_value_list.1,, push_back
+$@35
+part_value_item_list_paren.0,, PT_part_value_item_list_paren
+part_value_item_list.0,, push_back
+part_value_item_list.1,, push_back
+part_value_item.0,MAX_VALUE_SYM , PT_part_value_item_max
+part_value_item.1,, PT_part_value_item_expr
+opt_sub_partition.0,,
+opt_sub_partition.1,,
+sub_part_list.0,, push_back
+sub_part_list.1,, push_back
+sub_part_definition.0,SUBPARTITION_SYM , PT_subpartition
+opt_part_options.0,,
+opt_part_options.1,,
+part_option_list.0,, push_back
+part_option_list.1,, push_back
+part_option.0,TABLESPACE_SYM , PT_partition_tablespace
+part_option.1,ENGINE_SYM , PT_partition_engine to_lex_cstring
+part_option.2,NODEGROUP_SYM , PT_partition_nodegroup
+part_option.3,MAX_ROWS , PT_partition_max_rows
+part_option.4,MIN_ROWS , PT_partition_min_rows
+part_option.5,DATA_SYM DIRECTORY_SYM TEXT_STRING_sys , PT_partition_data_directory
+part_option.6,INDEX_SYM DIRECTORY_SYM TEXT_STRING_sys , PT_partition_index_directory
+part_option.7,COMMENT_SYM TEXT_STRING_sys , PT_partition_comment
+alter_database_options.0,,
+alter_database_options.1,,
+alter_database_option.0,,
+alter_database_option.1,READ_SYM ONLY_SYM , my_error MYF
+opt_create_database_options.0,,
+opt_create_database_options.1,,
+create_database_options.0,,
+create_database_options.1,,
+create_database_option.0,, set_default_collation
+create_database_option.1,, set_default_charset
+create_database_option.2,, my_strcasecmp my_strcasecmp my_error MYF
+opt_if_not_exists.0,,
+opt_if_not_exists.1,IF EXISTS ,
+create_table_options_space_separated.0,, push_back
+create_table_options_space_separated.1,, push_back
+create_table_options.0,, push_back
+create_table_options.1,, push_back
+opt_comma.0,,
+opt_comma.1,,
+create_table_option.0,ENGINE_SYM , PT_create_table_engine_option to_lex_cstring
+create_table_option.1,SECONDARY_ENGINE_SYM NULL_SYM , PT_create_table_secondary_engine_option
+create_table_option.2,SECONDARY_ENGINE_SYM , PT_create_table_secondary_engine_option to_lex_cstring
+create_table_option.3,MAX_ROWS , PT_create_max_rows_option
+create_table_option.4,MIN_ROWS , PT_create_min_rows_option
+create_table_option.5,AVG_ROW_LENGTH , max syntax_error_at PT_create_avg_row_length_option
+create_table_option.6,PASSWORD TEXT_STRING_sys , PT_create_password_option
+create_table_option.7,COMMENT_SYM TEXT_STRING_sys , PT_create_commen_option
+create_table_option.8,COMPRESSION_SYM TEXT_STRING_sys , PT_create_compress_option
+create_table_option.9,ENCRYPTION_SYM TEXT_STRING_sys , PT_create_encryption_option
+create_table_option.10,AUTO_INC , PT_create_auto_increment_option
+create_table_option.11,PACK_KEYS_SYM , PT_create_pack_keys_option
+create_table_option.12,STATS_AUTO_RECALC_SYM , PT_create_stats_auto_recalc_option
+create_table_option.13,STATS_PERSISTENT_SYM , PT_create_stats_persistent_option
+create_table_option.14,STATS_SAMPLE_PAGES_SYM , syntax_error_at PT_create_stats_stable_pages
+create_table_option.15,STATS_SAMPLE_PAGES_SYM DEFAULT_SYM , PT_create_stats_stable_pages
+create_table_option.16,CHECKSUM_SYM , PT_create_checksum_option
+create_table_option.17,TABLE_CHECKSUM_SYM , PT_create_checksum_option
+create_table_option.18,DELAY_KEY_WRITE_SYM , PT_create_delay_key_write_option
+create_table_option.19,ROW_FORMAT_SYM , PT_create_row_format_option
+create_table_option.20,UNION_SYM , PT_create_union_option
+create_table_option.21,, PT_create_table_default_charset
+create_table_option.22,, PT_create_table_default_collation
+create_table_option.23,INSERT_METHOD , PT_create_insert_method_option
+create_table_option.24,DATA_SYM DIRECTORY_SYM TEXT_STRING_sys , PT_create_data_directory_option
+create_table_option.25,INDEX_SYM DIRECTORY_SYM TEXT_STRING_sys , PT_create_index_directory_option
+create_table_option.26,TABLESPACE_SYM , PT_create_tablespace_option
+create_table_option.27,STORAGE_SYM DISK_SYM , PT_create_storage_option
+create_table_option.28,STORAGE_SYM MEMORY_SYM , PT_create_storage_option
+create_table_option.29,CONNECTION_SYM TEXT_STRING_sys , PT_create_connection_option
+create_table_option.30,KEY_BLOCK_SIZE , max syntax_error_at PT_create_key_block_size_option
+create_table_option.31,START_SYM TRANSACTION_SYM , PT_create_start_transaction_option
+create_table_option.32,ENGINE_ATTRIBUTE_SYM , make_table_engine_attribute
+create_table_option.33,SECONDARY_ENGINE_ATTRIBUTE_SYM , make_table_secondary_engine_attribute
+create_table_option.34,, PT_create_ts_autoextend_size_option
+ternary_option.0,, switch syntax_error
+ternary_option.1,DEFAULT_SYM ,
+default_charset.0,,
+default_collation.0,COLLATE_SYM ,
+default_encryption.0,ENCRYPTION_SYM TEXT_STRING_sys ,
+row_types.0,DEFAULT_SYM ,
+row_types.1,FIXED_SYM ,
+row_types.2,DYNAMIC_SYM ,
+row_types.3,COMPRESSED_SYM ,
+row_types.4,REDUNDANT_SYM ,
+row_types.5,COMPACT_SYM ,
+merge_insert_types.0,NO_SYM ,
+merge_insert_types.1,FIRST_SYM ,
+merge_insert_types.2,LAST_SYM ,
+udf_type.0,STRING_SYM ,
+udf_type.1,REAL_SYM ,
+udf_type.2,DECIMAL_SYM ,
+udf_type.3,INT_SYM ,
+table_element_list.0,, push_back
+table_element_list.1,, push_back
+table_element.0,,
+table_element.1,,
+column_def.0,, PT_column_def
+opt_references.0,,
+opt_references.1,,
+table_constraint_def.0,, PT_inline_index_definition
+table_constraint_def.1,FULLTEXT_SYM , PT_inline_index_definition
+table_constraint_def.2,SPATIAL_SYM , PT_inline_index_definition
+table_constraint_def.3,, PT_inline_index_definition
+table_constraint_def.4,FOREIGN KEY_SYM , PT_foreign_key_definition
+table_constraint_def.5,, PT_check_constraint
+check_constraint.0,CHECK_SYM ,
+opt_constraint_name.0,,
+opt_constraint_name.1,CONSTRAINT ,
+opt_not.0,,
+opt_not.1,NOT_SYM ,
+opt_constraint_enforcement.0,,
+opt_constraint_enforcement.1,,
+constraint_enforcement.0,ENFORCED_SYM ,
+field_def.0,, PT_field_def
+field_def.1,AS , PT_collate_column_attr push_back PT_generated_field_def
+opt_generated_always.0,,
+opt_generated_always.1,GENERATED ALWAYS_SYM ,
+opt_stored_attribute.0,,
+opt_stored_attribute.1,VIRTUAL_SYM ,
+opt_stored_attribute.2,STORED_SYM ,
+type.0,, PT_numeric_type
+type.1,, PT_numeric_type
+type.2,, PT_numeric_type
+type.3,BIT_SYM , PT_bit_type
+type.4,BIT_SYM , PT_bit_type
+type.5,BOOL_SYM , PT_boolean_type
+type.6,BOOLEAN_SYM , PT_boolean_type
+type.7,CHAR_SYM , PT_char_type
+type.8,CHAR_SYM , PT_char_type
+type.9,, get_bin_collation PT_char_type warn_about_deprecated_national
+type.10,, get_bin_collation PT_char_type warn_about_deprecated_national
+type.11,BINARY_SYM , PT_char_type
+type.12,BINARY_SYM , PT_char_type
+type.13,, PT_char_type
+type.14,, get_bin_collation PT_char_type warn_about_deprecated_national
+type.15,VARBINARY_SYM , PT_char_type
+type.16,YEAR_SYM , strtoul my_error MYF push_deprecated_warn push_warning ER_THD PT_year_type
+type.17,DATE_SYM , PT_date_type
+type.18,TIME_SYM , PT_time_type
+type.19,TIMESTAMP_SYM , PT_timestamp_type
+type.20,DATETIME_SYM , PT_time_type
+type.21,TINYBLOB_SYM , PT_blob_type
+type.22,BLOB_SYM , PT_blob_type
+type.23,,
+type.24,MEDIUMBLOB_SYM , PT_blob_type
+type.25,LONGBLOB_SYM , PT_blob_type
+type.26,LONG_SYM VARBINARY_SYM , PT_blob_type
+type.27,LONG_SYM , PT_blob_type
+type.28,TINYTEXT_SYN , PT_blob_type
+type.29,TEXT_SYM , PT_char_type
+type.30,MEDIUMTEXT_SYM , PT_blob_type
+type.31,LONGTEXT_SYM , PT_blob_type
+type.32,ENUM_SYM , PT_enum_type
+type.33,SET_SYM , PT_set_type
+type.34,LONG_SYM , PT_blob_type
+type.35,SERIAL_SYM , PT_serial_type
+type.36,JSON_SYM , PT_json_type
+spatial_type.0,GEOMETRY_SYM , PT_spacial_type
+spatial_type.1,GEOMETRYCOLLECTION_SYM , PT_spacial_type
+spatial_type.2,POINT_SYM , PT_spacial_type
+spatial_type.3,MULTIPOINT_SYM , PT_spacial_type
+spatial_type.4,LINESTRING_SYM , PT_spacial_type
+spatial_type.5,MULTILINESTRING_SYM , PT_spacial_type
+spatial_type.6,POLYGON_SYM , PT_spacial_type
+spatial_type.7,MULTIPOLYGON_SYM , PT_spacial_type
+nchar.0,NCHAR_SYM ,
+nchar.1,NATIONAL_SYM CHAR_SYM ,
+varchar.0,CHAR_SYM VARYING ,
+varchar.1,VARCHAR_SYM ,
+nvarchar.0,NATIONAL_SYM VARCHAR_SYM ,
+nvarchar.1,NVARCHAR_SYM ,
+nvarchar.2,NCHAR_SYM VARCHAR_SYM ,
+nvarchar.3,NATIONAL_SYM CHAR_SYM VARYING ,
+nvarchar.4,NCHAR_SYM VARYING ,
+int_type.0,INT_SYM ,
+int_type.1,TINYINT_SYM ,
+int_type.2,SMALLINT_SYM ,
+int_type.3,MEDIUMINT_SYM ,
+int_type.4,BIGINT_SYM ,
+real_type.0,REAL_SYM ,
+real_type.1,DOUBLE_SYM opt_PRECISION ,
+opt_PRECISION.0,,
+opt_PRECISION.1,PRECISION ,
+numeric_type.0,FLOAT_SYM ,
+numeric_type.1,DECIMAL_SYM ,
+numeric_type.2,NUMERIC_SYM ,
+numeric_type.3,FIXED_SYM ,
+standard_float_options.0,,
+standard_float_options.1,,
+float_options.0,,
+float_options.1,,
+float_options.2,,
+precision.0,NUM NUM ,
+type_datetime_precision.0,,
+type_datetime_precision.1,NUM ,
+func_datetime_precision.0,,
+func_datetime_precision.1,,
+func_datetime_precision.2,NUM , my_strtoll10
+field_options.0,,
+field_options.1,,
+field_opt_list.0,,
+field_opt_list.1,,
+field_option.0,SIGNED_SYM ,
+field_option.1,UNSIGNED_SYM ,
+field_option.2,ZEROFILL_SYM , push_warning ER_THD
+field_length.0,LONG_NUM ,
+field_length.1,ULONGLONG_NUM ,
+field_length.2,DECIMAL_NUM ,
+field_length.3,NUM ,
+opt_field_length.0,,
+opt_field_length.1,,
+opt_precision.0,,
+opt_precision.1,,
+opt_column_attribute_list.0,,
+opt_column_attribute_list.1,,
+column_attribute_list.0,, has_constraint_enforcement back set_constraint_enforcement is_constraint_enforced syntax_error_at push_back
+column_attribute_list.1,, has_constraint_enforcement syntax_error_at push_back
+column_attribute.0,NULL_SYM , PT_null_column_attr
+column_attribute.1,NULL_SYM , PT_not_null_column_attr
+column_attribute.2,SECONDARY_SYM , PT_secondary_column_attr
+column_attribute.3,DEFAULT_SYM , PT_default_column_attr
+column_attribute.4,DEFAULT_SYM , PT_generated_default_val_column_attr
+column_attribute.5,ON_SYM UPDATE_SYM , PT_on_update_column_attr
+column_attribute.6,AUTO_INC , PT_auto_increment_column_attr
+column_attribute.7,SERIAL_SYM DEFAULT_SYM VALUE_SYM , PT_serial_default_value_column_attr
+column_attribute.8,KEY_SYM , PT_primary_key_column_attr
+column_attribute.9,UNIQUE_SYM , PT_unique_key_column_attr
+column_attribute.10,UNIQUE_SYM KEY_SYM , PT_unique_key_column_attr
+column_attribute.11,COMMENT_SYM TEXT_STRING_sys , PT_comment_column_attr to_lex_cstring
+column_attribute.12,COLLATE_SYM , PT_collate_column_attr
+column_attribute.13,COLUMN_FORMAT_SYM , PT_column_format_column_attr
+column_attribute.14,STORAGE_SYM , PT_storage_media_column_attr
+column_attribute.15,SRID_SYM , max my_error MYF PT_srid_column_attr
+column_attribute.16,, PT_check_constraint_column_attr
+column_attribute.17,, PT_constraint_enforcement_attr
+column_attribute.18,ENGINE_ATTRIBUTE_SYM , make_column_engine_attribute
+column_attribute.19,SECONDARY_ENGINE_ATTRIBUTE_SYM , make_column_secondary_engine_attribute
+column_attribute.20,, PT_column_visibility_attr
+column_format.0,DEFAULT_SYM ,
+column_format.1,FIXED_SYM ,
+column_format.2,DYNAMIC_SYM ,
+storage_media.0,DEFAULT_SYM ,
+storage_media.1,DISK_SYM ,
+storage_media.2,MEMORY_SYM ,
+now.0,NOW_SYM ,
+now_or_signed_literal.0,, Item_func_now_local
+now_or_signed_literal.1,,
+character_set.0,CHAR_SYM SET_SYM ,
+character_set.1,CHARSET ,
+charset_name.0,, get_charset_by_csname MYF my_error MYF warn_on_deprecated_charset
+charset_name.1,BINARY_SYM ,
+opt_load_data_charset.0,,
+opt_load_data_charset.1,,
+old_or_new_charset_name.0,, get_charset_by_csname MYF get_old_charset_by_name my_error MYF
+old_or_new_charset_name.1,BINARY_SYM ,
+old_or_new_charset_name_or_default.0,,
+old_or_new_charset_name_or_default.1,DEFAULT_SYM ,
+collation_name.0,, mysqld_collation_get_by_name warn_on_deprecated_collation
+collation_name.1,BINARY_SYM ,
+opt_collate.0,,
+opt_collate.1,COLLATE_SYM ,
+opt_default.0,,
+opt_default.1,DEFAULT_SYM ,
+ascii.0,ASCII_SYM , push_deprecated_warn
+ascii.1,BINARY_SYM ASCII_SYM , warn_about_deprecated_binary push_deprecated_warn
+ascii.2,ASCII_SYM BINARY_SYM , push_deprecated_warn warn_about_deprecated_binary
+unicode.0,UNICODE_SYM , push_deprecated_warn get_charset_by_csname MYF my_error MYF
+unicode.1,UNICODE_SYM BINARY_SYM , push_deprecated_warn warn_about_deprecated_binary mysqld_collation_get_by_name
+unicode.2,BINARY_SYM UNICODE_SYM , warn_about_deprecated_binary push_deprecated_warn mysqld_collation_get_by_name my_error MYF
+opt_charset_with_opt_binary.0,,
+opt_charset_with_opt_binary.1,,
+opt_charset_with_opt_binary.2,,
+opt_charset_with_opt_binary.3,BYTE_SYM ,
+opt_charset_with_opt_binary.4,, get_bin_collation
+opt_charset_with_opt_binary.5,BINARY_SYM , warn_about_deprecated_binary
+opt_charset_with_opt_binary.6,BINARY_SYM , warn_about_deprecated_binary get_bin_collation
+opt_bin_mod.0,,
+opt_bin_mod.1,BINARY_SYM , warn_about_deprecated_binary
+$@36
+ws_num_codepoints.0,, syntax_error
+opt_primary.0,,
+opt_primary.1,PRIMARY_SYM ,
+references.0,REFERENCES ,
+opt_ref_list.0,,
+opt_ref_list.1,,
+reference_list.0,, Key_part_spec to_lex_cstring push_back
+reference_list.1,, Key_part_spec to_lex_cstring push_back
+opt_match_clause.0,,
+opt_match_clause.1,MATCH FULL ,
+opt_match_clause.2,MATCH PARTIAL ,
+opt_match_clause.3,MATCH SIMPLE_SYM ,
+opt_on_update_delete.0,,
+opt_on_update_delete.1,ON_SYM UPDATE_SYM ,
+opt_on_update_delete.2,ON_SYM DELETE_SYM ,
+opt_on_update_delete.3,ON_SYM UPDATE_SYM ON_SYM DELETE_SYM ,
+opt_on_update_delete.4,ON_SYM DELETE_SYM ON_SYM UPDATE_SYM ,
+delete_option.0,RESTRICT ,
+delete_option.1,CASCADE ,
+delete_option.2,SET_SYM NULL_SYM ,
+delete_option.3,NO_SYM ACTION ,
+delete_option.4,SET_SYM DEFAULT_SYM ,
+constraint_key_type.0,PRIMARY_SYM KEY_SYM ,
+constraint_key_type.1,UNIQUE_SYM ,
+key_or_index.0,KEY_SYM ,
+key_or_index.1,INDEX_SYM ,
+opt_key_or_index.0,,
+opt_key_or_index.1,,
+keys_or_index.0,KEYS ,
+keys_or_index.1,INDEX_SYM ,
+keys_or_index.2,INDEXES ,
+opt_unique.0,,
+opt_unique.1,UNIQUE_SYM ,
+opt_fulltext_index_options.0,, .init
+opt_fulltext_index_options.1,,
+fulltext_index_options.0,, .init .push_back
+fulltext_index_options.1,, .push_back
+fulltext_index_option.0,,
+fulltext_index_option.1,WITH PARSER_SYM IDENT_sys , plugin_is_ready my_error MYF PT_fulltext_index_parser_name to_lex_cstring
+opt_spatial_index_options.0,, .init
+opt_spatial_index_options.1,,
+spatial_index_options.0,, .init .push_back
+spatial_index_options.1,, .push_back
+spatial_index_option.0,,
+opt_index_options.0,, .init
+opt_index_options.1,,
+index_options.0,, .init .push_back
+index_options.1,, .push_back
+index_option.0,,
+index_option.1,,
+common_index_option.0,KEY_BLOCK_SIZE , PT_block_size
+common_index_option.1,COMMENT_SYM TEXT_STRING_sys , PT_index_comment to_lex_cstring
+common_index_option.2,, PT_index_visibility
+common_index_option.3,ENGINE_ATTRIBUTE_SYM , make_index_engine_attribute
+common_index_option.4,SECONDARY_ENGINE_ATTRIBUTE_SYM , make_index_secondary_engine_attribute
+opt_index_name_and_type.0,,
+opt_index_name_and_type.1,USING , PT_index_type
+opt_index_name_and_type.2,TYPE_SYM , PT_index_type
+opt_index_type_clause.0,,
+opt_index_type_clause.1,,
+index_type_clause.0,USING , PT_index_type
+index_type_clause.1,TYPE_SYM , PT_index_type
+visibility.0,VISIBLE_SYM ,
+visibility.1,INVISIBLE_SYM ,
+index_type.0,BTREE_SYM ,
+index_type.1,RTREE_SYM ,
+index_type.2,HASH_SYM ,
+key_list.0,, push_back
+key_list.1,, push_back
+key_part.0,, PT_key_part_specification to_lex_cstring
+key_part.1,NUM , atoi my_error MYF PT_key_part_specification to_lex_cstring
+key_list_with_expression.0,, push_back
+key_list_with_expression.1,, push_back
+key_part_with_expression.0,,
+key_part_with_expression.1,, PT_key_part_specification
+opt_ident.0,,
+opt_ident.1,,
+string_list.0,, push_back
+string_list.1,, push_back
+alter_table_stmt.0,ALTER TABLE_SYM , PT_alter_table_stmt .flags.algo.get_or_default .flags.lock.get_or_default .flags.validation.get_or_default
+alter_table_stmt.1,ALTER TABLE_SYM , PT_alter_table_standalone_stmt .flags.algo.get_or_default .flags.lock.get_or_default .flags.validation.get_or_default
+$@37
+alter_database_stmt.0,ALTER DATABASE , copy_db_to
+$@38
+alter_procedure_stmt.0,ALTER PROCEDURE_SYM , my_error MYF memset sizeof MAKE_CMD_DDL_DUMMY
+$@39
+alter_function_stmt.0,ALTER FUNCTION_SYM , my_error MYF memset sizeof MAKE_CMD_DDL_DUMMY
+$@40
+$@41
+alter_view_stmt.0,ALTER , my_error MYF MAKE_CMD_DDL_DUMMY
+alter_view_stmt.1,ALTER , my_error MYF MAKE_CMD_DDL_DUMMY
+$@42
+alter_event_stmt.0,ALTER EVENT_SYM , Event_parse_data MAKE_CMD_DDL_DUMMY syntax_error assert sql_cmd_type assert sql_command_code
+alter_logfile_stmt.0,ALTER LOGFILE_SYM GROUP_SYM ADD , is_error contextualize_array
+alter_tablespace_stmt.0,ALTER TABLESPACE_SYM ADD , is_error contextualize_array
+alter_tablespace_stmt.1,ALTER TABLESPACE_SYM DROP , is_error contextualize_array
+alter_tablespace_stmt.2,ALTER TABLESPACE_SYM RENAME TO_SYM ,
+alter_tablespace_stmt.3,ALTER TABLESPACE_SYM , is_error contextualize_array
+alter_undo_tablespace_stmt.0,ALTER UNDO_SYM TABLESPACE_SYM SET_SYM , is_error contextualize_array
+alter_server_stmt.0,ALTER SERVER_SYM OPTIONS_SYM , Sql_cmd_alter_server
+alter_user_stmt.0,,
+alter_user_stmt.1,,
+alter_user_stmt.2,,
+alter_user_stmt.3,DISCARD_SYM OLD_SYM PASSWORD ,
+alter_user_stmt.4,DEFAULT_SYM ROLE_SYM ALL , push_back PT_alter_user_default_role MAKE_CMD
+alter_user_stmt.5,DEFAULT_SYM ROLE_SYM NONE_SYM , push_back PT_alter_user_default_role MAKE_CMD
+alter_user_stmt.6,DEFAULT_SYM ROLE_SYM , push_back PT_alter_user_default_role MAKE_CMD
+alter_user_stmt.7,, mfa_list.push_back
+alter_user_stmt.8,, mfa_list.push_back
+opt_replace_password.0,,
+opt_replace_password.1,REPLACE_SYM TEXT_STRING_password , to_lex_cstring
+alter_resource_group_stmt.0,ALTER RESOURCE_SYM GROUP_SYM , PT_alter_resource_group to_lex_cstring
+alter_user_command.0,ALTER USER , MAKE_CMD_DCL_DUMMY
+opt_user_attribute.0,,
+opt_user_attribute.1,ATTRIBUTE_SYM TEXT_STRING_literal ,
+opt_user_attribute.2,COMMENT_SYM TEXT_STRING_literal ,
+opt_account_lock_password_expire_options.0,,
+opt_account_lock_password_expire_options.1,,
+opt_account_lock_password_expire_option_list.0,,
+opt_account_lock_password_expire_option_list.1,,
+opt_account_lock_password_expire_option.0,ACCOUNT_SYM UNLOCK_SYM ,
+opt_account_lock_password_expire_option.1,ACCOUNT_SYM LOCK_SYM ,
+opt_account_lock_password_expire_option.2,PASSWORD EXPIRE_SYM ,
+opt_account_lock_password_expire_option.3,PASSWORD EXPIRE_SYM INTERVAL_SYM DAY_SYM , snprintf sizeof my_error MYF
+opt_account_lock_password_expire_option.4,PASSWORD EXPIRE_SYM NEVER_SYM ,
+opt_account_lock_password_expire_option.5,PASSWORD EXPIRE_SYM DEFAULT_SYM ,
+opt_account_lock_password_expire_option.6,PASSWORD HISTORY_SYM ,
+opt_account_lock_password_expire_option.7,PASSWORD HISTORY_SYM DEFAULT_SYM ,
+opt_account_lock_password_expire_option.8,PASSWORD REUSE_SYM INTERVAL_SYM DAY_SYM ,
+opt_account_lock_password_expire_option.9,PASSWORD REUSE_SYM INTERVAL_SYM DEFAULT_SYM ,
+opt_account_lock_password_expire_option.10,PASSWORD REQUIRE_SYM CURRENT_SYM ,
+opt_account_lock_password_expire_option.11,PASSWORD REQUIRE_SYM CURRENT_SYM DEFAULT_SYM ,
+opt_account_lock_password_expire_option.12,PASSWORD REQUIRE_SYM CURRENT_SYM OPTIONAL_SYM ,
+opt_account_lock_password_expire_option.13,FAILED_LOGIN_ATTEMPTS_SYM , snprintf sizeof my_error MYF
+opt_account_lock_password_expire_option.14,PASSWORD_LOCK_TIME_SYM , snprintf sizeof my_error MYF
+opt_account_lock_password_expire_option.15,PASSWORD_LOCK_TIME_SYM UNBOUNDED_SYM ,
+connect_options.0,,
+connect_options.1,WITH ,
+connect_option_list.0,,
+connect_option_list.1,,
+connect_option.0,MAX_QUERIES_PER_HOUR ,
+connect_option.1,MAX_UPDATES_PER_HOUR ,
+connect_option.2,MAX_CONNECTIONS_PER_HOUR ,
+connect_option.3,MAX_USER_CONNECTIONS_SYM ,
+user_func.0,USER , alloc users_list.push_back
+ev_alter_on_schedule_completion.0,,
+ev_alter_on_schedule_completion.1,ON_SYM SCHEDULE_SYM ,
+ev_alter_on_schedule_completion.2,,
+ev_alter_on_schedule_completion.3,ON_SYM SCHEDULE_SYM ,
+opt_ev_rename_to.0,,
+opt_ev_rename_to.1,RENAME TO_SYM ,
+opt_ev_sql_stmt.0,,
+opt_ev_sql_stmt.1,DO_SYM ,
+ident_or_empty.0,,
+ident_or_empty.1,,
+opt_alter_table_actions.0,,
+opt_alter_table_actions.1,, push_back
+standalone_alter_table_action.0,, .flags.init
+standalone_alter_table_action.1,,
+alter_table_partition_options.0,, PT_alter_table_partition_by
+alter_table_partition_options.1,REMOVE_SYM PARTITIONING_SYM , PT_alter_table_remove_partitioning
+opt_alter_command_list.0,, .flags.init
+opt_alter_command_list.1,,
+opt_alter_command_list.2,,
+opt_alter_command_list.3,, .flags.merge
+standalone_alter_commands.0,DISCARD_SYM TABLESPACE_SYM , PT_alter_table_discard_tablespace
+standalone_alter_commands.1,IMPORT TABLESPACE_SYM , PT_alter_table_import_tablespace
+standalone_alter_commands.2,ADD PARTITION_SYM , PT_alter_table_add_partition
+standalone_alter_commands.3,ADD PARTITION_SYM , PT_alter_table_add_partition_def_list
+standalone_alter_commands.4,ADD PARTITION_SYM PARTITIONS_SYM , PT_alter_table_add_partition_num
+standalone_alter_commands.5,DROP PARTITION_SYM , PT_alter_table_drop_partition
+standalone_alter_commands.6,REBUILD_SYM PARTITION_SYM , PT_alter_table_rebuild_partition
+standalone_alter_commands.7,OPTIMIZE PARTITION_SYM , PT_alter_table_optimize_partition
+standalone_alter_commands.8,ANALYZE_SYM PARTITION_SYM , PT_alter_table_analyze_partition
+standalone_alter_commands.9,CHECK_SYM PARTITION_SYM , PT_alter_table_check_partition
+standalone_alter_commands.10,REPAIR PARTITION_SYM , PT_alter_table_repair_partition
+standalone_alter_commands.11,COALESCE PARTITION_SYM , PT_alter_table_coalesce_partition
+standalone_alter_commands.12,TRUNCATE_SYM PARTITION_SYM , PT_alter_table_truncate_partition
+standalone_alter_commands.13,REORGANIZE_SYM PARTITION_SYM , PT_alter_table_reorganize_partition
+standalone_alter_commands.14,REORGANIZE_SYM PARTITION_SYM INTO , PT_alter_table_reorganize_partition_into
+standalone_alter_commands.15,EXCHANGE_SYM PARTITION_SYM WITH TABLE_SYM , PT_alter_table_exchange_partition
+standalone_alter_commands.16,DISCARD_SYM PARTITION_SYM TABLESPACE_SYM , PT_alter_table_discard_partition_tablespace
+standalone_alter_commands.17,IMPORT PARTITION_SYM TABLESPACE_SYM , PT_alter_table_import_partition_tablespace
+standalone_alter_commands.18,SECONDARY_LOAD_SYM , PT_alter_table_secondary_load
+standalone_alter_commands.19,SECONDARY_UNLOAD_SYM , PT_alter_table_secondary_unload
+opt_with_validation.0,,
+opt_with_validation.1,,
+with_validation.0,WITH VALIDATION_SYM ,
+with_validation.1,WITHOUT_SYM VALIDATION_SYM ,
+all_or_alt_part_name_list.0,ALL ,
+all_or_alt_part_name_list.1,,
+alter_list.0,, .flags.init push_back
+alter_list.1,, push_back
+alter_list.2,, .flags.merge
+alter_list.3,, .flags.init
+alter_list.4,, push_back
+alter_commands_modifier_list.0,,
+alter_commands_modifier_list.1,, .merge
+alter_list_item.0,ADD , PT_alter_table_add_column
+alter_list_item.1,ADD , PT_alter_table_add_columns
+alter_list_item.2,ADD , PT_alter_table_add_constraint
+alter_list_item.3,CHANGE , PT_alter_table_change_column
+alter_list_item.4,MODIFY_SYM , PT_alter_table_change_column
+alter_list_item.5,DROP , PT_alter_table_drop_column
+alter_list_item.6,DROP FOREIGN KEY_SYM , PT_alter_table_drop_foreign_key
+alter_list_item.7,DROP PRIMARY_SYM KEY_SYM , PT_alter_table_drop_key
+alter_list_item.8,DROP , PT_alter_table_drop_key
+alter_list_item.9,DROP CHECK_SYM , PT_alter_table_drop_check_constraint
+alter_list_item.10,DROP CONSTRAINT , PT_alter_table_drop_constraint
+alter_list_item.11,DISABLE_SYM KEYS , PT_alter_table_enable_keys
+alter_list_item.12,ENABLE_SYM KEYS , PT_alter_table_enable_keys
+alter_list_item.13,ALTER SET_SYM DEFAULT_SYM , PT_alter_table_set_default
+alter_list_item.14,ALTER SET_SYM DEFAULT_SYM , PT_alter_table_set_default
+alter_list_item.15,ALTER DROP DEFAULT_SYM , PT_alter_table_set_default
+alter_list_item.16,ALTER SET_SYM , PT_alter_table_column_visibility
+alter_list_item.17,ALTER INDEX_SYM , PT_alter_table_index_visible
+alter_list_item.18,ALTER CHECK_SYM , PT_alter_table_enforce_check_constraint
+alter_list_item.19,ALTER CONSTRAINT , PT_alter_table_enforce_constraint
+alter_list_item.20,RENAME , PT_alter_table_rename
+alter_list_item.21,RENAME TO_SYM , PT_alter_table_rename_key
+alter_list_item.22,RENAME COLUMN_SYM TO_SYM , PT_alter_table_rename_column
+alter_list_item.23,CONVERT_SYM TO_SYM , PT_alter_table_convert_to_charset
+alter_list_item.24,CONVERT_SYM TO_SYM DEFAULT_SYM , PT_alter_table_convert_to_charset
+alter_list_item.25,FORCE_SYM , PT_alter_table_force
+alter_list_item.26,ORDER_SYM BY , PT_alter_table_order
+alter_commands_modifier.0,, .init .algo.set
+alter_commands_modifier.1,, .init .lock.set
+alter_commands_modifier.2,, .init .validation.set
+opt_index_lock_and_algorithm.0,, .init
+opt_index_lock_and_algorithm.1,, .init .lock.set
+opt_index_lock_and_algorithm.2,, .init .algo.set
+opt_index_lock_and_algorithm.3,, .init .lock.set .algo.set
+opt_index_lock_and_algorithm.4,, .init .algo.set .lock.set
+alter_algorithm_option.0,ALGORITHM_SYM ,
+alter_algorithm_option_value.0,DEFAULT_SYM ,
+alter_algorithm_option_value.1,, is_identifier is_identifier is_identifier my_error MYF
+alter_lock_option.0,LOCK_SYM ,
+alter_lock_option_value.0,DEFAULT_SYM ,
+alter_lock_option_value.1,, is_identifier is_identifier is_identifier my_error MYF
+opt_column.0,,
+opt_column.1,COLUMN_SYM ,
+opt_ignore.0,,
+opt_ignore.1,IGNORE_SYM ,
+opt_restrict.0,,
+opt_restrict.1,RESTRICT ,
+opt_restrict.2,CASCADE ,
+opt_place.0,,
+opt_place.1,AFTER_SYM ,
+opt_place.2,FIRST_SYM ,
+opt_to.0,,
+opt_to.1,TO_SYM ,
+opt_to.2,EQ ,
+opt_to.3,AS ,
+group_replication.0,,
+group_replication.1,STOP_SYM GROUP_REPLICATION ,
+group_replication_start.0,START_SYM GROUP_REPLICATION , replica_connection.reset
+opt_group_replication_start_options.0,,
+opt_group_replication_start_options.1,,
+group_replication_start_options.0,,
+group_replication_start_options.1,,
+group_replication_start_option.0,,
+group_replication_start_option.1,,
+group_replication_start_option.2,,
+group_replication_user.0,USER EQ TEXT_STRING_sys_nonewline , my_error MYF
+group_replication_password.0,PASSWORD EQ TEXT_STRING_sys_nonewline , my_error MYF
+group_replication_plugin_auth.0,DEFAULT_AUTH_SYM EQ TEXT_STRING_sys_nonewline ,
+stop_replica_stmt.0,STOP_SYM REPLICA_SYM , set_channel_name
+$@43
+$@44
+start_replica_stmt.0,START_SYM REPLICA_SYM , replica_connection.reset mi.set_unspecified my_error MYF set_channel_name
+start.0,START_SYM TRANSACTION_SYM , syntax_error
+opt_start_transaction_option_list.0,,
+opt_start_transaction_option_list.1,,
+start_transaction_option_list.0,,
+start_transaction_option_list.1,,
+start_transaction_option.0,WITH CONSISTENT_SYM SNAPSHOT_SYM ,
+start_transaction_option.1,READ_SYM ONLY_SYM ,
+start_transaction_option.2,READ_SYM WRITE_SYM ,
+opt_user_option.0,,
+opt_user_option.1,USER EQ TEXT_STRING_sys ,
+opt_password_option.0,,
+opt_password_option.1,PASSWORD EQ TEXT_STRING_sys ,
+opt_default_auth_option.0,,
+opt_default_auth_option.1,DEFAULT_AUTH_SYM EQ TEXT_STRING_sys ,
+opt_plugin_dir_option.0,,
+opt_plugin_dir_option.1,PLUGIN_DIR_SYM EQ TEXT_STRING_sys ,
+opt_replica_thread_option_list.0,,
+opt_replica_thread_option_list.1,,
+replica_thread_option_list.0,,
+replica_thread_option_list.1,,
+replica_thread_option.0,SQL_THREAD ,
+replica_thread_option.1,RELAY_THREAD ,
+opt_replica_until.0,,
+opt_replica_until.1,UNTIL_SYM , my_error MYF
+replica_until.0,,
+replica_until.1,,
+replica_until.2,SQL_BEFORE_GTIDS EQ TEXT_STRING_sys ,
+replica_until.3,SQL_AFTER_GTIDS EQ TEXT_STRING_sys ,
+replica_until.4,SQL_AFTER_MTS_GAPS ,
+checksum.0,CHECKSUM_SYM , add_tables
+opt_checksum_type.0,,
+opt_checksum_type.1,QUICK ,
+opt_checksum_type.2,EXTENDED_SYM ,
+repair_table_stmt.0,REPAIR , PT_repair_table_stmt
+opt_mi_repair_types.0,,
+opt_mi_repair_types.1,,
+mi_repair_types.0,,
+mi_repair_types.1,,
+mi_repair_type.0,QUICK ,
+mi_repair_type.1,EXTENDED_SYM ,
+mi_repair_type.2,USE_FRM ,
+analyze_table_stmt.0,ANALYZE_SYM , PT_analyze_table_stmt PT_analyze_table_stmt
+opt_histogram_auto_update.0,,
+opt_histogram_auto_update.1,MANUAL_SYM UPDATE_SYM ,
+opt_histogram_auto_update.2,AUTO_SYM UPDATE_SYM ,
+opt_histogram_num_buckets.0,,
+opt_histogram_num_buckets.1,WITH NUM BUCKETS_SYM , my_strtoll10 MYSQL_YYABORT_UNLESS my_error MYF
+opt_histogram_update_param.0,,
+opt_histogram_update_param.1,USING DATA_SYM TEXT_STRING_literal ,
+opt_histogram.0,,
+opt_histogram.1,UPDATE_SYM HISTOGRAM_SYM ON_SYM , Histogram_param
+opt_histogram.2,DROP HISTOGRAM_SYM ON_SYM ,
+binlog_base64_event.0,BINLOG_SYM TEXT_STRING_sys ,
+check_table_stmt.0,CHECK_SYM , PT_check_table_stmt
+opt_mi_check_types.0,,
+opt_mi_check_types.1,,
+mi_check_types.0,,
+mi_check_types.1,,
+mi_check_type.0,QUICK ,
+mi_check_type.1,FAST_SYM ,
+mi_check_type.2,MEDIUM_SYM ,
+mi_check_type.3,EXTENDED_SYM ,
+mi_check_type.4,CHANGED ,
+mi_check_type.5,FOR_SYM UPGRADE_SYM ,
+optimize_table_stmt.0,OPTIMIZE , PT_optimize_table_stmt
+opt_no_write_to_binlog.0,,
+opt_no_write_to_binlog.1,NO_WRITE_TO_BINLOG ,
+opt_no_write_to_binlog.2,LOCAL_SYM ,
+$@45
+rename.0,RENAME ,
+rename.1,RENAME USER ,
+rename_list.0,TO_SYM , users_list.push_back users_list.push_back
+rename_list.1,TO_SYM , users_list.push_back users_list.push_back
+table_to_table_list.0,,
+table_to_table_list.1,,
+table_to_table.0,TO_SYM , add_table_to_list add_table_to_list
+keycache_stmt.0,CACHE_SYM INDEX_SYM IN_SYM , PT_cache_index_stmt
+keycache_stmt.1,CACHE_SYM INDEX_SYM IN_SYM , PT_cache_index_partitions_stmt
+keycache_list.0,, push_back
+keycache_list.1,, push_back
+assign_to_keycache.0,, PT_assign_to_keycache
+key_cache_name.0,, to_lex_cstring
+key_cache_name.1,DEFAULT_SYM ,
+preload_stmt.0,LOAD INDEX_SYM INTO CACHE_SYM , PT_load_index_partitions_stmt
+preload_stmt.1,LOAD INDEX_SYM INTO CACHE_SYM , PT_load_index_stmt
+preload_list.0,, push_back
+preload_list.1,, push_back
+preload_keys.0,, PT_preload_keys
+adm_partition.0,PARTITION_SYM , PT_adm_partition
+opt_cache_key_list.0,,
+opt_cache_key_list.1,, init_index_hints
+opt_ignore_leaves.0,,
+opt_ignore_leaves.1,IGNORE_SYM LEAVES ,
+select_stmt.0,, PT_select_stmt
+select_stmt.1,, PT_select_stmt PT_locking
+select_stmt.2,,
+select_stmt_with_into.0,,
+select_stmt_with_into.1,, PT_select_stmt
+select_stmt_with_into.2,, PT_select_stmt PT_locking
+select_stmt_with_into.3,, PT_select_stmt PT_locking
+query_expression.0,, PT_query_expression
+query_expression.1,, PT_query_expression
+query_expression_body.0,,
+query_expression_body.1,,
+query_expression_body.2,UNION_SYM , PT_union
+query_expression_body.3,EXCEPT_SYM , PT_except
+query_expression_body.4,INTERSECT_SYM , PT_intersect
+query_expression_parens.0,,
+query_expression_parens.1,,
+query_primary.0,,
+query_primary.1,, PT_table_value_constructor
+query_primary.2,, PT_select_item_list POS Item_asterisk POS push_back PT_explicit_table
+query_specification.0,SELECT_SYM , PT_query_specification .raw.is_empty
+query_specification.1,SELECT_SYM , PT_query_specification .raw.is_empty
+opt_from_clause.0,, .init
+opt_from_clause.1,,
+from_clause.0,FROM ,
+from_tables.0,DUAL_SYM , .init
+from_tables.1,,
+table_reference_list.0,, .init .push_back
+table_reference_list.1,, .push_back
+table_value_constructor.0,VALUES ,
+explicit_table.0,TABLE_SYM , .init PT_table_factor_table_ident .push_back
+select_options.0,,
+select_options.1,,
+select_option_list.0,, .merge
+select_option_list.1,,
+select_option.0,,
+select_option.1,SQL_NO_CACHE_SYM , push_deprecated_warn_no_replacement
+locking_clause_list.0,, push_back
+locking_clause_list.1,, PT_locking_clause_list push_back
+locking_clause.0,FOR_SYM , PT_query_block_locking_clause
+locking_clause.1,FOR_SYM , PT_table_locking_clause
+locking_clause.2,LOCK_SYM IN_SYM SHARE_SYM MODE_SYM , PT_query_block_locking_clause
+lock_strength.0,UPDATE_SYM ,
+lock_strength.1,SHARE_SYM ,
+table_locking_list.0,OF_SYM ,
+opt_locked_row_action.0,,
+opt_locked_row_action.1,,
+locked_row_action.0,SKIP_SYM LOCKED_SYM ,
+locked_row_action.1,NOWAIT_SYM ,
+select_item_list.0,, push_back
+select_item_list.1,, PT_select_item_list push_back
+select_item_list.2,, Item_asterisk PT_select_item_list push_back
+select_item.0,,
+select_item.1,, PTI_expr_with_alias to_lex_cstring
+select_alias.0,,
+select_alias.1,AS ,
+select_alias.2,AS TEXT_STRING_validated ,
+select_alias.3,,
+select_alias.4,TEXT_STRING_validated ,
+optional_braces.0,,
+optional_braces.1,,
+expr.0,,
+expr.1,XOR , Item_func_xor
+expr.2,,
+expr.3,NOT_SYM , PTI_truth_transform
+expr.4,IS TRUE_SYM , PTI_truth_transform
+expr.5,IS TRUE_SYM , PTI_truth_transform
+expr.6,IS FALSE_SYM , PTI_truth_transform
+expr.7,IS FALSE_SYM , PTI_truth_transform
+expr.8,IS UNKNOWN_SYM , Item_func_isnull
+expr.9,IS UNKNOWN_SYM , Item_func_isnotnull
+expr.10,,
+bool_pri.0,IS NULL_SYM , Item_func_isnull
+bool_pri.1,IS NULL_SYM , Item_func_isnotnull
+bool_pri.2,, PTI_comp_op
+bool_pri.3,, syntax_error_at PTI_comp_op_all
+bool_pri.4,,
+predicate.0,IN_SYM , Item_in_subselect
+predicate.1,IN_SYM , Item_in_subselect PTI_truth_transform
+predicate.2,IN_SYM , PTI_handle_sql2003_note184_exception
+predicate.3,IN_SYM , push_front push_front Item_func_in
+predicate.4,IN_SYM , PTI_handle_sql2003_note184_exception
+predicate.5,IN_SYM , push_front value.push_front Item_func_in
+predicate.6,MEMBER_SYM , Item_func_member_of
+predicate.7,BETWEEN_SYM AND_SYM , Item_func_between
+predicate.8,BETWEEN_SYM AND_SYM , Item_func_between
+predicate.9,SOUNDS_SYM LIKE , Item_func_soundex Item_func_soundex Item_func_eq
+predicate.10,LIKE , Item_func_like
+predicate.11,LIKE ESCAPE_SYM , Item_func_like
+predicate.12,LIKE , Item_func_like Item_func_not
+predicate.13,LIKE ESCAPE_SYM , Item_func_like Item_func_not
+predicate.14,REGEXP , PT_item_list push_back push_back Item_func_regexp_like
+predicate.15,REGEXP , PT_item_list push_back push_back Item_func_regexp_like PTI_truth_transform
+predicate.16,,
+opt_of.0,OF_SYM ,
+opt_of.1,,
+bit_expr.0,, Item_func_bit_or
+bit_expr.1,, Item_func_bit_and
+bit_expr.2,SHIFT_LEFT , Item_func_shift_left
+bit_expr.3,SHIFT_RIGHT , Item_func_shift_right
+bit_expr.4,, Item_func_plus
+bit_expr.5,, Item_func_minus
+bit_expr.6,INTERVAL_SYM , Item_date_add_interval
+bit_expr.7,INTERVAL_SYM , Item_date_add_interval
+bit_expr.8,, Item_func_mul
+bit_expr.9,, Item_func_div
+bit_expr.10,, Item_func_mod
+bit_expr.11,DIV_SYM , Item_func_div_int
+bit_expr.12,MOD_SYM , Item_func_mod
+bit_expr.13,, Item_func_bit_xor
+bit_expr.14,,
+or.0,OR_SYM ,
+or.1,OR2_SYM ,
+and.0,AND_SYM ,
+and.1,AND_AND_SYM , push_deprecated_warn
+not.0,NOT_SYM ,
+not.1,NOT2_SYM ,
+not2.0,, push_deprecated_warn
+not2.1,NOT2_SYM ,
+comp_op.0,EQ ,
+comp_op.1,EQUAL_SYM ,
+comp_op.2,GE ,
+comp_op.3,GT_SYM ,
+comp_op.4,LE ,
+comp_op.5,LT ,
+comp_op.6,NE ,
+all_or_any.0,ALL ,
+all_or_any.1,ANY_SYM ,
+simple_expr.0,,
+simple_expr.1,,
+simple_expr.2,,
+simple_expr.3,,
+simple_expr.4,,
+simple_expr.5,COLLATE_SYM , warn_on_deprecated_user_defined_collation Item_func_set_collation
+simple_expr.6,,
+simple_expr.7,,
+simple_expr.8,,
+simple_expr.9,,
+simple_expr.10,,
+simple_expr.11,,
+simple_expr.12,OR_OR_SYM , Item_func_concat
+simple_expr.13,,
+simple_expr.14,, Item_func_neg
+simple_expr.15,, Item_func_bit_neg
+simple_expr.16,, PTI_truth_transform
+simple_expr.17,, PTI_singlerow_subselect
+simple_expr.18,,
+simple_expr.19,, Item_row
+simple_expr.20,ROW_SYM , Item_row
+simple_expr.21,EXISTS , PTI_exists_subselect
+simple_expr.22,, PTI_odbc_date
+simple_expr.23,MATCH AGAINST , Item_func_match
+simple_expr.24,BINARY_SYM , push_deprecated_warn create_func_cast
+simple_expr.25,CAST_SYM AS , create_func_cast
+simple_expr.26,CAST_SYM AT_SYM LOCAL_SYM AS , my_error MYF
+simple_expr.27,CAST_SYM AT_SYM TIME_SYM ZONE_SYM TEXT_STRING_literal AS DATETIME_SYM , Item_func_at_time_zone create_func_cast
+simple_expr.28,CASE_SYM END , Item_func_case
+simple_expr.29,CONVERT_SYM , create_func_cast
+simple_expr.30,CONVERT_SYM USING , Item_func_conv_charset
+simple_expr.31,DEFAULT_SYM , Item_default_value
+simple_expr.32,VALUES , Item_insert_value
+simple_expr.33,INTERVAL_SYM , Item_date_add_interval
+simple_expr.34,JSON_SEPARATOR_SYM TEXT_STRING_literal , Item_string Item_func_json_extract
+simple_expr.35,JSON_UNQUOTED_SEPARATOR_SYM TEXT_STRING_literal , Item_string Item_func_json_extract Item_func_json_unquote
+opt_array_cast.0,,
+opt_array_cast.1,ARRAY_SYM ,
+function_call_keyword.0,CHAR_SYM , Item_func_char
+function_call_keyword.1,CHAR_SYM USING , Item_func_char
+function_call_keyword.2,CURRENT_USER , Item_func_current_user
+function_call_keyword.3,DATE_SYM , Item_typecast_date
+function_call_keyword.4,DAY_SYM , Item_func_dayofmonth
+function_call_keyword.5,HOUR_SYM , Item_func_hour
+function_call_keyword.6,INSERT_SYM , Item_func_insert
+function_call_keyword.7,INTERVAL_SYM , Item_func_interval
+function_call_keyword.8,INTERVAL_SYM , Item_func_interval
+function_call_keyword.9,JSON_VALUE_SYM , create_func_json_value
+function_call_keyword.10,LEFT , Item_func_left
+function_call_keyword.11,MINUTE_SYM , Item_func_minute
+function_call_keyword.12,MONTH_SYM , Item_func_month
+function_call_keyword.13,RIGHT , Item_func_right
+function_call_keyword.14,SECOND_SYM , Item_func_second
+function_call_keyword.15,TIME_SYM , Item_typecast_time
+function_call_keyword.16,TIMESTAMP_SYM , Item_typecast_datetime
+function_call_keyword.17,TIMESTAMP_SYM , Item_func_add_time
+function_call_keyword.18,TRIM , Item_func_trim
+function_call_keyword.19,TRIM LEADING FROM , Item_func_trim
+function_call_keyword.20,TRIM TRAILING FROM , Item_func_trim
+function_call_keyword.21,TRIM BOTH FROM , Item_func_trim
+function_call_keyword.22,TRIM LEADING FROM , Item_func_trim
+function_call_keyword.23,TRIM TRAILING FROM , Item_func_trim
+function_call_keyword.24,TRIM BOTH FROM , Item_func_trim
+function_call_keyword.25,TRIM FROM , Item_func_trim
+function_call_keyword.26,USER , Item_func_user
+function_call_keyword.27,YEAR_SYM , Item_func_year
+function_call_nonkeyword.0,ADDDATE_SYM , Item_date_add_interval
+function_call_nonkeyword.1,ADDDATE_SYM INTERVAL_SYM , Item_date_add_interval
+function_call_nonkeyword.2,CURDATE , Item_func_curdate_local
+function_call_nonkeyword.3,CURTIME , Item_func_curtime_local
+function_call_nonkeyword.4,DATE_ADD_INTERVAL INTERVAL_SYM , Item_date_add_interval
+function_call_nonkeyword.5,DATE_SUB_INTERVAL INTERVAL_SYM , Item_date_add_interval
+function_call_nonkeyword.6,EXTRACT_SYM FROM , Item_extract
+function_call_nonkeyword.7,GET_FORMAT , Item_func_get_format
+function_call_nonkeyword.8,LOG_SYM , Item_func_log
+function_call_nonkeyword.9,LOG_SYM , Item_func_log
+function_call_nonkeyword.10,, PTI_function_call_nonkeyword_now
+function_call_nonkeyword.11,POSITION_SYM IN_SYM , Item_func_locate
+function_call_nonkeyword.12,SUBDATE_SYM , Item_date_add_interval
+function_call_nonkeyword.13,SUBDATE_SYM INTERVAL_SYM , Item_date_add_interval
+function_call_nonkeyword.14,SUBSTRING , Item_func_substr
+function_call_nonkeyword.15,SUBSTRING , Item_func_substr
+function_call_nonkeyword.16,SUBSTRING FROM FOR_SYM , Item_func_substr
+function_call_nonkeyword.17,SUBSTRING FROM , Item_func_substr
+function_call_nonkeyword.18,SYSDATE , PTI_function_call_nonkeyword_sysdate
+function_call_nonkeyword.19,TIMESTAMP_ADD , Item_date_add_interval
+function_call_nonkeyword.20,TIMESTAMP_DIFF , Item_func_timestamp_diff
+function_call_nonkeyword.21,UTC_DATE_SYM , Item_func_curdate_utc
+function_call_nonkeyword.22,UTC_TIME_SYM , Item_func_curtime_utc
+function_call_nonkeyword.23,UTC_TIMESTAMP_SYM , Item_func_now_utc
+opt_returning_type.0,,
+opt_returning_type.1,RETURNING_SYM ,
+function_call_conflict.0,ASCII_SYM , Item_func_ascii
+function_call_conflict.1,CHARSET , Item_func_charset
+function_call_conflict.2,COALESCE , Item_func_coalesce
+function_call_conflict.3,COLLATION_SYM , Item_func_collation
+function_call_conflict.4,DATABASE , Item_func_database
+function_call_conflict.5,IF , Item_func_if
+function_call_conflict.6,FORMAT_SYM , Item_func_format
+function_call_conflict.7,FORMAT_SYM , Item_func_format
+function_call_conflict.8,MICROSECOND_SYM , Item_func_microsecond
+function_call_conflict.9,MOD_SYM , Item_func_mod
+function_call_conflict.10,QUARTER_SYM , Item_func_quarter
+function_call_conflict.11,REPEAT_SYM , Item_func_repeat
+function_call_conflict.12,REPLACE_SYM , Item_func_replace
+function_call_conflict.13,REVERSE_SYM , Item_func_reverse
+function_call_conflict.14,ROW_COUNT_SYM , Item_func_row_count
+function_call_conflict.15,TRUNCATE_SYM , Item_func_round
+function_call_conflict.16,WEEK_SYM , Item_func_week
+function_call_conflict.17,WEEK_SYM , Item_func_week
+function_call_conflict.18,WEIGHT_STRING_SYM , Item_func_weight_string
+function_call_conflict.19,WEIGHT_STRING_SYM AS CHAR_SYM , Item_func_weight_string
+function_call_conflict.20,WEIGHT_STRING_SYM AS BINARY_SYM , Item_func_weight_string
+function_call_conflict.21,WEIGHT_STRING_SYM , Item_func_weight_string
+function_call_conflict.22,,
+geometry_function.0,GEOMETRYCOLLECTION_SYM , Item_func_spatial_collection
+geometry_function.1,LINESTRING_SYM , Item_func_spatial_collection
+geometry_function.2,MULTILINESTRING_SYM , Item_func_spatial_collection
+geometry_function.3,MULTIPOINT_SYM , Item_func_spatial_collection
+geometry_function.4,MULTIPOLYGON_SYM , Item_func_spatial_collection
+geometry_function.5,POINT_SYM , Item_func_point
+geometry_function.6,POLYGON_SYM , Item_func_spatial_collection
+function_call_generic.0,IDENT_sys , PTI_function_call_generic_ident_sys
+function_call_generic.1,, PTI_function_call_generic_2d
+fulltext_options.0,,
+fulltext_options.1,IN_SYM BOOLEAN_SYM MODE_SYM , DBUG_EXECUTE_IF syntax_error
+opt_natural_language_mode.0,,
+opt_natural_language_mode.1,IN_SYM NATURAL LANGUAGE_SYM MODE_SYM ,
+opt_query_expansion.0,,
+opt_query_expansion.1,WITH QUERY_SYM EXPANSION_SYM ,
+opt_udf_expr_list.0,,
+opt_udf_expr_list.1,,
+udf_expr_list.0,, PT_item_list push_back
+udf_expr_list.1,, push_back
+udf_expr.0,, PTI_udf_expr
+set_function_specification.0,,
+set_function_specification.1,,
+sum_expr.0,AVG_SYM , Item_sum_avg
+sum_expr.1,AVG_SYM DISTINCT , Item_sum_avg
+sum_expr.2,BIT_AND_SYM , Item_sum_and
+sum_expr.3,BIT_OR_SYM , Item_sum_or
+sum_expr.4,JSON_ARRAYAGG , Item_sum_json_array move move
+sum_expr.5,JSON_OBJECTAGG , Item_sum_json_object move move
+sum_expr.6,ST_COLLECT_SYM , Item_sum_collect
+sum_expr.7,ST_COLLECT_SYM DISTINCT , Item_sum_collect
+sum_expr.8,BIT_XOR_SYM , Item_sum_xor
+sum_expr.9,COUNT_SYM , PTI_count_sym
+sum_expr.10,COUNT_SYM , Item_sum_count
+sum_expr.11,COUNT_SYM DISTINCT , Item_sum_count
+sum_expr.12,MIN_SYM , Item_sum_min
+sum_expr.13,MIN_SYM DISTINCT , Item_sum_min
+sum_expr.14,MAX_SYM , Item_sum_max
+sum_expr.15,MAX_SYM DISTINCT , Item_sum_max
+sum_expr.16,STD_SYM , Item_sum_std
+sum_expr.17,VARIANCE_SYM , Item_sum_variance
+sum_expr.18,STDDEV_SAMP_SYM , Item_sum_std
+sum_expr.19,VAR_SAMP_SYM , Item_sum_variance
+sum_expr.20,SUM_SYM , Item_sum_sum
+sum_expr.21,SUM_SYM DISTINCT , Item_sum_sum
+sum_expr.22,GROUP_CONCAT_SYM , Item_func_group_concat
+sampling_method.0,SYSTEM_SYM ,
+sampling_method.1,BERNOULLI_SYM ,
+sampling_percentage.0,NUM_literal ,
+sampling_percentage.1,, PTI_user_variable
+sampling_percentage.2,,
+opt_tablesample_clause.0,,
+opt_tablesample_clause.1,TABLESAMPLE_SYM , PT_tablesample
+window_func_call.0,ROW_NUMBER_SYM , Item_row_number
+window_func_call.1,RANK_SYM , Item_rank
+window_func_call.2,DENSE_RANK_SYM , Item_rank
+window_func_call.3,CUME_DIST_SYM , Item_cume_dist
+window_func_call.4,PERCENT_RANK_SYM , Item_percent_rank
+window_func_call.5,NTILE_SYM , Item_ntile
+window_func_call.6,LEAD_SYM , PT_item_list push_back push_back push_back Item_lead_lag
+window_func_call.7,LAG_SYM , PT_item_list push_back push_back push_back Item_lead_lag
+window_func_call.8,FIRST_VALUE_SYM , Item_first_last_value
+window_func_call.9,LAST_VALUE_SYM , Item_first_last_value
+window_func_call.10,NTH_VALUE_SYM , PT_item_list push_back push_back Item_nth_value
+opt_lead_lag_info.0,,
+opt_lead_lag_info.1,,
+stable_integer.0,,
+stable_integer.1,,
+param_or_var.0,,
+param_or_var.1,, PTI_int_splocal to_lex_cstring
+param_or_var.2,, PTI_user_variable
+opt_ll_default.0,,
+opt_ll_default.1,,
+opt_null_treatment.0,,
+opt_null_treatment.1,RESPECT_SYM NULLS_SYM ,
+opt_null_treatment.2,IGNORE_SYM NULLS_SYM ,
+opt_from_first_last.0,,
+opt_from_first_last.1,FROM FIRST_SYM ,
+opt_from_first_last.2,FROM LAST_SYM ,
+opt_windowing_clause.0,,
+opt_windowing_clause.1,,
+windowing_clause.0,OVER_SYM ,
+window_name_or_spec.0,, PT_window
+window_name_or_spec.1,,
+window_name.0,, Item_string charset
+window_spec.0,,
+window_spec_details.0,, PT_border POS PT_border POS PT_borders POS PT_frame POS PT_window POS
+opt_existing_window_name.0,,
+opt_existing_window_name.1,,
+opt_partition_clause.0,,
+opt_partition_clause.1,PARTITION_SYM BY ,
+opt_window_order_by_clause.0,,
+opt_window_order_by_clause.1,ORDER_SYM BY ,
+opt_window_frame_clause.0,,
+opt_window_frame_clause.1,, PT_frame
+window_frame_extent.0,, PT_border PT_borders
+window_frame_extent.1,,
+window_frame_start.0,UNBOUNDED_SYM PRECEDING_SYM , PT_border
+window_frame_start.1,NUM_literal PRECEDING_SYM , PT_border
+window_frame_start.2,PRECEDING_SYM , PT_border
+window_frame_start.3,INTERVAL_SYM PRECEDING_SYM , PT_border
+window_frame_start.4,CURRENT_SYM ROW_SYM , PT_border
+window_frame_between.0,BETWEEN_SYM AND_SYM , PT_borders
+window_frame_bound.0,,
+window_frame_bound.1,UNBOUNDED_SYM FOLLOWING_SYM , PT_border
+window_frame_bound.2,NUM_literal FOLLOWING_SYM , PT_border
+window_frame_bound.3,FOLLOWING_SYM , PT_border
+window_frame_bound.4,INTERVAL_SYM FOLLOWING_SYM , PT_border
+opt_window_frame_exclusion.0,,
+opt_window_frame_exclusion.1,EXCLUDE_SYM CURRENT_SYM ROW_SYM , PT_exclusion
+opt_window_frame_exclusion.2,EXCLUDE_SYM GROUP_SYM , PT_exclusion
+opt_window_frame_exclusion.3,EXCLUDE_SYM TIES_SYM , PT_exclusion
+opt_window_frame_exclusion.4,EXCLUDE_SYM NO_SYM OTHERS_SYM , PT_exclusion
+window_frame_units.0,ROWS_SYM ,
+window_frame_units.1,RANGE_SYM ,
+window_frame_units.2,GROUPS_SYM ,
+grouping_operation.0,GROUPING_SYM , Item_func_grouping
+in_expression_user_variable_assignment.0,SET_VAR , push_warning ER_THD PTI_variable_aux_set_var
+rvalue_system_or_user_variable.0,, PTI_user_variable
+rvalue_system_or_user_variable.1,, PTI_get_system_variable
+opt_distinct.0,,
+opt_distinct.1,DISTINCT ,
+opt_gconcat_separator.0,, String
+opt_gconcat_separator.1,SEPARATOR_SYM ,
+opt_gorder_clause.0,,
+opt_gorder_clause.1,ORDER_SYM BY ,
+gorder_list.0,, push_back
+gorder_list.1,, PT_gorder_list push_back
+in_sum_expr.0,, PTI_in_sum_expr
+cast_type.0,BINARY_SYM ,
+cast_type.1,CHAR_SYM , get_bin_collation
+cast_type.2,, warn_about_deprecated_national
+cast_type.3,SIGNED_SYM ,
+cast_type.4,SIGNED_SYM INT_SYM ,
+cast_type.5,UNSIGNED_SYM ,
+cast_type.6,UNSIGNED_SYM INT_SYM ,
+cast_type.7,DATE_SYM ,
+cast_type.8,YEAR_SYM ,
+cast_type.9,TIME_SYM ,
+cast_type.10,DATETIME_SYM ,
+cast_type.11,DECIMAL_SYM ,
+cast_type.12,JSON_SYM ,
+cast_type.13,,
+cast_type.14,FLOAT_SYM ,
+cast_type.15,POINT_SYM ,
+cast_type.16,LINESTRING_SYM ,
+cast_type.17,POLYGON_SYM ,
+cast_type.18,MULTIPOINT_SYM ,
+cast_type.19,MULTILINESTRING_SYM ,
+cast_type.20,MULTIPOLYGON_SYM ,
+cast_type.21,GEOMETRYCOLLECTION_SYM ,
+opt_expr_list.0,,
+opt_expr_list.1,,
+expr_list.0,, PT_item_list push_back
+expr_list.1,, push_back
+ident_list_arg.0,,
+ident_list_arg.1,,
+ident_list.0,, PT_item_list push_back
+ident_list.1,, push_back
+opt_expr.0,,
+opt_expr.1,,
+opt_else.0,,
+opt_else.1,ELSE ,
+when_list.0,WHEN_SYM THEN_SYM , push_back push_back
+when_list.1,WHEN_SYM THEN_SYM , push_back push_back
+table_reference.0,,
+table_reference.1,,
+table_reference.2,OJ_SYM ,
+esc_table_reference.0,,
+esc_table_reference.1,,
+joined_table.0,ON_SYM , PT_joined_table_on
+joined_table.1,USING , PT_joined_table_using
+joined_table.2,ON_SYM , PT_joined_table_on
+joined_table.3,USING , PT_joined_table_using
+joined_table.4,, PT_cross_join add_cross_join
+joined_table.5,, PT_joined_table_using
+natural_join_type.0,NATURAL JOIN_SYM ,
+natural_join_type.1,NATURAL RIGHT JOIN_SYM ,
+natural_join_type.2,NATURAL LEFT JOIN_SYM ,
+inner_join_type.0,JOIN_SYM ,
+inner_join_type.1,INNER_SYM JOIN_SYM ,
+inner_join_type.2,CROSS JOIN_SYM ,
+inner_join_type.3,STRAIGHT_JOIN ,
+outer_join_type.0,LEFT JOIN_SYM ,
+outer_join_type.1,RIGHT JOIN_SYM ,
+opt_inner.0,,
+opt_inner.1,INNER_SYM ,
+opt_outer.0,,
+opt_outer.1,OUTER_SYM ,
+opt_use_partition.0,,
+opt_use_partition.1,,
+use_partition.0,PARTITION_SYM ,
+table_factor.0,,
+table_factor.1,,
+table_factor.2,,
+table_factor.3,, PT_table_factor_joined_table
+table_factor.4,, PT_table_reference_list_parens
+table_factor.5,,
+table_reference_list_parens.0,,
+table_reference_list_parens.1,, .push_back
+single_table_parens.0,,
+single_table_parens.1,,
+single_table.0,, PT_table_factor_table_ident
+joined_table_parens.0,,
+joined_table_parens.1,,
+derived_table.0,, my_message ER_THD MYF PT_derived_table
+derived_table.1,LATERAL_SYM , my_message ER_THD MYF PT_derived_table
+table_function.0,JSON_TABLE_SYM , my_message ER_THD MYF PT_table_factor_function to_lex_string
+columns_clause.0,COLUMNS ,
+columns_list.0,, push_back
+columns_list.1,, push_back
+jt_column.0,FOR_SYM ORDINALITY_SYM , PT_json_table_column_for_ordinality
+jt_column.1,PATH_SYM , PT_json_table_column_with_path move
+jt_column.2,NESTED_SYM PATH_SYM , PT_json_table_column_with_nested_path
+jt_column_type.0,,
+jt_column_type.1,EXISTS ,
+opt_on_empty_or_error.0,,
+opt_on_empty_or_error.1,,
+opt_on_empty_or_error.2,,
+opt_on_empty_or_error.3,,
+opt_on_empty_or_error_json_table.0,,
+opt_on_empty_or_error_json_table.1,, push_warning ER_THD
+on_empty.0,ON_SYM EMPTY_SYM ,
+on_error.0,ON_SYM ERROR_SYM ,
+json_on_response.0,ERROR_SYM ,
+json_on_response.1,NULL_SYM ,
+json_on_response.2,DEFAULT_SYM ,
+index_hint_clause.0,,
+index_hint_clause.1,FOR_SYM JOIN_SYM ,
+index_hint_clause.2,FOR_SYM ORDER_SYM BY ,
+index_hint_clause.3,FOR_SYM GROUP_SYM BY ,
+index_hint_type.0,FORCE_SYM ,
+index_hint_type.1,IGNORE_SYM ,
+index_hint_definition.0,, init_index_hints
+index_hint_definition.1,USE_SYM , init_index_hints
+index_hints_list.0,,
+index_hints_list.1,, concat
+opt_index_hints_list.0,,
+opt_index_hints_list.1,,
+opt_key_definition.0,,
+opt_key_usage_list.0,, Index_hint push_front
+opt_key_usage_list.1,,
+key_usage_element.0,, Index_hint
+key_usage_element.1,PRIMARY_SYM , Index_hint STRING_WITH_LEN
+key_usage_list.0,, push_front
+key_usage_list.1,, push_front
+using_list.0,,
+ident_string_list.0,, String push_back
+ident_string_list.1,, String push_back
+interval.0,,
+interval.1,DAY_HOUR_SYM ,
+interval.2,DAY_MICROSECOND_SYM ,
+interval.3,DAY_MINUTE_SYM ,
+interval.4,DAY_SECOND_SYM ,
+interval.5,HOUR_MICROSECOND_SYM ,
+interval.6,HOUR_MINUTE_SYM ,
+interval.7,HOUR_SECOND_SYM ,
+interval.8,MINUTE_MICROSECOND_SYM ,
+interval.9,MINUTE_SECOND_SYM ,
+interval.10,SECOND_MICROSECOND_SYM ,
+interval.11,YEAR_MONTH_SYM ,
+interval_time_stamp.0,DAY_SYM ,
+interval_time_stamp.1,WEEK_SYM ,
+interval_time_stamp.2,HOUR_SYM ,
+interval_time_stamp.3,MINUTE_SYM ,
+interval_time_stamp.4,MONTH_SYM ,
+interval_time_stamp.5,QUARTER_SYM ,
+interval_time_stamp.6,SECOND_SYM ,
+interval_time_stamp.7,MICROSECOND_SYM ,
+interval_time_stamp.8,YEAR_SYM ,
+date_time_type.0,DATE_SYM ,
+date_time_type.1,TIME_SYM ,
+date_time_type.2,TIMESTAMP_SYM ,
+date_time_type.3,DATETIME_SYM ,
+opt_as.0,,
+opt_as.1,AS ,
+opt_table_alias.0,,
+opt_table_alias.1,, to_lex_cstring
+opt_all.0,,
+opt_all.1,ALL ,
+opt_where_clause.0,,
+opt_where_clause.1,,
+where_clause.0,WHERE , PTI_where
+opt_having_clause.0,,
+opt_having_clause.1,HAVING , PTI_having
+opt_qualify_clause.0,,
+opt_qualify_clause.1,QUALIFY_SYM , PTI_qualify
+with_clause.0,WITH , PT_with_clause
+with_clause.1,WITH RECURSIVE_SYM , PT_with_clause
+with_list.0,, push_back
+with_list.1,, PT_with_list push_back
+common_table_expr.0,AS , .cpp.length strmake get_cpp_buf PT_common_table_expr
+opt_derived_column_list.0,, .init
+opt_derived_column_list.1,,
+simple_ident_list.0,, .init .push_back to_lex_cstring
+simple_ident_list.1,, .push_back to_lex_cstring
+opt_window_clause.0,,
+opt_window_clause.1,WINDOW_SYM ,
+window_definition_list.0,, PT_window_list push_back
+window_definition_list.1,, push_back
+window_definition.0,AS , set_name
+opt_group_clause.0,,
+opt_group_clause.1,GROUP_SYM BY , PT_group
+opt_group_clause.2,GROUP_SYM BY ROLLUP_SYM , PT_group
+opt_group_clause.3,GROUP_SYM BY CUBE_SYM , PT_group
+group_list.0,, push_back
+group_list.1,, PT_order_list push_back
+olap_opt.0,,
+olap_opt.1,WITH_ROLLUP_SYM ,
+alter_order_list.0,, push_back
+alter_order_list.1,, PT_order_list push_back
+alter_order_item.0,, PT_order_expr
+opt_order_clause.0,,
+opt_order_clause.1,,
+order_clause.0,ORDER_SYM BY , PT_order
+order_list.0,, push_back
+order_list.1,, PT_order_list push_back
+opt_ordering_direction.0,,
+opt_ordering_direction.1,,
+ordering_direction.0,ASC ,
+ordering_direction.1,DESC ,
+opt_limit_clause.0,,
+opt_limit_clause.1,,
+limit_clause.0,LIMIT , PT_limit_clause
+limit_options.0,,
+limit_options.1,,
+limit_options.2,OFFSET_SYM ,
+limit_option.0,, PTI_limit_option_ident to_lex_cstring
+limit_option.1,, PTI_limit_option_param_marker
+limit_option.2,ULONGLONG_NUM , Item_uint
+limit_option.3,LONG_NUM , Item_uint
+limit_option.4,NUM , Item_uint
+opt_simple_limit.0,,
+opt_simple_limit.1,LIMIT ,
+ulong_num.0,NUM , my_strtoll10
+ulong_num.1,HEX_NUM , my_strtoll
+ulong_num.2,LONG_NUM , my_strtoll10
+ulong_num.3,ULONGLONG_NUM , my_strtoll10
+ulong_num.4,DECIMAL_NUM , my_strtoll10
+ulong_num.5,FLOAT_NUM , my_strtoll10
+real_ulong_num.0,NUM , my_strtoll10
+real_ulong_num.1,HEX_NUM , my_strtoll
+real_ulong_num.2,LONG_NUM , my_strtoll10
+real_ulong_num.3,ULONGLONG_NUM , my_strtoll10
+real_ulong_num.4,,
+ulonglong_num.0,NUM , my_strtoll10
+ulonglong_num.1,ULONGLONG_NUM , my_strtoll10
+ulonglong_num.2,LONG_NUM , my_strtoll10
+ulonglong_num.3,DECIMAL_NUM , my_strtoll10
+ulonglong_num.4,FLOAT_NUM , my_strtoll10
+real_ulonglong_num.0,NUM , my_strtoll10
+real_ulonglong_num.1,HEX_NUM , my_strtoll
+real_ulonglong_num.2,ULONGLONG_NUM , my_strtoll10
+real_ulonglong_num.3,LONG_NUM , my_strtoll10
+real_ulonglong_num.4,,
+dec_num_error.0,, syntax_error
+dec_num.0,DECIMAL_NUM ,
+dec_num.1,FLOAT_NUM ,
+select_var_list.0,, push_back
+select_var_list.1,, PT_select_var_list push_back
+select_var_ident.0,, PT_select_var
+select_var_ident.1,, PT_select_sp_var
+into_clause.0,INTO ,
+into_destination.0,OUTFILE TEXT_STRING_filesystem , PT_into_destination_outfile
+into_destination.1,DUMPFILE TEXT_STRING_filesystem , PT_into_destination_dumpfile
+into_destination.2,,
+do_stmt.0,DO_SYM , PT_select_stmt PT_query_expression PT_query_specification
+drop_table_stmt.0,DROP , add_tables Sql_cmd_drop_table
+drop_index_stmt.0,DROP INDEX_SYM ON_SYM , PT_drop_index_stmt .algo.get_or_default .lock.get_or_default
+drop_database_stmt.0,DROP DATABASE , MAKE_CMD_DDL_DUMMY
+drop_function_stmt.0,DROP FUNCTION_SYM , check_and_convert_db_name sp_check_name my_error MYF sp_name to_lex_cstring init_qname MAKE_CMD_DDL_DUMMY
+drop_function_stmt.1,DROP FUNCTION_SYM , my_error MYF db copy_db_to sp_check_name sp_name to_lex_cstring init_qname MAKE_CMD_DDL_DUMMY
+drop_resource_group_stmt.0,DROP RESOURCE_SYM GROUP_SYM , PT_drop_resource_group to_lex_cstring
+drop_procedure_stmt.0,DROP PROCEDURE_SYM , my_error MYF MAKE_CMD_DDL_DUMMY
+drop_user_stmt.0,DROP USER , MAKE_CMD_DCL_DUMMY
+drop_view_stmt.0,DROP VIEW_SYM , add_tables MAKE_CMD_DDL_DUMMY
+drop_event_stmt.0,DROP EVENT_SYM , MAKE_CMD_DDL_DUMMY
+drop_trigger_stmt.0,DROP TRIGGER_SYM , Sql_cmd_drop_trigger
+drop_tablespace_stmt.0,DROP TABLESPACE_SYM , is_error contextualize_array
+drop_undo_tablespace_stmt.0,DROP UNDO_SYM TABLESPACE_SYM , is_error contextualize_array
+drop_logfile_stmt.0,DROP LOGFILE_SYM GROUP_SYM , is_error contextualize_array
+drop_server_stmt.0,DROP SERVER_SYM , Sql_cmd_drop_server
+drop_srs_stmt.0,DROP SPATIAL_SYM REFERENCE_SYM SYSTEM_SYM , PT_drop_srs
+drop_role_stmt.0,DROP ROLE_SYM , PT_drop_role
+table_list.0,, push_back
+table_list.1,, push_back
+table_alias_ref_list.0,, .init .push_back
+table_alias_ref_list.1,, .push_back
+if_exists.0,,
+if_exists.1,IF EXISTS ,
+opt_ignore_unknown_user.0,,
+opt_ignore_unknown_user.1,IGNORE_SYM UNKNOWN_SYM USER ,
+opt_temporary.0,,
+opt_temporary.1,TEMPORARY ,
+opt_drop_ts_options.0,,
+opt_drop_ts_options.1,,
+drop_ts_option_list.0,, push_back
+drop_ts_option_list.1,, push_back
+drop_ts_option.0,,
+drop_ts_option.1,,
+insert_stmt.0,INSERT_SYM opt_INTO , DBUG_EXECUTE_IF DBUG_SET PT_insert DBUG_EXECUTE_IF DBUG_SET
+insert_stmt.1,INSERT_SYM opt_INTO SET_SYM , PT_insert_values_list push_back PT_insert
+insert_stmt.2,INSERT_SYM opt_INTO , PT_insert
+replace_stmt.0,REPLACE_SYM opt_INTO , PT_insert
+replace_stmt.1,REPLACE_SYM opt_INTO SET_SYM , PT_insert_values_list push_back PT_insert
+replace_stmt.2,REPLACE_SYM opt_INTO , PT_insert
+insert_lock_option.0,,
+insert_lock_option.1,LOW_PRIORITY ,
+insert_lock_option.2,DELAYED_SYM , push_warning_printf ER_THD
+insert_lock_option.3,HIGH_PRIORITY ,
+replace_lock_option.0,,
+replace_lock_option.1,DELAYED_SYM , push_warning_printf ER_THD
+opt_INTO.0,,
+opt_INTO.1,INTO ,
+insert_from_constructor.0,, PT_item_list POS
+insert_from_constructor.1,, PT_item_list POS
+insert_from_constructor.2,,
+insert_query_expression.0,, PT_item_list POS
+insert_query_expression.1,, PT_item_list POS
+insert_query_expression.2,,
+insert_columns.0,, push_back
+insert_columns.1,, PT_item_list push_back
+insert_values.0,,
+query_expression_with_opt_locking_clauses.0,,
+query_expression_with_opt_locking_clauses.1,, PT_locking
+value_or_values.0,VALUE_SYM ,
+value_or_values.1,VALUES ,
+values_list.0,, push_back
+values_list.1,, PT_insert_values_list push_back
+values_row_list.0,, push_back
+values_row_list.1,, PT_insert_values_list push_back
+equal.0,EQ ,
+equal.1,SET_VAR ,
+opt_equal.0,,
+opt_equal.1,,
+row_value.0,,
+row_value_explicit.0,ROW_SYM ,
+opt_values.0,, PT_item_list POS
+opt_values.1,,
+values.0,, push_back
+values.1,, PT_item_list push_back
+expr_or_default.0,,
+expr_or_default.1,DEFAULT_SYM , Item_default_value
+opt_values_reference.0,,
+opt_values_reference.1,AS , to_lex_cstring memdup sizeof
+opt_insert_update_list.0,,
+opt_insert_update_list.1,ON_SYM DUPLICATE_SYM KEY_SYM UPDATE_SYM ,
+update_stmt.0,UPDATE_SYM SET_SYM , PT_update
+opt_with_clause.0,,
+opt_with_clause.1,,
+update_list.0,, push_back push_back
+update_list.1,, PT_item_list PT_item_list push_back push_back
+update_elem.0,,
+opt_low_priority.0,,
+opt_low_priority.1,LOW_PRIORITY ,
+delete_stmt.0,DELETE_SYM FROM , PT_delete
+delete_stmt.1,DELETE_SYM FROM , PT_delete
+delete_stmt.2,DELETE_SYM FROM USING , PT_delete
+opt_wild.0,,
+opt_wild.1,,
+opt_delete_options.0,,
+opt_delete_options.1,,
+opt_delete_option.0,QUICK ,
+opt_delete_option.1,LOW_PRIORITY ,
+opt_delete_option.2,IGNORE_SYM ,
+truncate_stmt.0,TRUNCATE_SYM , PT_truncate_table_stmt
+opt_table.0,,
+opt_table.1,TABLE_SYM ,
+opt_profile_defs.0,,
+opt_profile_defs.1,,
+profile_defs.0,,
+profile_defs.1,,
+profile_def.0,CPU_SYM ,
+profile_def.1,MEMORY_SYM ,
+profile_def.2,BLOCK_SYM IO_SYM ,
+profile_def.3,CONTEXT_SYM SWITCHES_SYM ,
+profile_def.4,PAGE_SYM FAULTS_SYM ,
+profile_def.5,IPC_SYM ,
+profile_def.6,SWAPS_SYM ,
+profile_def.7,SOURCE_SYM ,
+profile_def.8,ALL ,
+opt_for_query.0,,
+opt_for_query.1,FOR_SYM QUERY_SYM NUM , my_strtoll10
+show_databases_stmt.0,SHOW DATABASES , PT_show_databases
+show_tables_stmt.0,SHOW TABLES , PT_show_tables
+show_triggers_stmt.0,SHOW TRIGGERS_SYM , PT_show_triggers
+show_events_stmt.0,SHOW EVENTS_SYM , PT_show_events
+show_table_status_stmt.0,SHOW TABLE_SYM STATUS_SYM , PT_show_table_status
+show_open_tables_stmt.0,SHOW OPEN_SYM TABLES , PT_show_open_tables
+show_plugins_stmt.0,SHOW PLUGINS_SYM , PT_show_plugins
+show_engine_logs_stmt.0,SHOW ENGINE_SYM LOGS_SYM , PT_show_engine_logs
+show_engine_mutex_stmt.0,SHOW ENGINE_SYM MUTEX_SYM , PT_show_engine_mutex
+show_engine_status_stmt.0,SHOW ENGINE_SYM STATUS_SYM , PT_show_engine_status
+show_columns_stmt.0,SHOW COLUMNS , change_db PT_show_fields
+show_binary_logs_stmt.0,SHOW BINARY_SYM LOGS_SYM , PT_show_binlogs
+show_replicas_stmt.0,SHOW REPLICAS_SYM , PT_show_replicas
+show_binlog_events_stmt.0,SHOW BINLOG_SYM EVENTS_SYM , PT_show_binlog_events
+show_relaylog_events_stmt.0,SHOW RELAYLOG_SYM EVENTS_SYM , PT_show_relaylog_events
+show_keys_stmt.0,SHOW , change_db PT_show_keys
+show_engines_stmt.0,SHOW ENGINES_SYM , PT_show_engines
+show_count_warnings_stmt.0,SHOW COUNT_SYM WARNINGS , PT_show_count_warnings
+show_count_errors_stmt.0,SHOW COUNT_SYM ERRORS , PT_show_count_errors
+show_warnings_stmt.0,SHOW WARNINGS , PT_show_warnings
+show_errors_stmt.0,SHOW ERRORS , PT_show_errors
+show_profiles_stmt.0,SHOW PROFILES_SYM , push_warning_printf ER_THD PT_show_profiles
+show_profile_stmt.0,SHOW PROFILE_SYM , PT_show_profile
+show_status_stmt.0,SHOW STATUS_SYM , PT_show_status
+show_processlist_stmt.0,SHOW PROCESSLIST_SYM , PT_show_processlist
+show_variables_stmt.0,SHOW VARIABLES , PT_show_variables
+show_character_set_stmt.0,SHOW , PT_show_charsets
+show_collation_stmt.0,SHOW COLLATION_SYM , PT_show_collations
+show_privileges_stmt.0,SHOW PRIVILEGES , PT_show_privileges
+show_grants_stmt.0,SHOW GRANTS , PT_show_grants
+show_grants_stmt.1,SHOW GRANTS FOR_SYM , PT_show_grants
+show_grants_stmt.2,SHOW GRANTS FOR_SYM USING , PT_show_grants
+show_create_database_stmt.0,SHOW CREATE DATABASE , PT_show_create_database
+show_create_table_stmt.0,SHOW CREATE TABLE_SYM , PT_show_create_table
+show_create_view_stmt.0,SHOW CREATE VIEW_SYM , PT_show_create_view
+show_binary_log_status_stmt.0,SHOW BINARY_SYM LOG_SYM STATUS_SYM , PT_show_binary_log_status
+show_replica_status_stmt.0,SHOW REPLICA_SYM STATUS_SYM , PT_show_replica_status
+show_create_procedure_stmt.0,SHOW CREATE PROCEDURE_SYM , PT_show_create_procedure
+show_create_function_stmt.0,SHOW CREATE FUNCTION_SYM , PT_show_create_function
+show_create_trigger_stmt.0,SHOW CREATE TRIGGER_SYM , PT_show_create_trigger
+show_procedure_status_stmt.0,SHOW PROCEDURE_SYM STATUS_SYM , PT_show_status_proc
+show_function_status_stmt.0,SHOW FUNCTION_SYM STATUS_SYM , PT_show_status_func
+show_procedure_code_stmt.0,SHOW PROCEDURE_SYM CODE_SYM , PT_show_procedure_code
+show_function_code_stmt.0,SHOW FUNCTION_SYM CODE_SYM , PT_show_function_code
+show_create_event_stmt.0,SHOW CREATE EVENT_SYM , PT_show_create_event
+show_create_user_stmt.0,SHOW CREATE USER , PT_show_create_user
+show_parse_tree_stmt.0,SHOW PARSE_TREE_SYM , syntax_error_at PT_show_parse_tree
+engine_or_all.0,,
+engine_or_all.1,ALL ,
+opt_storage.0,,
+opt_storage.1,STORAGE_SYM ,
+opt_db.0,,
+opt_db.1,,
+opt_full.0,,
+opt_full.1,FULL ,
+opt_extended.0,,
+opt_extended.1,EXTENDED_SYM ,
+opt_show_cmd_type.0,,
+opt_show_cmd_type.1,FULL ,
+opt_show_cmd_type.2,EXTENDED_SYM ,
+opt_show_cmd_type.3,EXTENDED_SYM FULL ,
+from_or_in.0,FROM ,
+from_or_in.1,IN_SYM ,
+opt_binlog_in.0,,
+opt_binlog_in.1,IN_SYM TEXT_STRING_sys ,
+binlog_from.0,,
+binlog_from.1,FROM ,
+opt_wild_or_where.0,,
+opt_wild_or_where.1,LIKE TEXT_STRING_literal ,
+opt_wild_or_where.2,,
+describe_stmt.0,, PT_show_fields
+explain_stmt.0,, PT_explain to_string_view
+explainable_stmt.0,,
+explainable_stmt.1,,
+explainable_stmt.2,,
+explainable_stmt.3,,
+explainable_stmt.4,,
+explainable_stmt.5,FOR_SYM CONNECTION_SYM , PT_explain_for_connection
+describe_command.0,DESC ,
+describe_command.1,DESCRIBE ,
+opt_explain_format.0,,
+opt_explain_format.1,FORMAT_SYM EQ , is_identifier is_identifier is_identifier my_error MYF
+opt_explain_options.0,ANALYZE_SYM ,
+opt_explain_options.1,, MYSQL_YYABORT_ERROR MYF MYSQL_YYABORT_ERROR MYF MYSQL_YYABORT_ERROR MYF
+opt_explain_into.0,,
+opt_explain_into.1,INTO ,
+opt_explain_for_schema.0,,
+opt_explain_for_schema.1,FOR_SYM DATABASE , to_lex_cstring
+opt_describe_column.0,,
+opt_describe_column.1,, lex_string
+opt_describe_column.2,,
+$@46
+flush.0,FLUSH_SYM ,
+$@47
+flush_options.0,, add_tables
+flush_options.1,,
+$@48
+opt_flush_lock.0,,
+opt_flush_lock.1,WITH READ_SYM LOCK_SYM , mdl_request.set_type
+opt_flush_lock.2,FOR_SYM EXPORT_SYM , syntax_error mdl_request.set_type
+flush_options_list.0,,
+flush_options_list.1,,
+flush_option.0,ERROR_SYM LOGS_SYM ,
+flush_option.1,ENGINE_SYM LOGS_SYM ,
+flush_option.2,GENERAL LOGS_SYM ,
+flush_option.3,SLOW LOGS_SYM ,
+flush_option.4,BINARY_SYM LOGS_SYM ,
+flush_option.5,RELAY LOGS_SYM , set_channel_name
+flush_option.6,PRIVILEGES ,
+flush_option.7,LOGS_SYM ,
+flush_option.8,STATUS_SYM ,
+flush_option.9,RESOURCES ,
+flush_option.10,OPTIMIZER_COSTS_SYM ,
+opt_table_list.0,,
+opt_table_list.1,,
+$@49
+reset.0,RESET_SYM ,
+reset.1,RESET_SYM PERSIST_SYM ,
+reset_options.0,,
+reset_options.1,,
+opt_if_exists_ident.0,,
+opt_if_exists_ident.1,,
+persisted_variable_ident.0,,
+persisted_variable_ident.1,, alloc strxnmov
+persisted_variable_ident.2,DEFAULT_SYM , STRING_WITH_LEN alloc strxnmov
+$@50
+$@51
+reset_option.0,REPLICA_SYM , set_channel_name
+reset_option.1,BINARY_SYM LOGS_SYM AND_SYM GTIDS_SYM , global_read_lock.is_acquired
+opt_replica_reset_options.0,,
+opt_replica_reset_options.1,ALL ,
+source_reset_options.0,,
+source_reset_options.1,TO_SYM , my_error MYF
+$@52
+purge.0,PURGE ,
+purge_options.0,BINARY_SYM LOGS_SYM ,
+purge_option.0,TO_SYM TEXT_STRING_sys ,
+purge_option.1,BEFORE_SYM , ITEMIZE purge_value_list.clear purge_value_list.push_front
+kill.0,KILL_SYM , ITEMIZE kill_value_list.clear kill_value_list.push_front
+kill_option.0,,
+kill_option.1,CONNECTION_SYM ,
+kill_option.2,QUERY_SYM ,
+use.0,USE_SYM , my_error MYF
+load_stmt.0,LOAD TEXT_STRING_filesystem INTO TABLE_SYM , PT_load_table
+data_or_xml.0,DATA_SYM ,
+data_or_xml.1,XML_SYM ,
+opt_local.0,,
+opt_local.1,LOCAL_SYM ,
+opt_from_keyword.0,,
+opt_from_keyword.1,FROM ,
+load_data_lock.0,,
+load_data_lock.1,CONCURRENT ,
+load_data_lock.2,LOW_PRIORITY ,
+load_source_type.0,INFILE_SYM ,
+load_source_type.1,URL_SYM ,
+load_source_type.2,S3_SYM ,
+opt_source_count.0,,
+opt_source_count.1,IDENT_sys NUM , atol my_strcasecmp syntax_error_at syntax_error_at
+opt_source_order.0,,
+opt_source_order.1,IN_SYM PRIMARY_SYM KEY_SYM ORDER_SYM ,
+opt_duplicate.0,,
+opt_duplicate.1,,
+duplicate.0,REPLACE_SYM ,
+duplicate.1,IGNORE_SYM ,
+opt_field_term.0,, .cleanup
+opt_field_term.1,COLUMNS ,
+field_term_list.0,, .merge_field_separators
+field_term_list.1,,
+field_term.0,TERMINATED BY , .cleanup
+field_term.1,OPTIONALLY ENCLOSED BY , .cleanup
+field_term.2,ENCLOSED BY , .cleanup
+field_term.3,ESCAPED BY , .cleanup
+opt_line_term.0,, .cleanup
+opt_line_term.1,LINES ,
+line_term_list.0,, .merge_line_separators
+line_term_list.1,,
+line_term.0,TERMINATED BY , .cleanup
+line_term.1,STARTING BY , .cleanup
+opt_xml_rows_identified_by.0,,
+opt_xml_rows_identified_by.1,ROWS_SYM IDENTIFIED_SYM BY ,
+opt_ignore_lines.0,,
+opt_ignore_lines.1,IGNORE_SYM NUM , atol
+lines_or_rows.0,LINES ,
+lines_or_rows.1,ROWS_SYM ,
+opt_field_or_var_spec.0,,
+opt_field_or_var_spec.1,,
+opt_field_or_var_spec.2,,
+fields_or_vars.0,, push_back
+fields_or_vars.1,, PT_item_list push_back
+field_or_var.0,,
+field_or_var.1,, Item_user_var_as_out_param
+opt_load_data_set_spec.0,,
+opt_load_data_set_spec.1,SET_SYM ,
+load_data_set_list.0,, push_back push_back push_back
+load_data_set_list.1,, PT_item_list push_back PT_item_list push_back push_back
+load_data_set_elem.0,, item_name.copy charset String charset
+opt_load_algorithm.0,,
+opt_load_algorithm.1,ALGORITHM_SYM EQ BULK_SYM ,
+opt_compression_algorithm.0,,
+opt_compression_algorithm.1,COMPRESSION_SYM EQ TEXT_STRING_sys , to_lex_cstring
+opt_load_parallel.0,,
+opt_load_parallel.1,PARALLEL_SYM EQ NUM , atol
+opt_load_memory.0,,
+opt_load_memory.1,MEMORY_SYM EQ ,
+text_literal.0,TEXT_STRING , PTI_text_literal_text_string m_lip.text_string_is_7bit
+text_literal.1,NCHAR_STRING , PTI_text_literal_nchar_string m_lip.text_string_is_7bit warn_about_deprecated_national
+text_literal.2,UNDERSCORE_CHARSET TEXT_STRING , PTI_text_literal_underscore_charset m_lip.text_string_is_7bit
+text_literal.3,TEXT_STRING_literal , PTI_text_literal_concat m_lip.text_string_is_7bit
+text_string.0,TEXT_STRING_literal , String
+text_string.1,HEX_NUM , make_hex_str String
+text_string.2,BIN_NUM , make_bin_str String
+param_marker.0,PARAM_MARKER , Item_param get_buf param_list.push_back
+signed_literal.0,,
+signed_literal.1,NUM_literal ,
+signed_literal.2,NUM_literal , neg
+signed_literal_or_null.0,,
+signed_literal_or_null.1,,
+null_as_literal.0,NULL_SYM , reduce_digest_token Item_null
+literal.0,,
+literal.1,NUM_literal ,
+literal.2,,
+literal.3,FALSE_SYM , Item_func_false
+literal.4,TRUE_SYM , Item_func_true
+literal.5,HEX_NUM , Item_hex_string
+literal.6,BIN_NUM , Item_bin_string
+literal.7,UNDERSCORE_CHARSET HEX_NUM , PTI_literal_underscore_charset_hex_num
+literal.8,UNDERSCORE_CHARSET BIN_NUM , PTI_literal_underscore_charset_bin_num
+literal_or_null.0,,
+literal_or_null.1,,
+NUM_literal.0,,
+NUM_literal.1,DECIMAL_NUM , Item_decimal
+NUM_literal.2,FLOAT_NUM , Item_float
+int64_literal.0,NUM , Item_int
+int64_literal.1,LONG_NUM , Item_int
+int64_literal.2,ULONGLONG_NUM , Item_uint
+temporal_literal.0,DATE_SYM TEXT_STRING , PTI_temporal_literal
+temporal_literal.1,TIME_SYM TEXT_STRING , PTI_temporal_literal
+temporal_literal.2,TIMESTAMP_SYM TEXT_STRING , PTI_temporal_literal
+opt_interval.0,,
+opt_interval.1,INTERVAL_SYM ,
+insert_column.0,,
+table_wild.0,, Item_asterisk
+table_wild.1,, check_and_convert_db_name Item_asterisk
+order_expr.0,, PT_order_expr
+grouping_expr.0,, PT_order_expr
+simple_ident.0,, PTI_simple_ident_ident to_lex_cstring
+simple_ident.1,,
+simple_ident_nospvar.0,, PTI_simple_ident_nospvar_ident
+simple_ident_nospvar.1,,
+simple_ident_q.0,, PTI_simple_ident_q_2d
+simple_ident_q.1,, check_and_convert_db_name PTI_simple_ident_q_3d
+table_ident.0,, Table_ident to_lex_cstring
+table_ident.1,, to_lex_cstring Table_ident to_lex_cstring
+table_ident_opt_wild.0,, Table_ident to_lex_cstring
+table_ident_opt_wild.1,, Table_ident get_protocol to_lex_cstring to_lex_cstring
+IDENT_sys.0,IDENT ,
+IDENT_sys.1,IDENT_QUOTED , well_formed_len err my_error MYF err.ptr convert_string charset
+TEXT_STRING_sys_nonewline.0,TEXT_STRING_sys , strcont my_error MYF
+filter_wild_db_table_string.0,TEXT_STRING_sys_nonewline , strcont my_error MYF
+TEXT_STRING_sys.0,TEXT_STRING , convert_string charset
+TEXT_STRING_literal.0,TEXT_STRING , convert_string charset
+TEXT_STRING_filesystem.0,TEXT_STRING , convert_string charset
+TEXT_STRING_password.0,TEXT_STRING ,
+TEXT_STRING_hash.0,TEXT_STRING_sys ,
+TEXT_STRING_hash.1,HEX_NUM , to_lex_string make_hex_str
+TEXT_STRING_validated.0,TEXT_STRING , convert_string charset
+ident.0,IDENT_sys ,
+ident.1,, strmake
+role_ident.0,IDENT_sys ,
+role_ident.1,, strmake
+label_ident.0,IDENT_sys , to_lex_cstring
+label_ident.1,, strmake
+lvalue_ident.0,IDENT_sys ,
+lvalue_ident.1,, strmake
+ident_or_text.0,,
+ident_or_text.1,TEXT_STRING_sys ,
+ident_or_text.2,LEX_HOSTNAME ,
+role_ident_or_text.0,,
+role_ident_or_text.1,TEXT_STRING_sys ,
+role_ident_or_text.2,LEX_HOSTNAME ,
+user_ident_or_text.0,, alloc
+user_ident_or_text.1,, alloc
+user.0,,
+user.1,CURRENT_USER , alloc
+role.0,, alloc
+role.1,, alloc
+schema.0,, check_and_convert_db_name
+ident_keyword.0,,
+ident_keyword.1,,
+ident_keyword.2,,
+ident_keyword.3,,
+ident_keyword.4,,
+ident_keywords_ambiguous_1_roles_and_labels.0,EXECUTE_SYM ,
+ident_keywords_ambiguous_1_roles_and_labels.1,RESTART_SYM ,
+ident_keywords_ambiguous_1_roles_and_labels.2,SHUTDOWN ,
+ident_keywords_ambiguous_2_labels.0,ASCII_SYM ,
+ident_keywords_ambiguous_2_labels.1,BEGIN_SYM ,
+ident_keywords_ambiguous_2_labels.2,BYTE_SYM ,
+ident_keywords_ambiguous_2_labels.3,CACHE_SYM ,
+ident_keywords_ambiguous_2_labels.4,CHARSET ,
+ident_keywords_ambiguous_2_labels.5,CHECKSUM_SYM ,
+ident_keywords_ambiguous_2_labels.6,CLONE_SYM ,
+ident_keywords_ambiguous_2_labels.7,COMMENT_SYM ,
+ident_keywords_ambiguous_2_labels.8,COMMIT_SYM ,
+ident_keywords_ambiguous_2_labels.9,CONTAINS_SYM ,
+ident_keywords_ambiguous_2_labels.10,DEALLOCATE_SYM ,
+ident_keywords_ambiguous_2_labels.11,DO_SYM ,
+ident_keywords_ambiguous_2_labels.12,END ,
+ident_keywords_ambiguous_2_labels.13,FLUSH_SYM ,
+ident_keywords_ambiguous_2_labels.14,FOLLOWS_SYM ,
+ident_keywords_ambiguous_2_labels.15,HANDLER_SYM ,
+ident_keywords_ambiguous_2_labels.16,HELP_SYM ,
+ident_keywords_ambiguous_2_labels.17,IMPORT ,
+ident_keywords_ambiguous_2_labels.18,INSTALL_SYM ,
+ident_keywords_ambiguous_2_labels.19,LANGUAGE_SYM ,
+ident_keywords_ambiguous_2_labels.20,NO_SYM ,
+ident_keywords_ambiguous_2_labels.21,PRECEDES_SYM ,
+ident_keywords_ambiguous_2_labels.22,PREPARE_SYM ,
+ident_keywords_ambiguous_2_labels.23,REPAIR ,
+ident_keywords_ambiguous_2_labels.24,RESET_SYM ,
+ident_keywords_ambiguous_2_labels.25,ROLLBACK_SYM ,
+ident_keywords_ambiguous_2_labels.26,SAVEPOINT_SYM ,
+ident_keywords_ambiguous_2_labels.27,SIGNED_SYM ,
+ident_keywords_ambiguous_2_labels.28,SLAVE ,
+ident_keywords_ambiguous_2_labels.29,START_SYM ,
+ident_keywords_ambiguous_2_labels.30,STOP_SYM ,
+ident_keywords_ambiguous_2_labels.31,TRUNCATE_SYM ,
+ident_keywords_ambiguous_2_labels.32,UNICODE_SYM ,
+ident_keywords_ambiguous_2_labels.33,UNINSTALL_SYM ,
+ident_keywords_ambiguous_2_labels.34,XA_SYM ,
+label_keyword.0,,
+label_keyword.1,,
+label_keyword.2,,
+ident_keywords_ambiguous_3_roles.0,EVENT_SYM ,
+ident_keywords_ambiguous_3_roles.1,FILE_SYM ,
+ident_keywords_ambiguous_3_roles.2,NONE_SYM ,
+ident_keywords_ambiguous_3_roles.3,PROCESS ,
+ident_keywords_ambiguous_3_roles.4,PROXY_SYM ,
+ident_keywords_ambiguous_3_roles.5,RELOAD ,
+ident_keywords_ambiguous_3_roles.6,REPLICATION ,
+ident_keywords_ambiguous_3_roles.7,RESOURCE_SYM ,
+ident_keywords_ambiguous_3_roles.8,SUPER_SYM ,
+ident_keywords_unambiguous.0,ACTION ,
+ident_keywords_unambiguous.1,ACCOUNT_SYM ,
+ident_keywords_unambiguous.2,ACTIVE_SYM ,
+ident_keywords_unambiguous.3,ADDDATE_SYM ,
+ident_keywords_unambiguous.4,ADMIN_SYM ,
+ident_keywords_unambiguous.5,AFTER_SYM ,
+ident_keywords_unambiguous.6,AGAINST ,
+ident_keywords_unambiguous.7,AGGREGATE_SYM ,
+ident_keywords_unambiguous.8,ALGORITHM_SYM ,
+ident_keywords_unambiguous.9,ALWAYS_SYM ,
+ident_keywords_unambiguous.10,ANY_SYM ,
+ident_keywords_unambiguous.11,ARRAY_SYM ,
+ident_keywords_unambiguous.12,AT_SYM ,
+ident_keywords_unambiguous.13,ATTRIBUTE_SYM ,
+ident_keywords_unambiguous.14,AUTHENTICATION_SYM ,
+ident_keywords_unambiguous.15,AUTOEXTEND_SIZE_SYM ,
+ident_keywords_unambiguous.16,AUTO_SYM ,
+ident_keywords_unambiguous.17,AUTO_INC ,
+ident_keywords_unambiguous.18,AVG_ROW_LENGTH ,
+ident_keywords_unambiguous.19,AVG_SYM ,
+ident_keywords_unambiguous.20,BACKUP_SYM ,
+ident_keywords_unambiguous.21,BERNOULLI_SYM ,
+ident_keywords_unambiguous.22,BINLOG_SYM ,
+ident_keywords_unambiguous.23,BIT_SYM ,
+ident_keywords_unambiguous.24,BLOCK_SYM ,
+ident_keywords_unambiguous.25,BOOLEAN_SYM ,
+ident_keywords_unambiguous.26,BOOL_SYM ,
+ident_keywords_unambiguous.27,BTREE_SYM ,
+ident_keywords_unambiguous.28,BUCKETS_SYM ,
+ident_keywords_unambiguous.29,BULK_SYM ,
+ident_keywords_unambiguous.30,CASCADED ,
+ident_keywords_unambiguous.31,CATALOG_NAME_SYM ,
+ident_keywords_unambiguous.32,CHAIN_SYM ,
+ident_keywords_unambiguous.33,CHALLENGE_RESPONSE_SYM ,
+ident_keywords_unambiguous.34,CHANGED ,
+ident_keywords_unambiguous.35,CHANNEL_SYM ,
+ident_keywords_unambiguous.36,CIPHER_SYM ,
+ident_keywords_unambiguous.37,CLASS_ORIGIN_SYM ,
+ident_keywords_unambiguous.38,CLIENT_SYM ,
+ident_keywords_unambiguous.39,CLOSE_SYM ,
+ident_keywords_unambiguous.40,COALESCE ,
+ident_keywords_unambiguous.41,CODE_SYM ,
+ident_keywords_unambiguous.42,COLLATION_SYM ,
+ident_keywords_unambiguous.43,COLUMNS ,
+ident_keywords_unambiguous.44,COLUMN_FORMAT_SYM ,
+ident_keywords_unambiguous.45,COLUMN_NAME_SYM ,
+ident_keywords_unambiguous.46,COMMITTED_SYM ,
+ident_keywords_unambiguous.47,COMPACT_SYM ,
+ident_keywords_unambiguous.48,COMPLETION_SYM ,
+ident_keywords_unambiguous.49,COMPONENT_SYM ,
+ident_keywords_unambiguous.50,COMPRESSED_SYM ,
+ident_keywords_unambiguous.51,COMPRESSION_SYM ,
+ident_keywords_unambiguous.52,CONCURRENT ,
+ident_keywords_unambiguous.53,CONNECTION_SYM ,
+ident_keywords_unambiguous.54,CONSISTENT_SYM ,
+ident_keywords_unambiguous.55,CONSTRAINT_CATALOG_SYM ,
+ident_keywords_unambiguous.56,CONSTRAINT_NAME_SYM ,
+ident_keywords_unambiguous.57,CONSTRAINT_SCHEMA_SYM ,
+ident_keywords_unambiguous.58,CONTEXT_SYM ,
+ident_keywords_unambiguous.59,CPU_SYM ,
+ident_keywords_unambiguous.60,CURRENT_SYM ,
+ident_keywords_unambiguous.61,CURSOR_NAME_SYM ,
+ident_keywords_unambiguous.62,DATAFILE_SYM ,
+ident_keywords_unambiguous.63,DATA_SYM ,
+ident_keywords_unambiguous.64,DATETIME_SYM ,
+ident_keywords_unambiguous.65,DATE_SYM ,
+ident_keywords_unambiguous.66,DAY_SYM ,
+ident_keywords_unambiguous.67,DEFAULT_AUTH_SYM ,
+ident_keywords_unambiguous.68,DEFINER_SYM ,
+ident_keywords_unambiguous.69,DEFINITION_SYM ,
+ident_keywords_unambiguous.70,DELAY_KEY_WRITE_SYM ,
+ident_keywords_unambiguous.71,DESCRIPTION_SYM ,
+ident_keywords_unambiguous.72,DIAGNOSTICS_SYM ,
+ident_keywords_unambiguous.73,DIRECTORY_SYM ,
+ident_keywords_unambiguous.74,DISABLE_SYM ,
+ident_keywords_unambiguous.75,DISCARD_SYM ,
+ident_keywords_unambiguous.76,DISK_SYM ,
+ident_keywords_unambiguous.77,DUMPFILE ,
+ident_keywords_unambiguous.78,DUPLICATE_SYM ,
+ident_keywords_unambiguous.79,DYNAMIC_SYM ,
+ident_keywords_unambiguous.80,ENABLE_SYM ,
+ident_keywords_unambiguous.81,ENCRYPTION_SYM ,
+ident_keywords_unambiguous.82,ENDS_SYM ,
+ident_keywords_unambiguous.83,ENFORCED_SYM ,
+ident_keywords_unambiguous.84,ENGINES_SYM ,
+ident_keywords_unambiguous.85,ENGINE_SYM ,
+ident_keywords_unambiguous.86,ENGINE_ATTRIBUTE_SYM ,
+ident_keywords_unambiguous.87,ENUM_SYM ,
+ident_keywords_unambiguous.88,ERRORS ,
+ident_keywords_unambiguous.89,ERROR_SYM ,
+ident_keywords_unambiguous.90,ESCAPE_SYM ,
+ident_keywords_unambiguous.91,EVENTS_SYM ,
+ident_keywords_unambiguous.92,EVERY_SYM ,
+ident_keywords_unambiguous.93,EXCHANGE_SYM ,
+ident_keywords_unambiguous.94,EXCLUDE_SYM ,
+ident_keywords_unambiguous.95,EXPANSION_SYM ,
+ident_keywords_unambiguous.96,EXPIRE_SYM ,
+ident_keywords_unambiguous.97,EXPORT_SYM ,
+ident_keywords_unambiguous.98,EXTENDED_SYM ,
+ident_keywords_unambiguous.99,EXTENT_SIZE_SYM ,
+ident_keywords_unambiguous.100,FACTOR_SYM ,
+ident_keywords_unambiguous.101,FAILED_LOGIN_ATTEMPTS_SYM ,
+ident_keywords_unambiguous.102,FAST_SYM ,
+ident_keywords_unambiguous.103,FAULTS_SYM ,
+ident_keywords_unambiguous.104,FILE_BLOCK_SIZE_SYM ,
+ident_keywords_unambiguous.105,FILTER_SYM ,
+ident_keywords_unambiguous.106,FINISH_SYM ,
+ident_keywords_unambiguous.107,FIRST_SYM ,
+ident_keywords_unambiguous.108,FIXED_SYM ,
+ident_keywords_unambiguous.109,FOLLOWING_SYM ,
+ident_keywords_unambiguous.110,FORMAT_SYM ,
+ident_keywords_unambiguous.111,FOUND_SYM ,
+ident_keywords_unambiguous.112,FULL , push_warning_printf ER_THD
+ident_keywords_unambiguous.113,GENERAL ,
+ident_keywords_unambiguous.114,GENERATE_SYM ,
+ident_keywords_unambiguous.115,GEOMETRYCOLLECTION_SYM ,
+ident_keywords_unambiguous.116,GEOMETRY_SYM ,
+ident_keywords_unambiguous.117,GET_FORMAT ,
+ident_keywords_unambiguous.118,GET_SOURCE_PUBLIC_KEY_SYM ,
+ident_keywords_unambiguous.119,GRANTS ,
+ident_keywords_unambiguous.120,GROUP_REPLICATION ,
+ident_keywords_unambiguous.121,GTIDS_SYM ,
+ident_keywords_unambiguous.122,GTID_ONLY_SYM ,
+ident_keywords_unambiguous.123,HASH_SYM ,
+ident_keywords_unambiguous.124,HISTOGRAM_SYM ,
+ident_keywords_unambiguous.125,HISTORY_SYM ,
+ident_keywords_unambiguous.126,HOSTS_SYM ,
+ident_keywords_unambiguous.127,HOST_SYM ,
+ident_keywords_unambiguous.128,HOUR_SYM ,
+ident_keywords_unambiguous.129,IDENTIFIED_SYM ,
+ident_keywords_unambiguous.130,IGNORE_SERVER_IDS_SYM ,
+ident_keywords_unambiguous.131,INACTIVE_SYM ,
+ident_keywords_unambiguous.132,INDEXES ,
+ident_keywords_unambiguous.133,INITIAL_SIZE_SYM ,
+ident_keywords_unambiguous.134,INITIAL_SYM ,
+ident_keywords_unambiguous.135,INITIATE_SYM ,
+ident_keywords_unambiguous.136,INSERT_METHOD ,
+ident_keywords_unambiguous.137,INSTANCE_SYM ,
+ident_keywords_unambiguous.138,INVISIBLE_SYM ,
+ident_keywords_unambiguous.139,INVOKER_SYM ,
+ident_keywords_unambiguous.140,IO_SYM ,
+ident_keywords_unambiguous.141,IPC_SYM ,
+ident_keywords_unambiguous.142,ISOLATION ,
+ident_keywords_unambiguous.143,ISSUER_SYM ,
+ident_keywords_unambiguous.144,JSON_SYM ,
+ident_keywords_unambiguous.145,JSON_VALUE_SYM ,
+ident_keywords_unambiguous.146,KEY_BLOCK_SIZE ,
+ident_keywords_unambiguous.147,KEYRING_SYM ,
+ident_keywords_unambiguous.148,LAST_SYM ,
+ident_keywords_unambiguous.149,LEAVES ,
+ident_keywords_unambiguous.150,LESS_SYM ,
+ident_keywords_unambiguous.151,LEVEL_SYM ,
+ident_keywords_unambiguous.152,LINESTRING_SYM ,
+ident_keywords_unambiguous.153,LIST_SYM ,
+ident_keywords_unambiguous.154,LOCKED_SYM ,
+ident_keywords_unambiguous.155,LOCKS_SYM ,
+ident_keywords_unambiguous.156,LOGFILE_SYM ,
+ident_keywords_unambiguous.157,LOGS_SYM ,
+ident_keywords_unambiguous.158,LOG_SYM ,
+ident_keywords_unambiguous.159,NETWORK_NAMESPACE_SYM ,
+ident_keywords_unambiguous.160,MASTER_SYM ,
+ident_keywords_unambiguous.161,MAX_CONNECTIONS_PER_HOUR ,
+ident_keywords_unambiguous.162,MAX_QUERIES_PER_HOUR ,
+ident_keywords_unambiguous.163,MAX_ROWS ,
+ident_keywords_unambiguous.164,MAX_SIZE_SYM ,
+ident_keywords_unambiguous.165,MAX_UPDATES_PER_HOUR ,
+ident_keywords_unambiguous.166,MAX_USER_CONNECTIONS_SYM ,
+ident_keywords_unambiguous.167,MEDIUM_SYM ,
+ident_keywords_unambiguous.168,MEMBER_SYM ,
+ident_keywords_unambiguous.169,MEMORY_SYM ,
+ident_keywords_unambiguous.170,MERGE_SYM ,
+ident_keywords_unambiguous.171,MESSAGE_TEXT_SYM ,
+ident_keywords_unambiguous.172,MICROSECOND_SYM ,
+ident_keywords_unambiguous.173,MIGRATE_SYM ,
+ident_keywords_unambiguous.174,MINUTE_SYM ,
+ident_keywords_unambiguous.175,MIN_ROWS ,
+ident_keywords_unambiguous.176,MODE_SYM ,
+ident_keywords_unambiguous.177,MODIFY_SYM ,
+ident_keywords_unambiguous.178,MONTH_SYM ,
+ident_keywords_unambiguous.179,MULTILINESTRING_SYM ,
+ident_keywords_unambiguous.180,MULTIPOINT_SYM ,
+ident_keywords_unambiguous.181,MULTIPOLYGON_SYM ,
+ident_keywords_unambiguous.182,MUTEX_SYM ,
+ident_keywords_unambiguous.183,MYSQL_ERRNO_SYM ,
+ident_keywords_unambiguous.184,NAMES_SYM ,
+ident_keywords_unambiguous.185,NAME_SYM ,
+ident_keywords_unambiguous.186,NATIONAL_SYM ,
+ident_keywords_unambiguous.187,NCHAR_SYM ,
+ident_keywords_unambiguous.188,NDBCLUSTER_SYM ,
+ident_keywords_unambiguous.189,NESTED_SYM ,
+ident_keywords_unambiguous.190,NEVER_SYM ,
+ident_keywords_unambiguous.191,NEW_SYM ,
+ident_keywords_unambiguous.192,NEXT_SYM ,
+ident_keywords_unambiguous.193,NODEGROUP_SYM ,
+ident_keywords_unambiguous.194,NOWAIT_SYM ,
+ident_keywords_unambiguous.195,NO_WAIT_SYM ,
+ident_keywords_unambiguous.196,NULLS_SYM ,
+ident_keywords_unambiguous.197,NUMBER_SYM ,
+ident_keywords_unambiguous.198,NVARCHAR_SYM ,
+ident_keywords_unambiguous.199,OFF_SYM ,
+ident_keywords_unambiguous.200,OFFSET_SYM ,
+ident_keywords_unambiguous.201,OJ_SYM ,
+ident_keywords_unambiguous.202,OLD_SYM ,
+ident_keywords_unambiguous.203,ONE_SYM ,
+ident_keywords_unambiguous.204,ONLY_SYM ,
+ident_keywords_unambiguous.205,OPEN_SYM ,
+ident_keywords_unambiguous.206,OPTIONAL_SYM ,
+ident_keywords_unambiguous.207,OPTIONS_SYM ,
+ident_keywords_unambiguous.208,ORDINALITY_SYM ,
+ident_keywords_unambiguous.209,ORGANIZATION_SYM ,
+ident_keywords_unambiguous.210,OTHERS_SYM ,
+ident_keywords_unambiguous.211,OWNER_SYM ,
+ident_keywords_unambiguous.212,PACK_KEYS_SYM ,
+ident_keywords_unambiguous.213,PAGE_SYM ,
+ident_keywords_unambiguous.214,PARSER_SYM ,
+ident_keywords_unambiguous.215,PARSE_TREE_SYM ,
+ident_keywords_unambiguous.216,PARTIAL ,
+ident_keywords_unambiguous.217,PARTITIONING_SYM ,
+ident_keywords_unambiguous.218,PARTITIONS_SYM ,
+ident_keywords_unambiguous.219,PASSWORD ,
+ident_keywords_unambiguous.220,PASSWORD_LOCK_TIME_SYM ,
+ident_keywords_unambiguous.221,PATH_SYM ,
+ident_keywords_unambiguous.222,PHASE_SYM ,
+ident_keywords_unambiguous.223,PLUGINS_SYM ,
+ident_keywords_unambiguous.224,PLUGIN_DIR_SYM ,
+ident_keywords_unambiguous.225,PLUGIN_SYM ,
+ident_keywords_unambiguous.226,POINT_SYM ,
+ident_keywords_unambiguous.227,POLYGON_SYM ,
+ident_keywords_unambiguous.228,PORT_SYM ,
+ident_keywords_unambiguous.229,PRECEDING_SYM ,
+ident_keywords_unambiguous.230,PRESERVE_SYM ,
+ident_keywords_unambiguous.231,PREV_SYM ,
+ident_keywords_unambiguous.232,PRIVILEGES ,
+ident_keywords_unambiguous.233,PRIVILEGE_CHECKS_USER_SYM ,
+ident_keywords_unambiguous.234,PROCESSLIST_SYM ,
+ident_keywords_unambiguous.235,PROFILES_SYM ,
+ident_keywords_unambiguous.236,PROFILE_SYM ,
+ident_keywords_unambiguous.237,QUARTER_SYM ,
+ident_keywords_unambiguous.238,QUERY_SYM ,
+ident_keywords_unambiguous.239,QUICK ,
+ident_keywords_unambiguous.240,RANDOM_SYM ,
+ident_keywords_unambiguous.241,READ_ONLY_SYM ,
+ident_keywords_unambiguous.242,REBUILD_SYM ,
+ident_keywords_unambiguous.243,RECOVER_SYM ,
+ident_keywords_unambiguous.244,REDO_BUFFER_SIZE_SYM ,
+ident_keywords_unambiguous.245,REDUNDANT_SYM ,
+ident_keywords_unambiguous.246,REFERENCE_SYM ,
+ident_keywords_unambiguous.247,REGISTRATION_SYM ,
+ident_keywords_unambiguous.248,RELAY ,
+ident_keywords_unambiguous.249,RELAYLOG_SYM ,
+ident_keywords_unambiguous.250,RELAY_LOG_FILE_SYM ,
+ident_keywords_unambiguous.251,RELAY_LOG_POS_SYM ,
+ident_keywords_unambiguous.252,RELAY_THREAD ,
+ident_keywords_unambiguous.253,REMOVE_SYM ,
+ident_keywords_unambiguous.254,ASSIGN_GTIDS_TO_ANONYMOUS_TRANSACTIONS_SYM ,
+ident_keywords_unambiguous.255,REORGANIZE_SYM ,
+ident_keywords_unambiguous.256,REPEATABLE_SYM ,
+ident_keywords_unambiguous.257,REPLICAS_SYM ,
+ident_keywords_unambiguous.258,REPLICATE_DO_DB ,
+ident_keywords_unambiguous.259,REPLICATE_DO_TABLE ,
+ident_keywords_unambiguous.260,REPLICATE_IGNORE_DB ,
+ident_keywords_unambiguous.261,REPLICATE_IGNORE_TABLE ,
+ident_keywords_unambiguous.262,REPLICATE_REWRITE_DB ,
+ident_keywords_unambiguous.263,REPLICATE_WILD_DO_TABLE ,
+ident_keywords_unambiguous.264,REPLICATE_WILD_IGNORE_TABLE ,
+ident_keywords_unambiguous.265,REPLICA_SYM ,
+ident_keywords_unambiguous.266,REQUIRE_ROW_FORMAT_SYM ,
+ident_keywords_unambiguous.267,REQUIRE_TABLE_PRIMARY_KEY_CHECK_SYM ,
+ident_keywords_unambiguous.268,RESOURCES ,
+ident_keywords_unambiguous.269,RESPECT_SYM ,
+ident_keywords_unambiguous.270,RESTORE_SYM ,
+ident_keywords_unambiguous.271,RESUME_SYM ,
+ident_keywords_unambiguous.272,RETAIN_SYM ,
+ident_keywords_unambiguous.273,RETURNED_SQLSTATE_SYM ,
+ident_keywords_unambiguous.274,RETURNING_SYM ,
+ident_keywords_unambiguous.275,RETURNS_SYM ,
+ident_keywords_unambiguous.276,REUSE_SYM ,
+ident_keywords_unambiguous.277,REVERSE_SYM ,
+ident_keywords_unambiguous.278,ROLE_SYM ,
+ident_keywords_unambiguous.279,ROLLUP_SYM ,
+ident_keywords_unambiguous.280,ROTATE_SYM ,
+ident_keywords_unambiguous.281,ROUTINE_SYM ,
+ident_keywords_unambiguous.282,ROW_COUNT_SYM ,
+ident_keywords_unambiguous.283,ROW_FORMAT_SYM ,
+ident_keywords_unambiguous.284,RTREE_SYM ,
+ident_keywords_unambiguous.285,S3_SYM ,
+ident_keywords_unambiguous.286,SCHEDULE_SYM ,
+ident_keywords_unambiguous.287,SCHEMA_NAME_SYM ,
+ident_keywords_unambiguous.288,SECONDARY_ENGINE_SYM ,
+ident_keywords_unambiguous.289,SECONDARY_ENGINE_ATTRIBUTE_SYM ,
+ident_keywords_unambiguous.290,SECONDARY_LOAD_SYM ,
+ident_keywords_unambiguous.291,SECONDARY_SYM ,
+ident_keywords_unambiguous.292,SECONDARY_UNLOAD_SYM ,
+ident_keywords_unambiguous.293,SECOND_SYM ,
+ident_keywords_unambiguous.294,SECURITY_SYM ,
+ident_keywords_unambiguous.295,SERIALIZABLE_SYM ,
+ident_keywords_unambiguous.296,SERIAL_SYM ,
+ident_keywords_unambiguous.297,SERVER_SYM ,
+ident_keywords_unambiguous.298,SHARE_SYM ,
+ident_keywords_unambiguous.299,SIMPLE_SYM ,
+ident_keywords_unambiguous.300,SKIP_SYM ,
+ident_keywords_unambiguous.301,SLOW ,
+ident_keywords_unambiguous.302,SNAPSHOT_SYM ,
+ident_keywords_unambiguous.303,SOCKET_SYM ,
+ident_keywords_unambiguous.304,SONAME_SYM ,
+ident_keywords_unambiguous.305,SOUNDS_SYM ,
+ident_keywords_unambiguous.306,SOURCE_AUTO_POSITION_SYM ,
+ident_keywords_unambiguous.307,SOURCE_BIND_SYM ,
+ident_keywords_unambiguous.308,SOURCE_COMPRESSION_ALGORITHM_SYM ,
+ident_keywords_unambiguous.309,SOURCE_CONNECTION_AUTO_FAILOVER_SYM ,
+ident_keywords_unambiguous.310,SOURCE_CONNECT_RETRY_SYM ,
+ident_keywords_unambiguous.311,SOURCE_DELAY_SYM ,
+ident_keywords_unambiguous.312,SOURCE_HEARTBEAT_PERIOD_SYM ,
+ident_keywords_unambiguous.313,SOURCE_HOST_SYM ,
+ident_keywords_unambiguous.314,SOURCE_LOG_FILE_SYM ,
+ident_keywords_unambiguous.315,SOURCE_LOG_POS_SYM ,
+ident_keywords_unambiguous.316,SOURCE_PASSWORD_SYM ,
+ident_keywords_unambiguous.317,SOURCE_PORT_SYM ,
+ident_keywords_unambiguous.318,SOURCE_PUBLIC_KEY_PATH_SYM ,
+ident_keywords_unambiguous.319,SOURCE_RETRY_COUNT_SYM ,
+ident_keywords_unambiguous.320,SOURCE_SSL_CAPATH_SYM ,
+ident_keywords_unambiguous.321,SOURCE_SSL_CA_SYM ,
+ident_keywords_unambiguous.322,SOURCE_SSL_CERT_SYM ,
+ident_keywords_unambiguous.323,SOURCE_SSL_CIPHER_SYM ,
+ident_keywords_unambiguous.324,SOURCE_SSL_CRLPATH_SYM ,
+ident_keywords_unambiguous.325,SOURCE_SSL_CRL_SYM ,
+ident_keywords_unambiguous.326,SOURCE_SSL_KEY_SYM ,
+ident_keywords_unambiguous.327,SOURCE_SSL_SYM ,
+ident_keywords_unambiguous.328,SOURCE_SSL_VERIFY_SERVER_CERT_SYM ,
+ident_keywords_unambiguous.329,SOURCE_SYM ,
+ident_keywords_unambiguous.330,SOURCE_TLS_CIPHERSUITES_SYM ,
+ident_keywords_unambiguous.331,SOURCE_TLS_VERSION_SYM ,
+ident_keywords_unambiguous.332,SOURCE_USER_SYM ,
+ident_keywords_unambiguous.333,SOURCE_ZSTD_COMPRESSION_LEVEL_SYM ,
+ident_keywords_unambiguous.334,SQL_AFTER_GTIDS ,
+ident_keywords_unambiguous.335,SQL_AFTER_MTS_GAPS ,
+ident_keywords_unambiguous.336,SQL_BEFORE_GTIDS ,
+ident_keywords_unambiguous.337,SQL_BUFFER_RESULT ,
+ident_keywords_unambiguous.338,SQL_NO_CACHE_SYM ,
+ident_keywords_unambiguous.339,SQL_THREAD ,
+ident_keywords_unambiguous.340,SRID_SYM ,
+ident_keywords_unambiguous.341,STACKED_SYM ,
+ident_keywords_unambiguous.342,STARTS_SYM ,
+ident_keywords_unambiguous.343,STATS_AUTO_RECALC_SYM ,
+ident_keywords_unambiguous.344,STATS_PERSISTENT_SYM ,
+ident_keywords_unambiguous.345,STATS_SAMPLE_PAGES_SYM ,
+ident_keywords_unambiguous.346,STATUS_SYM ,
+ident_keywords_unambiguous.347,STORAGE_SYM ,
+ident_keywords_unambiguous.348,STREAM_SYM ,
+ident_keywords_unambiguous.349,STRING_SYM ,
+ident_keywords_unambiguous.350,ST_COLLECT_SYM ,
+ident_keywords_unambiguous.351,SUBCLASS_ORIGIN_SYM ,
+ident_keywords_unambiguous.352,SUBDATE_SYM ,
+ident_keywords_unambiguous.353,SUBJECT_SYM ,
+ident_keywords_unambiguous.354,SUBPARTITIONS_SYM ,
+ident_keywords_unambiguous.355,SUBPARTITION_SYM ,
+ident_keywords_unambiguous.356,SUSPEND_SYM ,
+ident_keywords_unambiguous.357,SWAPS_SYM ,
+ident_keywords_unambiguous.358,SWITCHES_SYM ,
+ident_keywords_unambiguous.359,TABLES ,
+ident_keywords_unambiguous.360,TABLESPACE_SYM ,
+ident_keywords_unambiguous.361,TABLE_CHECKSUM_SYM ,
+ident_keywords_unambiguous.362,TABLE_NAME_SYM ,
+ident_keywords_unambiguous.363,TEMPORARY ,
+ident_keywords_unambiguous.364,TEMPTABLE_SYM ,
+ident_keywords_unambiguous.365,TEXT_SYM ,
+ident_keywords_unambiguous.366,THAN_SYM ,
+ident_keywords_unambiguous.367,THREAD_PRIORITY_SYM ,
+ident_keywords_unambiguous.368,TIES_SYM ,
+ident_keywords_unambiguous.369,TIMESTAMP_ADD ,
+ident_keywords_unambiguous.370,TIMESTAMP_DIFF ,
+ident_keywords_unambiguous.371,TIMESTAMP_SYM ,
+ident_keywords_unambiguous.372,TIME_SYM ,
+ident_keywords_unambiguous.373,TLS_SYM ,
+ident_keywords_unambiguous.374,TRANSACTION_SYM ,
+ident_keywords_unambiguous.375,TRIGGERS_SYM ,
+ident_keywords_unambiguous.376,TYPES_SYM ,
+ident_keywords_unambiguous.377,TYPE_SYM ,
+ident_keywords_unambiguous.378,UNBOUNDED_SYM ,
+ident_keywords_unambiguous.379,UNCOMMITTED_SYM ,
+ident_keywords_unambiguous.380,UNDEFINED_SYM ,
+ident_keywords_unambiguous.381,UNDOFILE_SYM ,
+ident_keywords_unambiguous.382,UNDO_BUFFER_SIZE_SYM ,
+ident_keywords_unambiguous.383,UNKNOWN_SYM ,
+ident_keywords_unambiguous.384,UNREGISTER_SYM ,
+ident_keywords_unambiguous.385,UNTIL_SYM ,
+ident_keywords_unambiguous.386,UPGRADE_SYM ,
+ident_keywords_unambiguous.387,URL_SYM ,
+ident_keywords_unambiguous.388,USER ,
+ident_keywords_unambiguous.389,USE_FRM ,
+ident_keywords_unambiguous.390,VALIDATION_SYM ,
+ident_keywords_unambiguous.391,VALUE_SYM ,
+ident_keywords_unambiguous.392,VARIABLES ,
+ident_keywords_unambiguous.393,VCPU_SYM ,
+ident_keywords_unambiguous.394,VIEW_SYM ,
+ident_keywords_unambiguous.395,VISIBLE_SYM ,
+ident_keywords_unambiguous.396,WAIT_SYM ,
+ident_keywords_unambiguous.397,WARNINGS ,
+ident_keywords_unambiguous.398,WEEK_SYM ,
+ident_keywords_unambiguous.399,WEIGHT_STRING_SYM ,
+ident_keywords_unambiguous.400,WITHOUT_SYM ,
+ident_keywords_unambiguous.401,WORK_SYM ,
+ident_keywords_unambiguous.402,WRAPPER_SYM ,
+ident_keywords_unambiguous.403,X509_SYM ,
+ident_keywords_unambiguous.404,XID_SYM ,
+ident_keywords_unambiguous.405,XML_SYM ,
+ident_keywords_unambiguous.406,YEAR_SYM ,
+ident_keywords_unambiguous.407,ZONE_SYM ,
+role_keyword.0,,
+role_keyword.1,,
+role_keyword.2,,
+lvalue_keyword.0,,
+lvalue_keyword.1,,
+lvalue_keyword.2,,
+lvalue_keyword.3,,
+ident_keywords_ambiguous_4_system_variables.0,GLOBAL_SYM ,
+ident_keywords_ambiguous_4_system_variables.1,LOCAL_SYM ,
+ident_keywords_ambiguous_4_system_variables.2,PERSIST_SYM ,
+ident_keywords_ambiguous_4_system_variables.3,PERSIST_ONLY_SYM ,
+ident_keywords_ambiguous_4_system_variables.4,SESSION_SYM ,
+set.0,SET_SYM , PT_set
+start_option_value_list.0,, PT_start_option_value_list_no_type
+start_option_value_list.1,TRANSACTION_SYM , PT_start_option_value_list_transaction
+start_option_value_list.2,, PT_start_option_value_list_type
+start_option_value_list.3,PASSWORD TEXT_STRING_password , PT_option_value_no_option_type_password
+start_option_value_list.4,PASSWORD TO_SYM RANDOM_SYM , PT_option_value_no_option_type_password
+start_option_value_list.5,PASSWORD FOR_SYM TEXT_STRING_password , PT_option_value_no_option_type_password_for
+start_option_value_list.6,PASSWORD FOR_SYM TO_SYM RANDOM_SYM , PT_option_value_no_option_type_password_for
+set_role_stmt.0,SET_SYM ROLE_SYM , PT_set_role
+set_role_stmt.1,SET_SYM ROLE_SYM NONE_SYM , PT_set_role
+set_role_stmt.2,SET_SYM ROLE_SYM DEFAULT_SYM , PT_set_role
+set_role_stmt.3,SET_SYM DEFAULT_SYM ROLE_SYM TO_SYM , PT_alter_user_default_role
+set_role_stmt.4,SET_SYM DEFAULT_SYM ROLE_SYM NONE_SYM TO_SYM , PT_alter_user_default_role
+set_role_stmt.5,SET_SYM DEFAULT_SYM ROLE_SYM ALL TO_SYM , PT_alter_user_default_role
+set_role_stmt.6,SET_SYM ROLE_SYM ALL , PT_set_role
+opt_except_role_list.0,,
+opt_except_role_list.1,EXCEPT_SYM ,
+set_resource_group_stmt.0,SET_SYM RESOURCE_SYM GROUP_SYM , PT_set_resource_group to_lex_cstring
+set_resource_group_stmt.1,SET_SYM RESOURCE_SYM GROUP_SYM FOR_SYM , PT_set_resource_group to_lex_cstring
+thread_id_list.0,, push_back
+thread_id_list.1,, push_back
+thread_id_list_options.0,,
+start_option_value_list_following_option_type.0,, PT_start_option_value_list_following_option_type_eq
+start_option_value_list_following_option_type.1,TRANSACTION_SYM , PT_start_option_value_list_following_option_type_transaction
+option_value_list_continued.0,,
+option_value_list_continued.1,,
+option_value_list.0,, PT_option_value_list_head
+option_value_list.1,, PT_option_value_list
+option_value.0,, PT_option_value_type
+option_value.1,,
+option_type.0,GLOBAL_SYM ,
+option_type.1,PERSIST_SYM ,
+option_type.2,PERSIST_ONLY_SYM ,
+option_type.3,LOCAL_SYM ,
+option_type.4,SESSION_SYM ,
+opt_var_type.0,,
+opt_var_type.1,GLOBAL_SYM ,
+opt_var_type.2,LOCAL_SYM ,
+opt_var_type.3,SESSION_SYM ,
+opt_rvalue_system_variable_type.0,,
+opt_rvalue_system_variable_type.1,GLOBAL_SYM ,
+opt_rvalue_system_variable_type.2,LOCAL_SYM ,
+opt_rvalue_system_variable_type.3,SESSION_SYM ,
+opt_set_var_ident_type.0,,
+opt_set_var_ident_type.1,PERSIST_SYM ,
+opt_set_var_ident_type.2,PERSIST_ONLY_SYM ,
+opt_set_var_ident_type.3,GLOBAL_SYM ,
+opt_set_var_ident_type.4,LOCAL_SYM ,
+opt_set_var_ident_type.5,SESSION_SYM ,
+option_value_following_option_type.0,, PT_set_scoped_system_variable
+option_value_no_option_type.0,, PT_set_variable
+option_value_no_option_type.1,, PT_option_value_no_option_type_user_var
+option_value_no_option_type.2,, PT_set_system_variable
+option_value_no_option_type.3,, PT_option_value_no_option_type_charset
+option_value_no_option_type.4,NAMES_SYM , PT_option_value_no_option_type_names
+option_value_no_option_type.5,NAMES_SYM , PT_set_names
+option_value_no_option_type.6,NAMES_SYM DEFAULT_SYM , PT_set_names
+lvalue_variable.0,, to_lex_cstring
+lvalue_variable.1,, check_reserved_words syntax_error_at to_lex_cstring to_lex_cstring
+lvalue_variable.2,DEFAULT_SYM , STRING_WITH_LEN to_lex_cstring
+rvalue_system_variable.0,, to_lex_cstring
+rvalue_system_variable.1,, check_reserved_words syntax_error_at to_lex_cstring to_lex_cstring
+transaction_characteristics.0,, PT_transaction_characteristics
+transaction_characteristics.1,, PT_transaction_characteristics
+transaction_access_mode.0,, PT_transaction_access_mode
+opt_transaction_access_mode.0,,
+opt_transaction_access_mode.1,,
+isolation_level.0,ISOLATION LEVEL_SYM , PT_isolation_level
+opt_isolation_level.0,,
+opt_isolation_level.1,,
+transaction_access_mode_types.0,READ_SYM ONLY_SYM ,
+transaction_access_mode_types.1,READ_SYM WRITE_SYM ,
+isolation_types.0,READ_SYM UNCOMMITTED_SYM ,
+isolation_types.1,READ_SYM COMMITTED_SYM ,
+isolation_types.2,REPEATABLE_SYM READ_SYM ,
+isolation_types.3,SERIALIZABLE_SYM ,
+set_expr_or_default.0,,
+set_expr_or_default.1,DEFAULT_SYM ,
+set_expr_or_default.2,ON_SYM , Item_string
+set_expr_or_default.3,ALL , Item_string
+set_expr_or_default.4,BINARY_SYM , Item_string
+set_expr_or_default.5,ROW_SYM , Item_string
+set_expr_or_default.6,SYSTEM_SYM , Item_string
+$@53
+lock.0,LOCK_SYM , my_error MYF
+lock.1,LOCK_SYM INSTANCE_SYM FOR_SYM BACKUP_SYM , Sql_cmd_lock_instance
+table_or_tables.0,TABLE_SYM ,
+table_or_tables.1,TABLES ,
+table_lock_list.0,,
+table_lock_list.1,,
+table_lock.0,, add_table_to_list
+lock_option.0,READ_SYM ,
+lock_option.1,WRITE_SYM ,
+lock_option.2,READ_SYM LOCAL_SYM ,
+$@54
+unlock.0,UNLOCK_SYM , my_error MYF
+unlock.1,UNLOCK_SYM INSTANCE_SYM , Sql_cmd_unlock_instance
+shutdown_stmt.0,SHUTDOWN , PT_shutdown
+restart_server_stmt.0,RESTART_SYM , PT_restart_server
+alter_instance_stmt.0,ALTER INSTANCE_SYM ,
+alter_instance_action.0,ROTATE_SYM MASTER_SYM KEY_SYM , is_identifier PT_alter_instance is_identifier PT_alter_instance syntax_error_at
+alter_instance_action.1,RELOAD TLS_SYM , PT_alter_instance to_lex_cstring
+alter_instance_action.2,RELOAD TLS_SYM NO_SYM ROLLBACK_SYM ON_SYM ERROR_SYM , PT_alter_instance to_lex_cstring
+alter_instance_action.3,RELOAD TLS_SYM FOR_SYM CHANNEL_SYM , PT_alter_instance to_lex_cstring
+alter_instance_action.4,RELOAD TLS_SYM FOR_SYM CHANNEL_SYM NO_SYM ROLLBACK_SYM ON_SYM ERROR_SYM , PT_alter_instance to_lex_cstring
+alter_instance_action.5,ENABLE_SYM , is_identifier syntax_error_at is_identifier syntax_error_at PT_alter_instance
+alter_instance_action.6,DISABLE_SYM , is_identifier syntax_error_at is_identifier syntax_error_at PT_alter_instance
+alter_instance_action.7,RELOAD KEYRING_SYM , PT_alter_instance
+handler_stmt.0,HANDLER_SYM OPEN_SYM , PT_handler_open
+handler_stmt.1,HANDLER_SYM CLOSE_SYM , PT_handler_close to_lex_cstring
+handler_stmt.2,HANDLER_SYM READ_SYM , PT_handler_table_scan to_lex_cstring
+handler_stmt.3,HANDLER_SYM READ_SYM , PT_handler_index_scan to_lex_cstring to_lex_cstring
+handler_stmt.4,HANDLER_SYM READ_SYM , PT_handler_index_range_scan to_lex_cstring to_lex_cstring
+handler_scan_function.0,FIRST_SYM ,
+handler_scan_function.1,NEXT_SYM ,
+handler_rkey_function.0,FIRST_SYM ,
+handler_rkey_function.1,NEXT_SYM ,
+handler_rkey_function.2,PREV_SYM ,
+handler_rkey_function.3,LAST_SYM ,
+handler_rkey_mode.0,EQ ,
+handler_rkey_mode.1,GE ,
+handler_rkey_mode.2,LE ,
+handler_rkey_mode.3,GT_SYM ,
+handler_rkey_mode.4,LT ,
+$@55
+revoke.0,REVOKE FROM , PT_revoke_roles MAKE_CMD
+revoke.1,REVOKE ON_SYM FROM , apply_privileges columns.is_empty syntax_error MAKE_CMD_DCL_DUMMY
+revoke.2,REVOKE ALL ON_SYM FROM , columns.is_empty syntax_error MAKE_CMD_DCL_DUMMY
+revoke.3,REVOKE ALL GRANT OPTION FROM , MAKE_CMD_DCL_DUMMY
+revoke.4,REVOKE PROXY_SYM ON_SYM FROM , MAKE_CMD_DCL_DUMMY
+$@56
+grant.0,GRANT TO_SYM , PT_grant_roles MAKE_CMD
+grant.1,GRANT ON_SYM TO_SYM , apply_privileges columns.is_empty syntax_error MAKE_CMD_DCL_DUMMY
+grant.2,GRANT ALL ON_SYM TO_SYM , columns.is_empty syntax_error MAKE_CMD_DCL_DUMMY
+grant.3,GRANT PROXY_SYM ON_SYM TO_SYM , MAKE_CMD_DCL_DUMMY
+opt_acl_type.0,,
+opt_acl_type.1,TABLE_SYM ,
+opt_acl_type.2,FUNCTION_SYM ,
+opt_acl_type.3,PROCEDURE_SYM ,
+opt_privileges.0,,
+opt_privileges.1,PRIVILEGES ,
+role_or_privilege_list.0,, push_back
+role_or_privilege_list.1,, push_back
+role_or_privilege.0,, PT_role_or_dynamic_privilege PT_dynamic_privilege
+role_or_privilege.1,, PT_role_at_host
+role_or_privilege.2,SELECT_SYM , PT_static_privilege
+role_or_privilege.3,INSERT_SYM , PT_static_privilege
+role_or_privilege.4,UPDATE_SYM , PT_static_privilege
+role_or_privilege.5,REFERENCES , PT_static_privilege
+role_or_privilege.6,DELETE_SYM , PT_static_privilege
+role_or_privilege.7,USAGE , PT_static_privilege
+role_or_privilege.8,INDEX_SYM , PT_static_privilege
+role_or_privilege.9,ALTER , PT_static_privilege
+role_or_privilege.10,CREATE , PT_static_privilege
+role_or_privilege.11,DROP , PT_static_privilege
+role_or_privilege.12,EXECUTE_SYM , PT_static_privilege
+role_or_privilege.13,RELOAD , PT_static_privilege
+role_or_privilege.14,SHUTDOWN , PT_static_privilege
+role_or_privilege.15,PROCESS , PT_static_privilege
+role_or_privilege.16,FILE_SYM , PT_static_privilege
+role_or_privilege.17,GRANT OPTION , PT_static_privilege
+role_or_privilege.18,SHOW DATABASES , PT_static_privilege
+role_or_privilege.19,SUPER_SYM , PT_static_privilege push_warning
+role_or_privilege.20,CREATE TEMPORARY TABLES , PT_static_privilege
+role_or_privilege.21,LOCK_SYM TABLES , PT_static_privilege
+role_or_privilege.22,REPLICATION SLAVE , PT_static_privilege
+role_or_privilege.23,REPLICATION CLIENT_SYM , PT_static_privilege
+role_or_privilege.24,CREATE VIEW_SYM , PT_static_privilege
+role_or_privilege.25,SHOW VIEW_SYM , PT_static_privilege
+role_or_privilege.26,CREATE ROUTINE_SYM , PT_static_privilege
+role_or_privilege.27,ALTER ROUTINE_SYM , PT_static_privilege
+role_or_privilege.28,CREATE USER , PT_static_privilege
+role_or_privilege.29,EVENT_SYM , PT_static_privilege
+role_or_privilege.30,TRIGGER_SYM , PT_static_privilege
+role_or_privilege.31,CREATE TABLESPACE_SYM , PT_static_privilege
+role_or_privilege.32,CREATE ROLE_SYM , PT_static_privilege
+role_or_privilege.33,DROP ROLE_SYM , PT_static_privilege
+opt_with_admin_option.0,,
+opt_with_admin_option.1,WITH ADMIN_SYM OPTION ,
+opt_and.0,,
+opt_and.1,AND_SYM ,
+require_list.0,,
+require_list.1,,
+require_list_element.0,SUBJECT_SYM TEXT_STRING , my_error MYF
+require_list_element.1,ISSUER_SYM TEXT_STRING , my_error MYF
+require_list_element.2,CIPHER_SYM TEXT_STRING , my_error MYF
+grant_ident.0,, copy_db_to current_query_block my_error MYF
+grant_ident.1,, current_query_block my_error MYF
+grant_ident.2,, current_query_block my_error MYF
+grant_ident.3,, Table_ident to_lex_cstring current_query_block add_table_to_list
+grant_ident.4,, to_lex_cstring Table_ident to_lex_cstring current_query_block add_table_to_list
+user_list.0,, push_back
+user_list.1,, push_back
+role_list.0,, push_back
+role_list.1,, push_back
+opt_retain_current_password.0,,
+opt_retain_current_password.1,RETAIN_SYM CURRENT_SYM PASSWORD ,
+opt_discard_old_password.0,,
+opt_discard_old_password.1,DISCARD_SYM OLD_SYM PASSWORD ,
+opt_user_registration.0,INITIATE_SYM REGISTRATION_SYM ,
+opt_user_registration.1,UNREGISTER_SYM ,
+opt_user_registration.2,FINISH_SYM REGISTRATION_SYM SET_SYM CHALLENGE_RESPONSE_SYM AS TEXT_STRING_hash , to_lex_cstring
+create_user.0,, add_mfa_identifications
+create_user.1,, mfa_list.push_back
+create_user.2,, add_mfa_identifications
+opt_create_user_with_mfa.0,,
+opt_create_user_with_mfa.1,AND_SYM ,
+opt_create_user_with_mfa.2,AND_SYM AND_SYM ,
+identification.0,,
+identification.1,,
+identification.2,,
+identification.3,,
+identification.4,,
+identification.5,,
+identified_by_password.0,IDENTIFIED_SYM BY TEXT_STRING_password , to_lex_cstring
+identified_by_random_password.0,IDENTIFIED_SYM BY RANDOM_SYM PASSWORD ,
+identified_with_plugin.0,IDENTIFIED_SYM WITH , to_lex_cstring
+identified_with_plugin_as_auth.0,IDENTIFIED_SYM WITH AS TEXT_STRING_hash , to_lex_cstring to_lex_cstring
+identified_with_plugin_by_password.0,IDENTIFIED_SYM WITH BY TEXT_STRING_password , to_lex_cstring to_lex_cstring
+identified_with_plugin_by_random_password.0,IDENTIFIED_SYM WITH BY RANDOM_SYM PASSWORD , to_lex_cstring
+opt_initial_auth.0,INITIAL_SYM AUTHENTICATION_SYM ,
+opt_initial_auth.1,INITIAL_SYM AUTHENTICATION_SYM ,
+opt_initial_auth.2,INITIAL_SYM AUTHENTICATION_SYM ,
+alter_user.0,REPLACE_SYM TEXT_STRING_password , to_lex_cstring
+alter_user.1,REPLACE_SYM TEXT_STRING_password , to_lex_cstring
+alter_user.2,,
+alter_user.3,,
+alter_user.4,REPLACE_SYM TEXT_STRING_password , to_lex_cstring
+alter_user.5,,
+alter_user.6,,
+alter_user.7,,
+alter_user.8,,
+alter_user.9,,
+alter_user.10,ADD , add_mfa_identifications
+alter_user.11,ADD ADD , my_error MYF my_error MYF add_mfa_identifications
+alter_user.12,MODIFY_SYM , add_mfa_identifications
+alter_user.13,MODIFY_SYM MODIFY_SYM , my_error MYF add_mfa_identifications
+alter_user.14,DROP , add_mfa_identifications
+alter_user.15,DROP DROP , my_error MYF add_mfa_identifications
+factor.0,NUM FACTOR_SYM , my_strcasecmp my_strcasecmp my_error MYF
+create_user_list.0,, users_list.push_back
+create_user_list.1,, users_list.push_back
+alter_user_list.0,, users_list.push_back
+alter_user_list.1,, users_list.push_back
+opt_column_list.0,,
+opt_column_list.1,,
+column_list.0,, push_back to_lex_cstring
+column_list.1,, push_back to_lex_cstring
+require_clause.0,,
+require_clause.1,REQUIRE_SYM ,
+require_clause.2,REQUIRE_SYM SSL_SYM ,
+require_clause.3,REQUIRE_SYM X509_SYM ,
+require_clause.4,REQUIRE_SYM NONE_SYM ,
+grant_options.0,,
+grant_options.1,WITH GRANT OPTION ,
+opt_grant_option.0,,
+opt_grant_option.1,WITH GRANT OPTION ,
+opt_with_roles.0,,
+opt_with_roles.1,WITH ROLE_SYM ,
+opt_with_roles.2,WITH ROLE_SYM ALL ,
+opt_with_roles.3,WITH ROLE_SYM NONE_SYM ,
+opt_with_roles.4,WITH ROLE_SYM DEFAULT_SYM ,
+opt_grant_as.0,,
+opt_grant_as.1,AS ,
+$@57
+begin_stmt.0,BEGIN_SYM ,
+opt_work.0,,
+opt_work.1,WORK_SYM ,
+opt_chain.0,,
+opt_chain.1,AND_SYM NO_SYM CHAIN_SYM ,
+opt_chain.2,AND_SYM CHAIN_SYM ,
+opt_release.0,,
+opt_release.1,RELEASE_SYM ,
+opt_release.2,NO_SYM RELEASE_SYM ,
+opt_savepoint.0,,
+opt_savepoint.1,SAVEPOINT_SYM ,
+commit.0,COMMIT_SYM , MYSQL_YYABORT_UNLESS
+rollback.0,ROLLBACK_SYM , MYSQL_YYABORT_UNLESS
+rollback.1,ROLLBACK_SYM TO_SYM ,
+savepoint.0,SAVEPOINT_SYM ,
+release.0,RELEASE_SYM SAVEPOINT_SYM ,
+union_option.0,,
+union_option.1,DISTINCT ,
+union_option.2,ALL ,
+row_subquery.0,,
+table_subquery.0,,
+subquery.0,, PT_subquery
+query_spec_option.0,STRAIGHT_JOIN ,
+query_spec_option.1,HIGH_PRIORITY ,
+query_spec_option.2,DISTINCT ,
+query_spec_option.3,SQL_SMALL_RESULT ,
+query_spec_option.4,SQL_BIG_RESULT ,
+query_spec_option.5,SQL_BUFFER_RESULT ,
+query_spec_option.6,SQL_CALC_FOUND_ROWS , push_warning ER_THD
+query_spec_option.7,ALL ,
+init_lex_create_info.0,,
+view_or_trigger_or_sp_or_event.0,,
+view_or_trigger_or_sp_or_event.1,,
+view_or_trigger_or_sp_or_event.2,,
+definer_tail.0,,
+definer_tail.1,,
+definer_tail.2,,
+definer_tail.3,,
+definer_tail.4,,
+no_definer_tail.0,,
+no_definer_tail.1,,
+no_definer_tail.2,,
+no_definer_tail.3,,
+no_definer_tail.4,,
+no_definer_tail.5,,
+definer_opt.0,,
+definer_opt.1,,
+no_definer.0,,
+definer.0,DEFINER_SYM EQ , get_current_user
+view_replace_or_algorithm.0,,
+view_replace_or_algorithm.1,,
+view_replace_or_algorithm.2,,
+view_replace.0,OR_SYM REPLACE_SYM ,
+view_algorithm.0,ALGORITHM_SYM EQ UNDEFINED_SYM ,
+view_algorithm.1,ALGORITHM_SYM EQ MERGE_SYM ,
+view_algorithm.2,ALGORITHM_SYM EQ TEMPTABLE_SYM ,
+view_suid.0,,
+view_suid.1,SQL_SYM SECURITY_SYM DEFINER_SYM ,
+view_suid.2,SQL_SYM SECURITY_SYM INVOKER_SYM ,
+$@58
+view_tail.0,VIEW_SYM AS , add_table_to_list .size check_column_name my_error MYF memdup sizeof set_derived_column_names
+view_query_block.0,, m_table_list.save_and_clear CONTEXTUALIZE_VIEW m_table_list.push_front memdup trim_whitespace charset
+view_check_option.0,,
+view_check_option.1,WITH CHECK_SYM OPTION ,
+view_check_option.2,WITH CASCADED CHECK_SYM OPTION ,
+view_check_option.3,WITH LOCAL_SYM CHECK_SYM OPTION ,
+trigger_action_order.0,FOLLOWS_SYM ,
+trigger_action_order.1,PRECEDES_SYM ,
+trigger_follows_precedes_clause.0,,
+trigger_follows_precedes_clause.1,,
+$@59
+trigger_tail.0,TRIGGER_SYM ON_SYM FOR_SYM EACH_SYM ROW_SYM , my_error MYF sp_start_parsing memset sizeof set_body_start sp_finish_parsing is_not_allowed_in_function add_table_to_list Sql_cmd_create_trigger
+udf_tail.0,AGGREGATE_SYM FUNCTION_SYM RETURNS_SYM SONAME_SYM TEXT_STRING_sys , is_native_function if my_error MYF my_error MYF
+udf_tail.1,FUNCTION_SYM RETURNS_SYM SONAME_SYM TEXT_STRING_sys , is_native_function if my_error MYF my_error MYF
+$@60
+$@61
+$@62
+$@63
+sf_tail.0,FUNCTION_SYM RETURNS_SYM , my_error MYF sp_start_parsing m_parser_data.set_parameter_start_ptr m_parser_data.set_parameter_end_ptr CONTEXTUALIZE get_charset merge_sp_var_charset_and_collation get_type_flags my_error MYF m_return_field_def.init get_length get_dec get_type_flags get_interval_list get_uint_geom_type prepare_sp_create_field memset sizeof set_body_start is_not_allowed_in_function is_sql my_error MYF is_native_function push_warning_printf ER_THD
+routine_string.0,TEXT_STRING_literal ,
+routine_string.1,DOLLAR_QUOTED_STRING_SYM ,
+stored_routine_body.0,AS , is_sql syntax_error to_lex_cstring sp_finish_parsing
+stored_routine_body.1,, is_sql syntax_error sp_finish_parsing
+$@64
+$@65
+$@66
+$@67
+sp_tail.0,PROCEDURE_SYM , my_error MYF sp_start_parsing m_parser_data.set_parameter_start_ptr m_parser_data.set_parameter_end_ptr memset sizeof set_body_start
+xa.0,XA_SYM , Sql_cmd_xa_start
+xa.1,XA_SYM END , Sql_cmd_xa_end
+xa.2,XA_SYM PREPARE_SYM , Sql_cmd_xa_prepare
+xa.3,XA_SYM COMMIT_SYM , Sql_cmd_xa_commit
+xa.4,XA_SYM ROLLBACK_SYM , Sql_cmd_xa_rollback
+xa.5,XA_SYM RECOVER_SYM , Sql_cmd_xa_recover
+opt_convert_xid.0,,
+opt_convert_xid.1,CONVERT_SYM XID_SYM ,
+xid.0,, MYSQL_YYABORT_UNLESS length alloc sizeof set ptr length
+xid.1,, MYSQL_YYABORT_UNLESS length length alloc sizeof set ptr length ptr length
+xid.2,, MYSQL_YYABORT_UNLESS length length alloc sizeof set ptr length ptr length
+begin_or_start.0,BEGIN_SYM ,
+begin_or_start.1,START_SYM ,
+opt_join_or_resume.0,,
+opt_join_or_resume.1,JOIN_SYM ,
+opt_join_or_resume.2,RESUME_SYM ,
+opt_one_phase.0,,
+opt_one_phase.1,ONE_SYM PHASE_SYM ,
+opt_suspend.0,,
+opt_suspend.1,SUSPEND_SYM ,
+opt_suspend.2,SUSPEND_SYM FOR_SYM MIGRATE_SYM ,
+install_option_type.0,,
+install_option_type.1,GLOBAL_SYM ,
+install_option_type.2,PERSIST_SYM ,
+install_set_rvalue.0,,
+install_set_rvalue.1,ON_SYM , Item_string
+install_set_value.0,,
+install_set_value_list.0,, push_back
+install_set_value_list.1,, push_back
+opt_install_set_value_list.0,,
+opt_install_set_value_list.1,SET_SYM ,
+install_stmt.0,INSTALL_SYM PLUGIN_SYM SONAME_SYM TEXT_STRING_sys , Sql_cmd_install_plugin to_lex_cstring
+install_stmt.1,INSTALL_SYM COMPONENT_SYM TEXT_STRING_sys_list , PT_install_component
+uninstall.0,UNINSTALL_SYM PLUGIN_SYM , Sql_cmd_uninstall_plugin to_lex_cstring
+uninstall.1,UNINSTALL_SYM COMPONENT_SYM TEXT_STRING_sys_list , Sql_cmd_uninstall_component
+TEXT_STRING_sys_list.0,TEXT_STRING_sys , .init .push_back
+TEXT_STRING_sys_list.1,TEXT_STRING_sys_list TEXT_STRING_sys , .push_back
+import_stmt.0,IMPORT TABLE_SYM FROM TEXT_STRING_sys_list , Sql_cmd_import_table
+clone_stmt.0,CLONE_SYM LOCAL_SYM DATA_SYM DIRECTORY_SYM TEXT_STRING_filesystem , Sql_cmd_clone to_lex_cstring
+clone_stmt.1,CLONE_SYM INSTANCE_SYM FROM IDENTIFIED_SYM BY TEXT_STRING_sys , syntax_error_at to_lex_cstring Sql_cmd_clone to_lex_cstring
+opt_datadir_ssl.0,,
+opt_datadir_ssl.1,DATA_SYM DIRECTORY_SYM TEXT_STRING_filesystem ,
+opt_ssl.0,,
+opt_ssl.1,REQUIRE_SYM SSL_SYM ,
+opt_ssl.2,REQUIRE_SYM NO_SYM SSL_SYM ,
+resource_group_types.0,USER ,
+resource_group_types.1,SYSTEM_SYM ,
+opt_resource_group_vcpu_list.0,,
+opt_resource_group_vcpu_list.1,VCPU_SYM ,
+vcpu_range_spec_list.0,, r push_back
+vcpu_range_spec_list.1,, r push_back
+vcpu_num_or_range.0,NUM , my_strtoull assert
+vcpu_num_or_range.1,NUM NUM , my_strtoull assert my_strtoull assert
+signed_num.0,NUM , my_strtoll
+signed_num.1,NUM , my_strtoll
+opt_resource_group_priority.0,,
+opt_resource_group_priority.1,THREAD_PRIORITY_SYM ,
+opt_resource_group_enable_disable.0,,
+opt_resource_group_enable_disable.1,ENABLE_SYM ,
+opt_resource_group_enable_disable.2,DISABLE_SYM ,
+opt_force.0,,
+opt_force.1,FORCE_SYM ,
+json_attribute.0,TEXT_STRING_sys , is_valid_json_syntax my_error MYF emsg.c_str to_lex_cstring

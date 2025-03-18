@@ -1,16 +1,17 @@
 #!/usr/bin/env python3
 """@package gnlp
-    Given a list of parser rules and a list of tags, assign labels in the form of flags to each parser rule
+Given a list of parser rules and a list of tags, assign labels in the form of flags to each parser rule
 """
 import pandas as pd
 import argparse
 import os
+import json
 
 from pygaur import gnlp
 
 
-def compute_threshold_semantic(tags: list) -> list:
-    """Simple function that returns a list of tresholds for each tag
+def get_tresholds(tags: list) -> list:
+    """Dummy function that returns default tresholds values for each tag
 
     Args:
         tags (list): tags list
@@ -37,12 +38,20 @@ def check_indexes(list_df: list) -> bool:
     return True
 
 
-def write_semantic_file(list_df: list, filepath: str, mode: str = "json"):
-    """Write the rule labels to a file in the form of flags
+def write_semantic_file(
+    list_df: list, filepath: str, ll_tags: list, mode: str = "json"
+):
+    """Write as json all informations required by GAUR to inject semantic knowledge into the parser.
 
     Args:
-        list_df (list): list of dataframes containing flags, one dataframe for each type of tag
-        filepath (str): filepath to the output file
+        list_df (list): Dataframes (each representing a semantic class) with the flag value for each rule (representing the associated label).
+        filepath (str): Filepath to write json file to
+        ll_tags (list): Lists (each representing a semantic class), of possible semantic tag values.
+        mode (str, optional): Defaults to "json".
+
+    Raises:
+        Exception: _description_
+        Exception: _description_
     """
     if check_indexes(list_df):
         df_flags = pd.DataFrame(index=list_df[0].index)
@@ -58,6 +67,7 @@ def write_semantic_file(list_df: list, filepath: str, mode: str = "json"):
             flags_size.append(len("".join(df.iloc[0].astype(str))))
 
         if mode == "custom":
+            # Deprecated, do not use.
             with open(filepath, "w") as f:
                 # Write in file the number of flags
                 f.write(f"{len(df_flags.columns)},")
@@ -76,7 +86,6 @@ def write_semantic_file(list_df: list, filepath: str, mode: str = "json"):
                     f.write(f"{''.join(flags_binary)}{index}\n")
                 f.close()
         elif mode == "json":
-            import json
 
             # Create a nested dictionary
             config = {}
@@ -87,6 +96,14 @@ def write_semantic_file(list_df: list, filepath: str, mode: str = "json"):
             config["GENERAL"]["flags_names"] = [
                 df.index.name for df in list_df
             ]
+            config["GENERAL"]["tag_values"] = {}
+
+            # Supposedly len(list_df) == len(ll_tags)
+            for i, df in enumerate(list_df):
+                config["GENERAL"]["tag_values"][df.index.name] = list(
+                    ll_tags[i]
+                )
+
             config["RULES"] = []
 
             # Create dictionnary entry for each rule
@@ -109,10 +126,19 @@ def write_semantic_file(list_df: list, filepath: str, mode: str = "json"):
         raise Exception("Indexes of the dataframes are not the same")
 
 
+def get_tagfiles_from_folder(tagspath: str) -> list:
+    l_filenames = sorted(os.listdir(tagspath))
+    tags_files = []
+
+    for filenames in l_filenames:
+        tags_files.append(tagspath + filenames)
+    return tags_files
+
+
 def create_semantic_file_mysql(
     model_name: str,
-    filepath: str,
-    filepath_output: str,
+    fp_extracted: str,
+    fp_output_sem: str,
     tagspath: str,
     stop_words_set: set,
 ):
@@ -121,46 +147,29 @@ def create_semantic_file_mysql(
 
     Args:
         model_name (str): Sentence BERT model name
-        filepath (str): Filepath to file which contains rule informations
-        tagspath (str): Filepath to folder containing the different tag files
-        filepath_output (str): Filepath for result file
+        fp_extracted (str): Filepath to file which contains rule informations
+        fp_output_sem (str): Filepath for result file
+        tagspath (str): Filepath to folder containing the different .tags files
         stop_words_set (set): Set of stop words to ignore for similarity computation
     """
     model = gnlp.init_sentence_model(model_name)
+    tags_files = get_tagfiles_from_folder(tagspath)
     df_labels = []
+    ll_tags = (
+        []
+    )  # List of lists of semantic tags ( a list for each semantic class)
 
-    # In directory denoted by tagspath, we are expecting two files:
-    # 1. A file with  a list of actions tags
-    # 2. A file with a list of object tags
-
-    ACTIONS_FILENAME = "actions.tags"
-    OBJECTS_FILENAME = "objects.tags"
-
-    full_path_actions = tagspath + ACTIONS_FILENAME
-    full_path_objects = tagspath + OBJECTS_FILENAME
-
-    try:
-        os.path.exists(full_path_actions)
-    except FileNotFoundError:
-        print("No actions.tags file found in specified path", filepath_output)
-        exit()
-    try:
-        os.path.exists(full_path_objects)
-    except FileNotFoundError:
-        print("No objects.tags file found in specified path", filepath_output)
-        exit()
-
-    tag_files = [full_path_actions, full_path_objects]
-    for tag_file in tag_files:
-        df_keywords = gnlp.get_df_tags_keywords(model, tag_file)
+    for fp_tags in tags_files:
+        df_keywords = gnlp.get_tags_keywords_embeddings(model, fp_tags)
         possible_tags = df_keywords["tag"].unique()
-        tag_type = tag_file.split("/")[-1].rstrip(".tags")
+        ll_tags.append(possible_tags)
+        tag_type = fp_tags.split("/")[-1].removesuffix(".tags")
 
         print(f"> Defined {tag_type} tags:{possible_tags}")
         df_pred = gnlp.compute_nterm_semantic_max(
-            filepath, model, possible_tags, stop_words_set, df_keywords
+            fp_extracted, model, possible_tags, stop_words_set, df_keywords
         )
-        tresholds = compute_threshold_semantic(possible_tags)
+        tresholds = get_tresholds(possible_tags)
 
         # For now we want at most a single label
         df_pred = gnlp.keep_maximum_score(df_pred)
@@ -171,7 +180,7 @@ def create_semantic_file_mysql(
         df_pred.index.name = os.path.splitext(tag_type)[0]
         df_labels.append(df_pred)
 
-    write_semantic_file(df_labels, filepath_output, mode="json")
+    write_semantic_file(df_labels, fp_output_sem, ll_tags, mode="json")
 
 
 def main():

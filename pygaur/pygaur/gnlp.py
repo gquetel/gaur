@@ -2,7 +2,6 @@ import pandas as pd
 import math
 from sentence_transformers import SentenceTransformer
 
-
 def init_sentence_model(model_name: str) -> SentenceTransformer:
     """Returns an instancied SentenceTransformer model
 

@@ -5,6 +5,7 @@ CFLAGS=-g -Wall
 
 GRAMMARFILE=sql_yacc.yy
 INJECTFILE=../../src/injects/vector-pt.mysql.cpp
+TAGS_FOLDER=../../data/mysql/expert-defined-tags/
 
 GCLASSIFY=gclassify
 SKELETON=gaur_mysql.c
@@ -20,7 +21,7 @@ rules.extracted.full:
 	$(GAUR) -f $(GRAMMARFILE) -o rules.extracted 
 	
 labels.json:  rules.extracted 
-	$(GCLASSIFY) -o labels.json rules.extracted ./tags/
+	$(GCLASSIFY) -o labels.json rules.extracted $(TAGS_FOLDER)
 
 clean: 
 	rm -f parse gaur.modified.y *.c *.h *.o *.log rules.extracted labels.json sql_yacc.patch
