@@ -15,9 +15,11 @@ let
   };
   pythonEnv = pkgs.python311.withPackages (ps: [
     pygaur
-    # ps.jupyter
-    # ps.notebook
-    # ps.ipython
+    # Pkgs to use notebooks
+    ps.ipykernel
+    ps.notebook
+    # python pkgs used outside the pygaur framework for experiments, if packages finally get used by pygaur, move them to ./pygaur/default.nix
+
     ps.transformers
     ps.torch
     ps.pandas
