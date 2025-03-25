@@ -130,8 +130,9 @@ def get_tagfiles_from_folder(tagspath: str) -> list:
     l_filenames = sorted(os.listdir(tagspath))
     tags_files = []
 
-    for filenames in l_filenames:
-        tags_files.append(tagspath + filenames)
+    for filename in l_filenames:
+        if filename.endswith(".tags"):
+            tags_files.append(tagspath + filename)
     return tags_files
 
 
