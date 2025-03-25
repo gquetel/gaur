@@ -191,6 +191,10 @@ static int current_state = 0;
     return ID_COLON;
   }
 
+  [ \t]+ { // Eat whitespace between nonterminal and colon.
+    continue;
+  }
+
  .|\n {
     yyless(0);
     yylval.id = val_id;

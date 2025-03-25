@@ -2,16 +2,16 @@ let
   inputs = import ./npins;
   pkgs = import inputs.nixpkgs { };
   pygaur = pkgs.callPackage ./pygaur/default.nix {
-    inherit (pkgs.python311Packages) 
-    buildPythonPackage
-    setuptools
-    pandas
-    gensim
-    numpy
-    sentence-transformers
-    transformers
-    torch
-    ;
+    inherit (pkgs.python311Packages)
+      buildPythonPackage
+      setuptools
+      pandas
+      gensim
+      numpy
+      sentence-transformers
+      transformers
+      torch
+      ;
   };
   pythonEnv = pkgs.python311.withPackages (ps: [
     pygaur
@@ -34,7 +34,8 @@ pkgs.mkShell rec {
     pkgs.flex
     pkgs.bison
     pkgs.libgcc
-    pkgs.gnumake
+    pkgs.gnumake 
+    pkgs.readline70 # Required by example/sem
   ];
 
   catchConflicts = false;

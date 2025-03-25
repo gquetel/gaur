@@ -51,7 +51,7 @@ void append_rule_group_buffer(char *source)
 
     if (len_rule_group_buffer + s_len < MAX_SIZE_RULE)
     {
-        strncat(rule_group_buffer, source, s_len);
+        strncat(rule_group_buffer, source, MAX_SIZE_RULE - 1);
         len_rule_group_buffer += s_len;
     }
     else
@@ -71,7 +71,7 @@ void append_action_buffer(char *source)
 
     if (len_action_buffer + s_len < MAX_SIZE_CODE)
     {
-        strncat(action_buffer, source, s_len);
+        strncat(action_buffer, source, MAX_SIZE_CODE - 1);
         len_action_buffer += s_len;
     }
     else
@@ -490,8 +490,6 @@ void extract_rhs_content(char *string)
         snprintf(tmp, sizeof(tmp), "%s ", string);
         append_rule_group_buffer(tmp);
     }
-
-
 }
 
 void signal_new_rule(char *nterm)
