@@ -50,7 +50,7 @@ def get_tags_keywords_embeddings(
     df_tk = get_df_tags_keywords(filepath)
     df_tk["vector"] = df_tk.index.map(lambda x: model.encode(x))
     return df_tk
-
+ 
 
 def get_df_tags_keywords(filepath: str) -> pd.DataFrame:
     """ Returns a DataFrame of defined keywords and their associated tags.
@@ -75,42 +75,6 @@ def get_df_tags_keywords(filepath: str) -> pd.DataFrame:
     df =  pd.DataFrame({"tag": ltags, "keyword": lkeywords})
     df.set_index("keyword", inplace=True)
     return df   
-
-
-# def build_tags_and_keywords_lists(
-#     model: SentenceTransformer, filepath: str
-# ) -> pd.DataFrame:
-#     """Build the list of keywords from filepath. 
-
-#     Returns a Dataframe with columns [keyword, tag, vector].
-#     Args:
-#         model (SentenceTransformer): models to compute embeddings with
-
-#     Returns:
-#         pd.DataFrame: Dataframe with columns [keyword, tag, vector]
-#     """
-#     df = pd.DataFrame()
-
-#     with open(filepath, "r") as f:
-#         lines = f.readlines()
-#         for line in lines:
-#             keywords = line.split(",")
-#             keywords = [keyword.rstrip() for keyword in keywords]
-#             tag = [keywords[0] for _ in range(len(keywords))]
-#             vectors = []
-
-#             for keyword in keywords:
-#                 vectors.append(model.encode(keyword))
-#             df = pd.concat(
-#                 [
-#                     df,
-#                     pd.DataFrame(
-#                         {"keyword": keywords, "tag": tag, "vector": vectors}
-#                     ),
-#                 ]
-#             )
-#     df.set_index("keyword", inplace=True)
-#     return df
 
 
 def load_extracted_file(filepath: str) -> pd.DataFrame:
