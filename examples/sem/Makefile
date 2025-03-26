@@ -6,7 +6,7 @@ FLEX = flex
 BISON = bison -d -t
 LDFLAGS= -L/opt/local/lib  -lm -lreadline 
 CFLAGS=-g -Wall
-GCLASSIFY=gclassify
+GCLASSIFY=gclassify.py
 
 SKELETON=/usr/share/bison/skeletons/gaur_yacc.c
 GRAMMARFILE=parse.y

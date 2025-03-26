@@ -1,5 +1,5 @@
-create,produce
-delete,erase,remove,drop
-execute,invoke,call
-modify,update,change,alter
-read,display,view,retrieve,access,select
+create,create,produce
+delete,delete,erase,remove,drop
+execute,execute,invoke,call
+modify,modify,update,change,alter
+read,read,display,view,retrieve,access,select

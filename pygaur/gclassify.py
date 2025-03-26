@@ -6,12 +6,11 @@ import pandas as pd
 import argparse
 import os
 import json
-
 from pygaur import gnlp
 
 
 def get_tresholds(tags: list) -> list:
-    """Dummy function that returns default tresholds values for each tag
+    """ Dummy function that returns default tresholds values for each tag
 
     Args:
         tags (list): tags list

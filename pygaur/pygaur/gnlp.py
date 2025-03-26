@@ -22,7 +22,7 @@ def compute_similarity(
     possible_tags: list,
     list_keywords: list,
 ) -> dict:
-    """Compute semantic similarity scores between document and all tags in possible tags using model.
+    """ Compute semantic similarity scores between document and all tags in possible tags using model.
 
     Args:
         document (str): document to compute semantic similarity for
@@ -70,8 +70,9 @@ def get_df_tags_keywords(filepath: str) -> pd.DataFrame:
             keywords = [keyword.rstrip() for keyword in keywords]
             tag = keywords[0]
 
-            ltags += [tag for _ in range(len(keywords))]
-            lkeywords += keywords
+            # rang(1, ...) -> 1 to ignore tag name.
+            ltags += [tag for _ in range(1,len(keywords))]
+            lkeywords += keywords[1::]
     df =  pd.DataFrame({"tag": ltags, "keyword": lkeywords})
     df.set_index("keyword", inplace=True)
     return df   
