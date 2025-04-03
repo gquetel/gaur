@@ -3,6 +3,7 @@
 Given a list of parser rules and a list of tags, assign labels in the form of flags to each parser rule
 """
 import pandas as pd
+import numpy as np
 import argparse
 import os
 import json
@@ -10,7 +11,7 @@ from pygaur import gnlp
 
 
 def get_tresholds(tags: list) -> list:
-    """ Dummy function that returns default tresholds values for each tag
+    """Dummy function that returns default tresholds values for each tag
 
     Args:
         tags (list): tags list
@@ -135,6 +136,26 @@ def get_tagfiles_from_folder(tagspath: str) -> list:
     return tags_files
 
 
+def create_random_semantic_file(
+    tagspath: str, fp_output_sem: str, fp_extracted: str
+):
+    # l_tags: my random tags.
+    tags_files = get_tagfiles_from_folder(tagspath)
+    df_tags = gnlp.get_df_tags_keywords(tags_files[0])
+    l_tags = df_tags.index.to_numpy()
+    # Load extracted file to construct df_random's index with rules ids.
+    df_extract = gnlp.load_extracted_file(fp_extracted)
+    df_random = pd.DataFrame(0, index=df_extract.index, columns=l_tags)
+    df_random.index.name = "random" # Makes labels.json without null value.
+    np.random.seed(7)
+    # Assign tag at random
+    random_cols = np.random.randint(
+        0, len(df_random.columns), size=len(df_random)
+    )
+    df_random.values[np.arange(len(df_random)), random_cols] = 1
+    write_semantic_file([df_random], fp_output_sem, [l_tags], mode="json")
+
+
 def create_semantic_file_mysql(
     model_name: str,
     fp_extracted: str,
@@ -154,7 +175,7 @@ def create_semantic_file_mysql(
     """
     model = gnlp.init_sentence_model(model_name)
     tags_files = get_tagfiles_from_folder(tagspath)
-    df_labels = []
+    list_df = []
     ll_tags = (
         []
     )  # List of lists of semantic tags ( a list for each semantic class)
@@ -178,9 +199,8 @@ def create_semantic_file_mysql(
 
         # Save tags category (given by filename without extension .tags) to dataframes index name.
         df_pred.index.name = os.path.splitext(tag_type)[0]
-        df_labels.append(df_pred)
-
-    write_semantic_file(df_labels, fp_output_sem, ll_tags, mode="json")
+        list_df.append(df_pred)
+    write_semantic_file(list_df, fp_output_sem, ll_tags, mode="json")
 
 
 def main():
@@ -213,6 +233,14 @@ def main():
         metavar="stopwords",
         dest="stopwords",
     )
+
+    parser.add_argument(
+        "-r",
+        "--random",
+        action="store_true",
+        help="Randomly attribute given semantic tags.",
+    )
+
     args = parser.parse_args()
 
     if args.output:
@@ -220,13 +248,20 @@ def main():
     if args.stopwords:
         stop_words_set = gnlp.load_stop_words(args.stopwords)
 
-    create_semantic_file_mysql(
-        model_name,
-        args.filename,
-        filepath_output,
-        args.tagspath,
-        stop_words_set,
-    )
+    if args.random:
+        create_random_semantic_file(
+            tagspath=args.tagspath,
+            fp_output_sem=filepath_output,
+            fp_extracted=args.filename,
+        )
+    else:
+        create_semantic_file_mysql(
+            model_name,
+            args.filename,
+            filepath_output,
+            args.tagspath,
+            stop_words_set,
+        )
 
 
 if __name__ == "__main__":
