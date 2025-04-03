@@ -1,7 +1,7 @@
 let
   inputs = import ./npins;
   pkgs = import inputs.nixpkgs { };
-  pygaur = pkgs.callPackage ./pygaur/default.nix {
+  pygaur = pkgs.callPackage ./pygaur-code/default.nix {
     inherit (pkgs.python311Packages)
       buildPythonPackage
       setuptools
