@@ -42,4 +42,4 @@ build: parse.o scan.o
 	$(CC)  -o parse parse.o scan.o $(LDFLAGS)
 
 clean: 
-	rm -f parse gaur.modified.y *.c *.h *.o parse.output *.log rules.extracted nterm_sem.txt  parse.dot
+	rm -f parse gaur.modified.y *.c *.h *.o parse.output *.log rules.extracted labels.json nterm_sem.txt  parse.dot
