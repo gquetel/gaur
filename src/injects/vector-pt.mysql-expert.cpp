@@ -178,7 +178,8 @@ void shift(int yykind, YYSTYPE const *const yyvaluep, int ggid)
 }
 
 /**
- * @brief Called when a parser reduction occurs, we create a father node_t object, associate it with its children, remove them from tab and store the father in tab.
+ * @brief Called when a parser reduction occurs, we create a father node_t object,
+ * associate it with its children, remove them from tab and store the father in tab.
  *
  * @param n_children Number of rule rhs (number of children to retrieve in tab)
  * @param r_id Rule id (given by bison)
@@ -191,7 +192,21 @@ void reduce(int n_children, int r_id, int rule_object, int r_action, int yykind)
     if (is_collector_error) /* Skip reduction if tree is already messed up */
         return;
 
+    if (n_children < 0 || index_tab < n_children)
+    {
+        fprintf(stderr, "GAUR - reduce(): invalid n_children=%d with index_tab=%d\n",
+                n_children, index_tab);
+        is_collector_error = 1;
+        return;
+    }
+
     node_t *father_node = (struct node_t *)malloc(sizeof(struct node_t));
+    if (!father_node)
+    {
+        fprintf(stderr, "GAUR - reduce(): malloc failed\n");
+        is_collector_error = 1;
+        return;
+    }
     father_node->rule_id = r_id;
     father_node->rule_action = r_action;
     father_node->rule_object = rule_object;
@@ -202,12 +217,16 @@ void reduce(int n_children, int r_id, int rule_object, int r_action, int yykind)
 
     if (n_children > 0)
     {
-        /* We have at least a child: retrieve first node child (tab[index_tab - 1]) */
+        // We have at least a child: retrieve first node child (tab[index_tab - 1])
         index_tab--;
-        int remaining_children = n_children - 1; // Store number of remaining children to associate to father.
-        father_node->first_child = tab[index_tab];
+        // Store number of children to associate to father.
+        int remaining_children = n_children - 1;
 
-        node_t *last_children = father_node->first_child; // Store children on which to append next brother
+        // We iterate over children, last_children correspond to the last child added
+        // to the father's list. Each new popped child is therefore added as the
+        // next_brother, and then considered as the new last_children.
+        father_node->first_child = tab[index_tab];
+        node_t *last_children = father_node->first_child;
 
         /* collect n_children last values of array tab and associate them to their father */
         for (int i = 0; i < remaining_children; i++)
@@ -215,7 +234,7 @@ void reduce(int n_children, int r_id, int rule_object, int r_action, int yykind)
             index_tab--;
             if (index_tab < 0 || index_tab >= GAUR_TAB_MAX_L)
             {
-                fprintf(stderr, "gaur data collector - reduce(): incorrect index_tab: %d\n", index_tab);
+                fprintf(stderr, "GAUR - reduce(): incorrect index_tab: %d\n", index_tab);
 
                 is_collector_error = 1;
                 return;
@@ -223,6 +242,13 @@ void reduce(int n_children, int r_id, int rule_object, int r_action, int yykind)
             last_children->next_brother = tab[index_tab];
             last_children = last_children->next_brother;
         }
+    }
+
+    if (index_tab < 0 || index_tab >= GAUR_TAB_MAX_L)
+    {
+        fprintf(stderr, "GAUR - reduce(): final index_tab=%d out of range\n", index_tab);
+        is_collector_error = 1;
+        return;
     }
 
     tab[index_tab] = father_node;
@@ -330,9 +356,11 @@ void print_edges_relation(node_t *root_node, FILE *f)
 }
 
 /**
- * @brief Function that makes sure printing the sem_value does not mess with our logfile format
- * - We enclosed the whole semantic tree in double quotes: every occurence of double quotes must be doubled within the string
- * - We also need to make sure no ":" is present, For now we replace them by GAUR_SEMICOLON which is replaced back when post-processing the log file until we find a cleaner way
+ * @brief Sanitize the sem_value of node.
+ * - We enclosed the whole semantic tree in double quotes: every occurence of double
+ *      quotes must be doubled within the string;
+ * - We also need to make sure no ":" is present, we replace them by GAUR_SEMICOLON
+ *     which is replaced back when preprocessing the log traces;
  * - We also need to make sure no "|" is present
  * @param sem_val
  * @param f
@@ -357,7 +385,7 @@ void safe_sem_value_print(char *sem_val, FILE *f)
 
 /**
  * @brief Print nodes, and their attributes
- *  | appearance_int:symbol_kind:rule_id:action:object:sem_value
+ *  appearance_int:symbol_kind:rule_id:action:object:sem_value
  * @param root_node
  * @param f
  */
