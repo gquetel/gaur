@@ -26,5 +26,9 @@ labels.json:  rules.extracted
 clean: 
 	rm -f parse gaur.modified.y *.c *.h *.o *.log rules.extracted labels.json sql_yacc.patch
 
-# patch: modify-sql
-# 	cd ~/repos/mysql-server && git diff > "$(CURDIR)/sql_yacc.patch"
+
+# Rule to create patch file for the server. The source code of a mysql-server
+# of the correct version under ~/repos/mysql-server.
+patch: run
+	cp ./gaur.modified.y ~/repos/mysql-server/sql/sql_yacc.yy
+	cd ~/repos/mysql-server && git diff > "$(CURDIR)/sql_yacc.patch"
