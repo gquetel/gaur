@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <inttypes.h>
+#include <sys/time.h>
+#include <time.h>
 
 typedef struct node_t node_t;
 
@@ -40,11 +42,11 @@ struct node_t
  */
 node_t *tab[GAUR_TAB_MAX_L];
 
-/**
- * index_tab stores the index of the next available position in the tab
- *  index_tab - 1 corresponds to the index of the last shifted element (when index_tab > 0s)
- */
+// stores the index of the next available position in the tab.
+// index_tab - 1 corresponds to the index of the last shifted element.
 int index_tab = 0;
+// Signals a state of error for the collector. When in this mode, the trace is not
+// fully produced, the semantic tree is missing.
 int is_collector_error = 0;
 int rule_counter = 0;
 
@@ -53,6 +55,7 @@ int rule_counter = 0;
     int n_nonterminal = 0;          \
     uint64_t ggid = thd->query_id;  \
     index_tab = 0;                  \
+    tab[index_tab] = NULL;          \
     rule_counter = 0;               \
     is_collector_error = 0;
 
@@ -79,7 +82,7 @@ int rule_counter = 0;
 
 #define GAUR_REDUCE(nrule, yylen, yykind)                                              \
     do                                                                                 \
-    { /* We substract 1 to nrule because of the bison accept rule offset*/             \
+    { /* We substract 1 to nrule because of the bison internal yyaccept rule */        \
         n_nonterminal++;                                                               \
         reduce(yylen, nrule - 1, GET_ASSET_TAG(nrule), GET_ACTION_TAG(nrule), yykind); \
     } while (0)
@@ -116,6 +119,32 @@ static struct
 };
 
 /**
+ * @brief Get current timestamp
+ * @return Static string containing formatted timestamp (not thread-safe)
+ */
+const char *get_timestamp()
+{
+    static char timestamp_buffer[64];
+    struct timeval tv;
+    struct tm *timeinfo;
+
+    gettimeofday(&tv, NULL);
+    timeinfo = gmtime(&tv.tv_sec);
+
+    snprintf(timestamp_buffer, sizeof(timestamp_buffer),
+             "%04d-%02d-%02dT%02d:%02d:%02d.%06ldZ [ERROR]",
+             timeinfo->tm_year + 1900,
+             timeinfo->tm_mon + 1,
+             timeinfo->tm_mday,
+             timeinfo->tm_hour,
+             timeinfo->tm_min,
+             timeinfo->tm_sec,
+             tv.tv_usec);
+
+    return timestamp_buffer;
+}
+
+/**
  * @brief Called when a shift occurs, we create a node_t object and store it in the tab
  *
  * @param yykind Kind of shifted item (given by flex / bison).
@@ -126,7 +155,8 @@ void shift(int yykind, YYSTYPE const *const yyvaluep, int ggid)
 {
     if (index_tab >= GAUR_TAB_MAX_L || is_collector_error)
     {
-        fprintf(stderr, "gaur data collector - shift(): incorrect index_tab: %d for query %d\n", index_tab, ggid);
+        fprintf(stderr, "%s GAUR - shift(): incorrect index_tab: %d for query %d\n",
+                get_timestamp(), index_tab, ggid);
         is_collector_error = 1;
         return;
     }
@@ -158,16 +188,6 @@ void shift(int yykind, YYSTYPE const *const yyvaluep, int ggid)
         tab[index_tab]->sem_val = strdup(yyvaluep->lexer.lex_str.str);
         break;
     }
-
-    // case YYSYMBOL_ident_or_text: -> is a nterm
-    // case YYSYMBOL_IDENT_sys: -> is a nterm
-    // case YYSYMBOL_TEXT_STRING_sys:-> is a nterm
-    // case YYSYMBOL_TEXT_STRING_literal:-> is a nterm
-    // case YYSYMBOL_TEXT_STRING_filesystem:-> is a nterm
-    // case YYSYMBOL_TEXT_STRING_sys_nonewline: -> is a nterm
-    // case YYSYMBOL_TEXT_STRING_password: -> is a nterm
-    // case YYSYMBOL_TEXT_STRING_hash:-> is a nterm
-    // case YYSYMBOL_TEXT_STRING_validated:-> is a nterm
     default:
     {
         tab[index_tab]->sem_val = NULL;
@@ -189,13 +209,14 @@ void shift(int yykind, YYSTYPE const *const yyvaluep, int ggid)
  */
 void reduce(int n_children, int r_id, int rule_object, int r_action, int yykind)
 {
-    if (is_collector_error) /* Skip reduction if tree is already messed up */
+    // Skip reduction if tree is already messed up
+    if (is_collector_error)
         return;
 
     if (n_children < 0 || index_tab < n_children)
     {
-        fprintf(stderr, "GAUR - reduce(): invalid n_children=%d with index_tab=%d\n",
-                n_children, index_tab);
+        fprintf(stderr, "%s GAUR - reduce(): invalid n_children=%d with index_tab=%d\n",
+                get_timestamp(), n_children, index_tab);
         is_collector_error = 1;
         return;
     }
@@ -203,7 +224,7 @@ void reduce(int n_children, int r_id, int rule_object, int r_action, int yykind)
     node_t *father_node = (struct node_t *)malloc(sizeof(struct node_t));
     if (!father_node)
     {
-        fprintf(stderr, "GAUR - reduce(): malloc failed\n");
+        fprintf(stderr, "%s GAUR - reduce(): malloc failed\n", get_timestamp());
         is_collector_error = 1;
         return;
     }
@@ -225,6 +246,9 @@ void reduce(int n_children, int r_id, int rule_object, int r_action, int yykind)
         // We iterate over children, last_children correspond to the last child added
         // to the father's list. Each new popped child is therefore added as the
         // next_brother, and then considered as the new last_children.
+
+        // Check whether the existing node in tab is not null.
+
         father_node->first_child = tab[index_tab];
         node_t *last_children = father_node->first_child;
 
@@ -234,7 +258,7 @@ void reduce(int n_children, int r_id, int rule_object, int r_action, int yykind)
             index_tab--;
             if (index_tab < 0 || index_tab >= GAUR_TAB_MAX_L)
             {
-                fprintf(stderr, "GAUR - reduce(): incorrect index_tab: %d\n", index_tab);
+                fprintf(stderr, "%s GAUR - reduce(): incorrect index_tab: %d\n", get_timestamp(), index_tab);
 
                 is_collector_error = 1;
                 return;
@@ -242,11 +266,12 @@ void reduce(int n_children, int r_id, int rule_object, int r_action, int yykind)
             last_children->next_brother = tab[index_tab];
             last_children = last_children->next_brother;
         }
+        last_children->next_brother = NULL;
     }
 
     if (index_tab < 0 || index_tab >= GAUR_TAB_MAX_L)
     {
-        fprintf(stderr, "GAUR - reduce(): final index_tab=%d out of range\n", index_tab);
+        fprintf(stderr, "%s GAUR - reduce(): final index_tab=%d out of range\n", get_timestamp(), index_tab);
         is_collector_error = 1;
         return;
     }
@@ -256,8 +281,7 @@ void reduce(int n_children, int r_id, int rule_object, int r_action, int yykind)
 }
 
 /**
- * @brief Check existence of file, if not exists create it, and create header line, then return file pointer.
- * If already exists, just return file pointer.
+ * @brief Return gaur logfile pointer, creates it if necessary.
  *
  * @return FILE*
  */
@@ -291,7 +315,7 @@ FILE *gaur_open_file()
  */
 int get_tree_depth(node_t *tree_root)
 {
-    if (tree_root == NULL)
+    if (is_collector_error || tree_root == NULL)
         return 0;
 
     int max = 0;
@@ -301,6 +325,13 @@ int get_tree_depth(node_t *tree_root)
 
     for (int i = 0; i < tree_root->n_children; i++)
     {
+        if (next_child == NULL)
+        {
+            fprintf(stderr, "%s GAUR - get_tree_depth(): child list shorter than n_children=%d\n",
+                    get_timestamp(), tree_root->n_children);
+            is_collector_error = 1;
+            return 0;
+        }
         current = get_tree_depth(next_child);
 
         if (current > max)
@@ -334,8 +365,8 @@ void print_tree_features(FILE *f)
  */
 void print_edges_relation(node_t *root_node, FILE *f)
 {
-    /* If root node is null or no children we return */
-    if (root_node == NULL || root_node->n_children == 0)
+    /* If root node is null, no children or error we return  */
+    if (root_node == NULL || root_node->n_children == 0 || is_collector_error)
         return;
 
     fprintf(f, " %d>", root_node->rule_order);
@@ -343,6 +374,13 @@ void print_edges_relation(node_t *root_node, FILE *f)
     /* Print edges between root_node and its children. */
     for (int i = 0; i < root_node->n_children; i++)
     {
+        if (current_node == NULL)
+        {
+            fprintf(stderr, "%s GAUR - print_edges_relation(): Child list is shorter than n_children (%d).\n",
+                    get_timestamp(), root_node->n_children);
+            is_collector_error = 1;
+            return;
+        }
         fprintf(f, "%d:", current_node->rule_order);
         current_node = current_node->next_brother;
     }
@@ -392,7 +430,7 @@ void safe_sem_value_print(char *sem_val, FILE *f)
 void print_nodes_attr(node_t *root_node, FILE *f)
 {
     // TODO: append all text to a buffer and only print once
-    if (root_node == NULL)
+    if (root_node == NULL || is_collector_error)
         return;
 
     fprintf(f, "|%d:%d:%d:", root_node->rule_order, root_node->yykind, root_node->rule_id);
@@ -424,6 +462,13 @@ void print_nodes_attr(node_t *root_node, FILE *f)
     node_t *current_node = root_node->first_child;
     for (int i = 0; i < root_node->n_children; i++)
     {
+        if (current_node == NULL)
+        {
+            fprintf(stderr, "%s GAUR - print_nodes_attr(): Child list is shorter than n_children (%d).\n",
+                    get_timestamp(), root_node->n_children);
+            is_collector_error = 1;
+            return;
+        }
         print_nodes_attr(current_node, f);
         current_node = current_node->next_brother;
     }
@@ -442,6 +487,13 @@ void free_node_and_child(node_t *node)
     node_t *current_node = node->first_child;
     for (int i = 0; i < node->n_children; i++)
     {
+        if (current_node == NULL)
+        {
+            fprintf(stderr,
+                    "%s GAUR - free_node_and_child() - child list shorter than n_children=%d at index %d\n",
+                    get_timestamp(), node->n_children, i);
+            break;
+        }
         node_t *next = current_node->next_brother;
         free_node_and_child(current_node);
         current_node = next;
@@ -462,6 +514,7 @@ void free_node_and_child(node_t *node)
  */
 void print_tree_MY(FILE *f)
 {
+    // Checks on the validity of the tree are done in caller.
     fprintf(f, ",\"");
     print_nodes_attr(tab[index_tab - 1], f);
     fprintf(f, "||-||"); /* Allows to separate node declaration from edges*/
@@ -479,6 +532,10 @@ void print_tree_MY(FILE *f)
  */
 void collect_and_clean(uint64_t query_id, int n_terminal, int n_nonterminal, int is_error)
 {
+    // Case where tree is empty / invalid.
+    if (index_tab == 0 || tab[index_tab - 1] == NULL)
+        return;
+
     FILE *f_logs = gaur_open_file();
     if (f_logs != NULL)
     {
