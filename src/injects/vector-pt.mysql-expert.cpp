@@ -36,7 +36,7 @@ struct node_t
 #define GAUR_TAB_MAX_L 10000
 
 /**
- *  Tab servers as a stack of pt nodes until they are given a father
+ *  Tab serves as a stack of pt nodes until they are given a father
  * - Each shift increments the number of element in the array
  * - Each reduce reduce the number of elements by the number of rhs elements (direct childrens)
  */
@@ -213,6 +213,8 @@ void reduce(int n_children, int r_id, int rule_object, int r_action, int yykind)
     if (is_collector_error)
         return;
 
+    // Check if n_children is valid, and not superior to the number of entries
+    // in the stack.
     if (n_children < 0 || index_tab < n_children)
     {
         fprintf(stderr, "%s GAUR - reduce(): invalid n_children=%d with index_tab=%d\n",
@@ -221,6 +223,7 @@ void reduce(int n_children, int r_id, int rule_object, int r_action, int yykind)
         return;
     }
 
+    // Create father and populate entries with information given by function params.
     node_t *father_node = (struct node_t *)malloc(sizeof(struct node_t));
     if (!father_node)
     {
@@ -236,38 +239,44 @@ void reduce(int n_children, int r_id, int rule_object, int r_action, int yykind)
     father_node->yykind = yykind;
     father_node->sem_val = NULL;
 
-    if (n_children > 0)
+    // First child to associate is at index_tab - 1.
+    index_tab--;
+    // The number of children to associate to the father.
+    int remaining_children = n_children - 1;
+
+    // Check whether the existing node in tab is not null.
+    if (tab[index_tab] == NULL)
     {
-        // We have at least a child: retrieve first node child (tab[index_tab - 1])
-        index_tab--;
-        // Store number of children to associate to father.
-        int remaining_children = n_children - 1;
-
-        // We iterate over children, last_children correspond to the last child added
-        // to the father's list. Each new popped child is therefore added as the
-        // next_brother, and then considered as the new last_children.
-
-        // Check whether the existing node in tab is not null.
-
-        father_node->first_child = tab[index_tab];
-        node_t *last_children = father_node->first_child;
-
-        /* collect n_children last values of array tab and associate them to their father */
-        for (int i = 0; i < remaining_children; i++)
-        {
-            index_tab--;
-            if (index_tab < 0 || index_tab >= GAUR_TAB_MAX_L)
-            {
-                fprintf(stderr, "%s GAUR - reduce(): incorrect index_tab: %d\n", get_timestamp(), index_tab);
-
-                is_collector_error = 1;
-                return;
-            }
-            last_children->next_brother = tab[index_tab];
-            last_children = last_children->next_brother;
-        }
-        last_children->next_brother = NULL;
+        fprintf(stderr, "%s GAUR - reduce(): Expected children is NULL\n", get_timestamp());
+        is_collector_error = 1;
+        return;
     }
+    father_node->first_child = tab[index_tab];
+    node_t *last_children = father_node->first_child;
+
+    // We iterate over children, last_children correspond to the last child added
+    // to the father's list. Each new popped child is therefore added as the
+    // next_brother, and then considered as the new last_children.
+    for (int i = 0; i < remaining_children; i++)
+    {
+        index_tab--;
+        if (index_tab < 0 || index_tab >= GAUR_TAB_MAX_L)
+        {
+            fprintf(stderr, "%s GAUR - reduce(): incorrect index_tab: %d\n", get_timestamp(), index_tab);
+            is_collector_error = 1;
+            return;
+        }
+        if (tab[index_tab] == NULL)
+        {
+            fprintf(stderr, "%s GAUR - reduce(): Expected children is NULL\n", get_timestamp());
+            is_collector_error = 1;
+            return;
+        }
+        last_children->next_brother = tab[index_tab];
+        last_children = last_children->next_brother;
+    }
+    last_children->next_brother = NULL;
+    
 
     if (index_tab < 0 || index_tab >= GAUR_TAB_MAX_L)
     {
