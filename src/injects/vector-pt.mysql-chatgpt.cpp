@@ -7,7 +7,7 @@
 #include <time.h>
 
 // TODO
-// - Thread / connexion specific gaur.log file. 
+// - Thread / connexion specific gaur.log file.
 typedef struct node_t node_t;
 
 /**
@@ -64,7 +64,6 @@ thread_local uint64_t ggid = 0;
     tab[index_tab] = NULL;          \
     rule_counter = 0;               \
     is_collector_error = 0;
-
 
 #define GET_TAG(i) (ggrulesem[i - 2])
 
@@ -540,6 +539,15 @@ void collect_and_clean(uint64_t query_id, int n_terminal, int n_nonterminal, int
 
         if (is_collector_error)
             fprintf(f_logs, ",,\n"); // One for pt, one for depth
+        else if (rule_counter > 10000)
+        {
+            // FIXME
+            // Large rule_counter value lead to A LOT of recursive calls to
+            // print_notes_attr. This would cause a stack overflow. A fix would be a
+            // different implementation of print_nodes_attr. But because this mostly
+            // happens for large INSERT statement, we simply put a limit for now.
+            fprintf(f_logs, ",,\n");
+        }
         else
         {
             print_tree_MY(f_logs);
