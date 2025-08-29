@@ -6,6 +6,8 @@
 #include <sys/time.h>
 #include <time.h>
 
+// TODO
+// - Thread / connexion specific gaur.log file.
 typedef struct node_t node_t;
 
 /**
@@ -38,21 +40,26 @@ struct node_t
  * - Each shift increments the number of element in the array
  * - Each reduce reduce the number of elements by the number of rhs elements (direct childrens)
  */
-node_t *tab[GAUR_TAB_MAX_L];
+thread_local node_t *tab[GAUR_TAB_MAX_L];
 
 // stores the index of the next available position in the tab.
 // index_tab - 1 corresponds to the index of the last shifted element.
-int index_tab = 0;
-
+thread_local int index_tab = 0;
 // Signals a state of error for the collector. When in this mode, the trace is not
 // fully produced, the semantic tree is missing.
-int is_collector_error = 0;
-int rule_counter = 0;
+thread_local int is_collector_error = 0;
 
+thread_local int rule_counter = 0;
+thread_local int n_terminal = 0;
+thread_local int n_nonterminal = 0;
+// Store query id
+thread_local uint64_t ggid = 0;
+
+// Is called at the beginning of each input parsing. Reinitialize values.
 #define GAUR_PARSE_BEGIN(size, thd) \
-    int n_terminal = 0;             \
-    int n_nonterminal = 0;          \
-    uint64_t ggid = thd->query_id;  \
+    n_terminal = 0;                 \
+    n_nonterminal = 0;              \
+    ggid = thd->query_id;           \
     index_tab = 0;                  \
     tab[index_tab] = NULL;          \
     rule_counter = 0;               \
