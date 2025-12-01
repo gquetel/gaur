@@ -9,3 +9,4 @@ clean:
 	@cd mysql-stmts ; make clean
 	@cd mysql-claude ; make clean
 	@cd mysql-chatgpt ; make clean
+	@cd mysql-mistral ; make clean

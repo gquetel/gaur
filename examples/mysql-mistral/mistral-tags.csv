@@ -1,0 +1,1013 @@
+rulename,tag
+start_entry,Statement Control
+sql_statement,Statement Control
+835_1,Statement Control
+opt_end_of_input,Statement Control
+simple_statement_or_begin,Statement Control
+simple_statement,Statement Control
+deallocate,Stored Procedures & Functions
+deallocate_or_drop,Stored Procedures & Functions
+prepare,Stored Procedures & Functions
+prepare_src,Stored Procedures & Functions
+execute,Stored Procedures & Functions
+844_2,Stored Procedures & Functions
+execute_using,Stored Procedures & Functions
+execute_var_list,Stored Procedures & Functions
+execute_var_ident,Stored Procedures & Functions
+help,System Information
+849_3,System Information
+change_replication_stmt,Replication & Clustering
+851_4,Replication & Clustering
+852_5,Replication & Clustering
+filter_defs,Security & Privileges
+filter_def,Security & Privileges
+opt_filter_db_list,Security & Privileges
+filter_db_list,Security & Privileges
+filter_db_ident,Security & Privileges
+opt_filter_db_pair_list,Security & Privileges
+filter_db_pair_list,Security & Privileges
+opt_filter_table_list,Security & Privileges
+filter_table_list,Security & Privileges
+filter_table_ident,Security & Privileges
+opt_filter_string_list,Security & Privileges
+filter_string_list,Security & Privileges
+filter_string,Security & Privileges
+source_defs,Replication & Clustering
+source_def,Replication & Clustering
+ignore_server_id_list,Replication & Clustering
+ignore_server_id,Replication & Clustering
+privilege_check_def,Security & Privileges
+table_primary_key_check_def,Data Definition
+assign_gtids_to_anonymous_transactions_def,Transaction Control
+source_tls_ciphersuites_def,Security & Privileges
+source_file_def,Data Import/Export
+opt_channel,Replication & Clustering
+create_table_stmt,Data Definition
+create_role_stmt,User Management
+create_resource_group_stmt,Resource Management
+create,Data Definition
+880_6,Data Definition
+create_srs_stmt,Data Definition
+srs_attributes,Data Definition
+default_role_clause,User Management
+create_index_stmt,Data Definition
+server_options_list,System Variables
+server_option,System Variables
+event_tail,Triggers & Events
+888_7,Triggers & Events
+ev_schedule_time,Triggers & Events
+890_8,Triggers & Events
+opt_ev_status,Triggers & Events
+ev_starts,Triggers & Events
+ev_ends,Triggers & Events
+opt_ev_on_completion,Triggers & Events
+ev_on_completion,Triggers & Events
+opt_ev_comment,Triggers & Events
+ev_sql_stmt,Triggers & Events
+898_9,Triggers & Events
+ev_sql_stmt_inner,Triggers & Events
+sp_name,Stored Procedures & Functions
+sp_a_chistics,Stored Procedures & Functions
+sp_c_chistics,Stored Procedures & Functions
+sp_chistic,Stored Procedures & Functions
+sp_c_chistic,Stored Procedures & Functions
+sp_suid,Stored Procedures & Functions
+call_stmt,Stored Procedures & Functions
+opt_paren_expr_list,Stored Procedures & Functions
+sp_fdparam_list,Stored Procedures & Functions
+sp_fdparams,Stored Procedures & Functions
+sp_fdparam,Stored Procedures & Functions
+sp_pdparam_list,Stored Procedures & Functions
+sp_pdparams,Stored Procedures & Functions
+sp_pdparam,Stored Procedures & Functions
+sp_opt_inout,Stored Procedures & Functions
+sp_proc_stmts,Stored Procedures & Functions
+sp_proc_stmts1,Stored Procedures & Functions
+sp_decls,Stored Procedures & Functions
+sp_decl,Stored Procedures & Functions
+919_10,Stored Procedures & Functions
+920_11,Stored Procedures & Functions
+sp_handler_type,Stored Procedures & Functions
+sp_hcond_list,Stored Procedures & Functions
+sp_hcond_element,Stored Procedures & Functions
+sp_cond,Stored Procedures & Functions
+sqlstate,Stored Procedures & Functions
+opt_value,Stored Procedures & Functions
+sp_hcond,Stored Procedures & Functions
+signal_stmt,Stored Procedures & Functions
+signal_value,Stored Procedures & Functions
+opt_signal_value,Stored Procedures & Functions
+opt_set_signal_information,Stored Procedures & Functions
+signal_information_item_list,Stored Procedures & Functions
+signal_allowed_expr,Stored Procedures & Functions
+signal_condition_information_item_name,Stored Procedures & Functions
+resignal_stmt,Stored Procedures & Functions
+get_diagnostics,Stored Procedures & Functions
+which_area,Stored Procedures & Functions
+diagnostics_information,Stored Procedures & Functions
+statement_information,Stored Procedures & Functions
+statement_information_item,Stored Procedures & Functions
+simple_target_specification,Stored Procedures & Functions
+statement_information_item_name,Stored Procedures & Functions
+condition_number,Stored Procedures & Functions
+condition_information,Stored Procedures & Functions
+condition_information_item,Stored Procedures & Functions
+condition_information_item_name,Stored Procedures & Functions
+sp_decl_idents,Stored Procedures & Functions
+sp_opt_default,Stored Procedures & Functions
+sp_proc_stmt,Stored Procedures & Functions
+sp_proc_stmt_if,Stored Procedures & Functions
+951_12,Stored Procedures & Functions
+sp_proc_stmt_statement,Stored Procedures & Functions
+953_13,Stored Procedures & Functions
+sp_proc_stmt_return,Stored Procedures & Functions
+955_14,Stored Procedures & Functions
+sp_proc_stmt_unlabeled,Stored Procedures & Functions
+957_15,Stored Procedures & Functions
+sp_proc_stmt_leave,Stored Procedures & Functions
+sp_proc_stmt_iterate,Stored Procedures & Functions
+sp_proc_stmt_open,Stored Procedures & Functions
+sp_proc_stmt_fetch,Stored Procedures & Functions
+962_16,Stored Procedures & Functions
+sp_proc_stmt_close,Stored Procedures & Functions
+sp_opt_fetch_noise,Stored Procedures & Functions
+sp_fetch_list,Stored Procedures & Functions
+sp_if,Stored Procedures & Functions
+967_17,Stored Procedures & Functions
+968_18,Stored Procedures & Functions
+969_19,Stored Procedures & Functions
+sp_elseifs,Stored Procedures & Functions
+case_stmt_specification,Stored Procedures & Functions
+simple_case_stmt,Stored Procedures & Functions
+973_20,Stored Procedures & Functions
+974_21,Stored Procedures & Functions
+searched_case_stmt,Stored Procedures & Functions
+976_22,Stored Procedures & Functions
+simple_when_clause_list,Stored Procedures & Functions
+searched_when_clause_list,Stored Procedures & Functions
+simple_when_clause,Stored Procedures & Functions
+980_23,Stored Procedures & Functions
+981_24,Stored Procedures & Functions
+searched_when_clause,Stored Procedures & Functions
+983_25,Stored Procedures & Functions
+984_26,Stored Procedures & Functions
+else_clause_opt,Stored Procedures & Functions
+sp_labeled_control,Stored Procedures & Functions
+987_27,Stored Procedures & Functions
+sp_opt_label,Stored Procedures & Functions
+sp_labeled_block,Stored Procedures & Functions
+990_28,Stored Procedures & Functions
+sp_unlabeled_block,Stored Procedures & Functions
+992_29,Stored Procedures & Functions
+sp_block_content,Stored Procedures & Functions
+994_30,Stored Procedures & Functions
+sp_unlabeled_control,Stored Procedures & Functions
+996_31,Stored Procedures & Functions
+997_32,Stored Procedures & Functions
+998_33,Stored Procedures & Functions
+999_34,Stored Procedures & Functions
+trg_action_time,Triggers & Events
+trg_event,Triggers & Events
+opt_ts_datafile_name,Data Definition
+opt_logfile_group_name,Data Definition
+opt_tablespace_options,Data Definition
+tablespace_option_list,Data Definition
+tablespace_option,Data Definition
+opt_alter_tablespace_options,Data Definition
+alter_tablespace_option_list,Data Definition
+alter_tablespace_option,Data Definition
+opt_undo_tablespace_options,Data Definition
+undo_tablespace_option_list,Data Definition
+undo_tablespace_option,Data Definition
+opt_logfile_group_options,Data Definition
+logfile_group_option_list,Data Definition
+logfile_group_option,Data Definition
+opt_alter_logfile_group_options,Data Definition
+alter_logfile_group_option_list,Data Definition
+alter_logfile_group_option,Data Definition
+ts_datafile,Data Definition
+undo_tablespace_state,Data Definition
+lg_undofile,Data Definition
+ts_option_initial_size,Data Definition
+ts_option_autoextend_size,Data Definition
+option_autoextend_size,Data Definition
+ts_option_max_size,Data Definition
+ts_option_extent_size,Data Definition
+ts_option_undo_buffer_size,Data Definition
+ts_option_redo_buffer_size,Data Definition
+ts_option_nodegroup,Data Definition
+ts_option_comment,Data Definition
+ts_option_engine,Data Definition
+ts_option_file_block_size,Data Definition
+ts_option_wait,Data Definition
+ts_option_encryption,Data Definition
+ts_option_engine_attribute,Data Definition
+size_number,Data Definition
+opt_create_table_options_etc,Data Definition
+opt_create_partitioning_etc,Data Definition
+opt_duplicate_as_qe,Data Definition
+as_create_query_expression,Data Definition
+partition_clause,Data Definition
+part_type_def,Data Definition
+opt_linear,Data Definition
+opt_key_algo,Data Definition
+opt_num_parts,Data Definition
+opt_sub_part,Data Definition
+opt_name_list,Data Definition
+name_list,Data Definition
+opt_num_subparts,Data Definition
+opt_part_defs,Data Definition
+part_def_list,Data Definition
+part_definition,Data Definition
+opt_part_values,Data Definition
+part_func_max,Data Definition
+part_values_in,Data Definition
+part_value_list,Data Definition
+part_value_item_list_paren,Data Definition
+1058_35,Data Definition
+part_value_item_list,Data Definition
+part_value_item,Data Definition
+opt_sub_partition,Data Definition
+sub_part_list,Data Definition
+sub_part_definition,Data Definition
+opt_part_options,Data Definition
+part_option_list,Data Definition
+part_option,Data Definition
+alter_database_options,Database Management
+alter_database_option,Database Management
+opt_create_database_options,Database Management
+create_database_options,Database Management
+create_database_option,Database Management
+opt_if_not_exists,Database Management
+create_table_options_space_separated,Data Definition
+create_table_options,Data Definition
+opt_comma,Data Definition
+create_table_option,Data Definition
+ternary_option,Data Definition
+default_charset,Data Definition
+default_collation,Data Definition
+default_encryption,Data Definition
+row_types,Data Definition
+merge_insert_types,Data Definition
+udf_type,Data Definition
+table_element_list,Data Definition
+table_element,Data Definition
+column_def,Data Definition
+opt_references,Data Definition
+table_constraint_def,Data Definition
+check_constraint,Data Definition
+opt_constraint_name,Data Definition
+opt_not,Data Definition
+opt_constraint_enforcement,Data Definition
+constraint_enforcement,Data Definition
+field_def,Data Definition
+opt_generated_always,Data Definition
+opt_stored_attribute,Data Definition
+type,Data Definition
+spatial_type,Data Definition
+nchar,Data Definition
+varchar,Data Definition
+nvarchar,Data Definition
+int_type,Data Definition
+real_type,Data Definition
+opt_PRECISION,Data Definition
+numeric_type,Data Definition
+standard_float_options,Data Definition
+float_options,Data Definition
+precision,Data Definition
+type_datetime_precision,Data Definition
+func_datetime_precision,Data Definition
+field_options,Data Definition
+field_opt_list,Data Definition
+field_option,Data Definition
+field_length,Data Definition
+opt_field_length,Data Definition
+opt_precision,Data Definition
+opt_column_attribute_list,Data Definition
+column_attribute_list,Data Definition
+column_attribute,Data Definition
+column_format,Data Definition
+storage_media,Data Definition
+now,Data Definition
+now_or_signed_literal,Data Definition
+character_set,Data Definition
+charset_name,Data Definition
+opt_load_data_charset,Data Definition
+old_or_new_charset_name,Data Definition
+old_or_new_charset_name_or_default,Data Definition
+collation_name,Data Definition
+opt_collate,Data Definition
+opt_default,Data Definition
+ascii,Data Definition
+unicode,Data Definition
+opt_charset_with_opt_binary,Data Definition
+opt_bin_mod,Data Definition
+ws_num_codepoints,Data Definition
+1137_36,Data Definition
+opt_primary,Data Definition
+references,Data Definition
+opt_ref_list,Data Definition
+reference_list,Data Definition
+opt_match_clause,Data Definition
+opt_on_update_delete,Data Definition
+delete_option,Data Definition
+constraint_key_type,Data Definition
+key_or_index,Data Definition
+opt_key_or_index,Data Definition
+keys_or_index,Data Definition
+opt_unique,Data Definition
+opt_fulltext_index_options,Data Definition
+fulltext_index_options,Data Definition
+fulltext_index_option,Data Definition
+opt_spatial_index_options,Data Definition
+spatial_index_options,Data Definition
+spatial_index_option,Data Definition
+opt_index_options,Data Definition
+index_options,Data Definition
+index_option,Data Definition
+common_index_option,Data Definition
+opt_index_name_and_type,Data Definition
+opt_index_type_clause,Data Definition
+index_type_clause,Data Definition
+visibility,Data Definition
+index_type,Data Definition
+key_list,Data Definition
+key_part,Data Definition
+key_list_with_expression,Data Definition
+key_part_with_expression,Data Definition
+opt_ident,Data Definition
+string_list,Data Definition
+alter_table_stmt,Data Definition
+alter_database_stmt,Database Management
+1173_37,Database Management
+alter_procedure_stmt,Stored Procedures & Functions
+1175_38,Stored Procedures & Functions
+alter_function_stmt,Stored Procedures & Functions
+1177_39,Stored Procedures & Functions
+alter_view_stmt,Views
+1179_40,Views
+1180_41,Views
+alter_event_stmt,Triggers & Events
+1182_42,Triggers & Events
+alter_logfile_stmt,Data Definition
+alter_tablespace_stmt,Data Definition
+alter_undo_tablespace_stmt,Data Definition
+alter_server_stmt,Replication & Clustering
+alter_user_stmt,User Management
+opt_replace_password,User Management
+alter_resource_group_stmt,Resource Management
+alter_user_command,User Management
+opt_user_attribute,User Management
+opt_account_lock_password_expire_options,User Management
+opt_account_lock_password_expire_option_list,User Management
+opt_account_lock_password_expire_option,User Management
+connect_options,Replication & Clustering
+connect_option_list,Replication & Clustering
+connect_option,Replication & Clustering
+user_func,Stored Procedures & Functions
+ev_alter_on_schedule_completion,Triggers & Events
+opt_ev_rename_to,Triggers & Events
+opt_ev_sql_stmt,Triggers & Events
+ident_or_empty,Statement Control
+opt_alter_table_actions,Data Definition
+standalone_alter_table_action,Data Definition
+alter_table_partition_options,Data Definition
+opt_alter_command_list,Data Definition
+standalone_alter_commands,Data Definition
+opt_with_validation,Data Definition
+with_validation,Data Definition
+all_or_alt_part_name_list,Data Definition
+alter_list,Data Definition
+alter_commands_modifier_list,Data Definition
+alter_list_item,Data Definition
+alter_commands_modifier,Data Definition
+opt_index_lock_and_algorithm,Locking & Concurrency
+alter_algorithm_option,Locking & Concurrency
+alter_algorithm_option_value,Locking & Concurrency
+alter_lock_option,Locking & Concurrency
+alter_lock_option_value,Locking & Concurrency
+opt_column,Data Definition
+opt_ignore,Data Definition
+opt_restrict,Data Definition
+opt_place,Data Definition
+opt_to,Data Definition
+group_replication,Replication & Clustering
+group_replication_start,Replication & Clustering
+opt_group_replication_start_options,Replication & Clustering
+group_replication_start_options,Replication & Clustering
+group_replication_start_option,Replication & Clustering
+group_replication_user,Replication & Clustering
+group_replication_password,Replication & Clustering
+group_replication_plugin_auth,Replication & Clustering
+stop_replica_stmt,Replication & Clustering
+start_replica_stmt,Replication & Clustering
+1235_43,Replication & Clustering
+1236_44,Replication & Clustering
+start,Transaction Control
+opt_start_transaction_option_list,Transaction Control
+start_transaction_option_list,Transaction Control
+start_transaction_option,Transaction Control
+opt_user_option,Transaction Control
+opt_password_option,Transaction Control
+opt_default_auth_option,Transaction Control
+opt_plugin_dir_option,Transaction Control
+opt_replica_thread_option_list,Replication & Clustering
+replica_thread_option_list,Replication & Clustering
+replica_thread_option,Replication & Clustering
+opt_replica_until,Replication & Clustering
+replica_until,Replication & Clustering
+checksum,System Maintenance
+opt_checksum_type,System Maintenance
+repair_table_stmt,System Maintenance
+opt_mi_repair_types,System Maintenance
+mi_repair_types,System Maintenance
+mi_repair_type,System Maintenance
+analyze_table_stmt,System Maintenance
+opt_histogram_auto_update,System Maintenance
+opt_histogram_num_buckets,System Maintenance
+opt_histogram_update_param,System Maintenance
+opt_histogram,System Maintenance
+binlog_base64_event,Replication & Clustering
+check_table_stmt,System Maintenance
+opt_mi_check_types,System Maintenance
+mi_check_types,System Maintenance
+mi_check_type,System Maintenance
+optimize_table_stmt,System Maintenance
+opt_no_write_to_binlog,System Maintenance
+rename,Data Definition
+1269_45,Data Definition
+rename_list,Data Definition
+table_to_table_list,Data Definition
+table_to_table,Data Definition
+keycache_stmt,System Maintenance
+keycache_list,System Maintenance
+assign_to_keycache,System Maintenance
+key_cache_name,System Maintenance
+preload_stmt,System Maintenance
+preload_list,System Maintenance
+preload_keys,System Maintenance
+adm_partition,Data Definition
+opt_cache_key_list,System Maintenance
+opt_ignore_leaves,System Maintenance
+select_stmt,Data Query
+select_stmt_with_into,Data Query
+query_expression,Data Query
+query_expression_body,Data Query
+query_expression_parens,Data Query
+query_primary,Data Query
+query_specification,Data Query
+opt_from_clause,Data Query
+from_clause,Data Query
+from_tables,Data Query
+table_reference_list,Data Query
+table_value_constructor,Data Query
+explicit_table,Data Query
+select_options,Data Query
+select_option_list,Data Query
+select_option,Data Query
+locking_clause_list,Locking & Concurrency
+locking_clause,Locking & Concurrency
+lock_strength,Locking & Concurrency
+table_locking_list,Locking & Concurrency
+opt_locked_row_action,Locking & Concurrency
+locked_row_action,Locking & Concurrency
+select_item_list,Data Query
+select_item,Data Query
+select_alias,Data Query
+optional_braces,Data Query
+expr,Data Query
+bool_pri,Data Query
+predicate,Data Query
+opt_of,Data Query
+bit_expr,Data Query
+or,Data Query
+and,Data Query
+not,Data Query
+not2,Data Query
+comp_op,Data Query
+all_or_any,Data Query
+simple_expr,Data Query
+opt_array_cast,Data Query
+function_call_keyword,Data Query
+function_call_nonkeyword,Data Query
+opt_returning_type,Data Query
+function_call_conflict,Data Query
+geometry_function,Data Query
+function_call_generic,Data Query
+fulltext_options,Data Query
+opt_natural_language_mode,Data Query
+opt_query_expansion,Data Query
+opt_udf_expr_list,Data Query
+udf_expr_list,Data Query
+udf_expr,Data Query
+set_function_specification,Data Query
+sum_expr,Data Query
+sampling_method,Data Query
+sampling_percentage,Data Query
+opt_tablesample_clause,Data Query
+window_func_call,Data Query
+opt_lead_lag_info,Data Query
+stable_integer,Data Query
+param_or_var,Data Query
+opt_ll_default,Data Query
+opt_null_treatment,Data Query
+opt_from_first_last,Data Query
+opt_windowing_clause,Data Query
+windowing_clause,Data Query
+window_name_or_spec,Data Query
+window_name,Data Query
+window_spec,Data Query
+window_spec_details,Data Query
+opt_existing_window_name,Data Query
+opt_partition_clause,Data Query
+opt_window_order_by_clause,Data Query
+opt_window_frame_clause,Data Query
+window_frame_extent,Data Query
+window_frame_start,Data Query
+window_frame_between,Data Query
+window_frame_bound,Data Query
+opt_window_frame_exclusion,Data Query
+window_frame_units,Data Query
+grouping_operation,Data Query
+in_expression_user_variable_assignment,Data Query
+rvalue_system_or_user_variable,Data Query
+opt_distinct,Data Query
+opt_gconcat_separator,Data Query
+opt_gorder_clause,Data Query
+gorder_list,Data Query
+in_sum_expr,Data Query
+cast_type,Data Query
+opt_expr_list,Data Query
+expr_list,Data Query
+ident_list_arg,Data Query
+ident_list,Data Query
+opt_expr,Data Query
+opt_else,Data Query
+when_list,Data Query
+table_reference,Data Query
+esc_table_reference,Data Query
+joined_table,Data Query
+natural_join_type,Data Query
+inner_join_type,Data Query
+outer_join_type,Data Query
+opt_inner,Data Query
+opt_outer,Data Query
+opt_use_partition,Data Query
+use_partition,Data Query
+table_factor,Data Query
+table_reference_list_parens,Data Query
+single_table_parens,Data Query
+single_table,Data Query
+joined_table_parens,Data Query
+derived_table,Data Query
+table_function,Data Query
+columns_clause,Data Query
+columns_list,Data Query
+jt_column,Data Query
+jt_column_type,Data Query
+opt_on_empty_or_error,Data Query
+opt_on_empty_or_error_json_table,Data Query
+on_empty,Data Query
+on_error,Data Query
+json_on_response,Data Query
+index_hint_clause,Data Query
+index_hint_type,Data Query
+index_hint_definition,Data Query
+index_hints_list,Data Query
+opt_index_hints_list,Data Query
+opt_key_definition,Data Query
+opt_key_usage_list,Data Query
+key_usage_element,Data Query
+key_usage_list,Data Query
+using_list,Data Query
+ident_string_list,Data Query
+interval,Data Query
+interval_time_stamp,Data Query
+date_time_type,Data Query
+opt_as,Data Query
+opt_table_alias,Data Query
+opt_all,Data Query
+opt_where_clause,Data Query
+where_clause,Data Query
+opt_having_clause,Data Query
+opt_qualify_clause,Data Query
+with_clause,Data Query
+with_list,Data Query
+common_table_expr,Data Query
+opt_derived_column_list,Data Query
+simple_ident_list,Data Query
+opt_window_clause,Data Query
+window_definition_list,Data Query
+window_definition,Data Query
+opt_group_clause,Data Query
+group_list,Data Query
+olap_opt,Data Query
+alter_order_list,Data Query
+alter_order_item,Data Query
+opt_order_clause,Data Query
+order_clause,Data Query
+order_list,Data Query
+opt_ordering_direction,Data Query
+ordering_direction,Data Query
+opt_limit_clause,Data Query
+limit_clause,Data Query
+limit_options,Data Query
+limit_option,Data Query
+opt_simple_limit,Data Query
+ulong_num,Data Query
+real_ulong_num,Data Query
+ulonglong_num,Data Query
+real_ulonglong_num,Data Query
+dec_num_error,Data Query
+dec_num,Data Query
+select_var_list,Data Query
+select_var_ident,Data Query
+into_clause,Data Query
+into_destination,Data Query
+do_stmt,Data Manipulation
+drop_table_stmt,Data Definition
+drop_index_stmt,Data Definition
+drop_database_stmt,Database Management
+drop_function_stmt,Stored Procedures & Functions
+drop_resource_group_stmt,Resource Management
+drop_procedure_stmt,Stored Procedures & Functions
+drop_user_stmt,User Management
+drop_view_stmt,Views
+drop_event_stmt,Triggers & Events
+drop_trigger_stmt,Triggers & Events
+drop_tablespace_stmt,Data Definition
+drop_undo_tablespace_stmt,Data Definition
+drop_logfile_stmt,Data Definition
+drop_server_stmt,Replication & Clustering
+drop_srs_stmt,Data Definition
+drop_role_stmt,User Management
+table_list,Data Definition
+table_alias_ref_list,Data Query
+if_exists,Statement Control
+opt_ignore_unknown_user,User Management
+opt_temporary,Temporary Objects
+opt_drop_ts_options,Data Definition
+drop_ts_option_list,Data Definition
+drop_ts_option,Data Definition
+insert_stmt,Data Manipulation
+replace_stmt,Data Manipulation
+insert_lock_option,Locking & Concurrency
+replace_lock_option,Locking & Concurrency
+opt_INTO,Data Manipulation
+insert_from_constructor,Data Manipulation
+insert_query_expression,Data Manipulation
+insert_columns,Data Manipulation
+insert_values,Data Manipulation
+query_expression_with_opt_locking_clauses,Data Query
+value_or_values,Data Manipulation
+values_list,Data Manipulation
+values_row_list,Data Manipulation
+equal,Data Manipulation
+opt_equal,Data Manipulation
+row_value,Data Manipulation
+row_value_explicit,Data Manipulation
+opt_values,Data Manipulation
+values,Data Manipulation
+expr_or_default,Data Manipulation
+opt_values_reference,Data Manipulation
+opt_insert_update_list,Data Manipulation
+update_stmt,Data Manipulation
+opt_with_clause,Data Manipulation
+update_list,Data Manipulation
+update_elem,Data Manipulation
+opt_low_priority,Data Manipulation
+delete_stmt,Data Manipulation
+opt_wild,Data Manipulation
+opt_delete_options,Data Manipulation
+opt_delete_option,Data Manipulation
+truncate_stmt,Data Manipulation
+opt_table,Data Manipulation
+opt_profile_defs,System Information
+profile_defs,System Information
+profile_def,System Information
+opt_for_query,System Information
+show_databases_stmt,System Information
+show_tables_stmt,System Information
+show_triggers_stmt,System Information
+show_events_stmt,System Information
+show_table_status_stmt,System Information
+show_open_tables_stmt,System Information
+show_plugins_stmt,System Information
+show_engine_logs_stmt,System Information
+show_engine_mutex_stmt,System Information
+show_engine_status_stmt,System Information
+show_columns_stmt,System Information
+show_binary_logs_stmt,System Information
+show_replicas_stmt,System Information
+show_binlog_events_stmt,System Information
+show_relaylog_events_stmt,System Information
+show_keys_stmt,System Information
+show_engines_stmt,System Information
+show_count_warnings_stmt,System Information
+show_count_errors_stmt,System Information
+show_warnings_stmt,System Information
+show_errors_stmt,System Information
+show_profiles_stmt,System Information
+show_profile_stmt,System Information
+show_status_stmt,System Information
+show_processlist_stmt,System Information
+show_variables_stmt,System Information
+show_character_set_stmt,System Information
+show_collation_stmt,System Information
+show_privileges_stmt,Security & Privileges
+show_grants_stmt,Security & Privileges
+show_create_database_stmt,Database Management
+show_create_table_stmt,Data Definition
+show_create_view_stmt,Views
+show_binary_log_status_stmt,Replication & Clustering
+show_replica_status_stmt,Replication & Clustering
+show_create_procedure_stmt,Stored Procedures & Functions
+show_create_function_stmt,Stored Procedures & Functions
+show_create_trigger_stmt,Triggers & Events
+show_procedure_status_stmt,Stored Procedures & Functions
+show_function_status_stmt,Stored Procedures & Functions
+show_procedure_code_stmt,Stored Procedures & Functions
+show_function_code_stmt,Stored Procedures & Functions
+show_create_event_stmt,Triggers & Events
+show_create_user_stmt,User Management
+show_parse_tree_stmt,System Information
+engine_or_all,System Information
+opt_storage,System Information
+opt_db,System Information
+opt_full,System Information
+opt_extended,System Information
+opt_show_cmd_type,System Information
+from_or_in,System Information
+opt_binlog_in,Replication & Clustering
+binlog_from,Replication & Clustering
+opt_wild_or_where,System Information
+describe_stmt,Data Query
+explain_stmt,Data Query
+explainable_stmt,Data Query
+describe_command,Data Query
+opt_explain_format,Data Query
+opt_explain_options,Data Query
+opt_explain_into,Data Query
+opt_explain_for_schema,Data Query
+opt_describe_column,Data Query
+flush,System Maintenance
+1585_46,System Maintenance
+flush_options,System Maintenance
+1587_47,System Maintenance
+opt_flush_lock,System Maintenance
+1589_48,System Maintenance
+flush_options_list,System Maintenance
+flush_option,System Maintenance
+opt_table_list,System Maintenance
+reset,System Maintenance
+1594_49,System Maintenance
+reset_options,System Maintenance
+opt_if_exists_ident,System Maintenance
+persisted_variable_ident,System Variables
+reset_option,System Maintenance
+1599_50,System Maintenance
+1600_51,System Maintenance
+opt_replica_reset_options,Replication & Clustering
+source_reset_options,Replication & Clustering
+purge,Replication & Clustering
+1604_52,Replication & Clustering
+purge_options,Replication & Clustering
+purge_option,Replication & Clustering
+kill,Miscellaneous Operations
+kill_option,Miscellaneous Operations
+use,Database Management
+load_stmt,Data Import/Export
+data_or_xml,Data Import/Export
+opt_local,Data Import/Export
+opt_from_keyword,Data Import/Export
+load_data_lock,Data Import/Export
+load_source_type,Data Import/Export
+opt_source_count,Data Import/Export
+opt_source_order,Data Import/Export
+opt_duplicate,Data Import/Export
+duplicate,Data Import/Export
+opt_field_term,Data Import/Export
+field_term_list,Data Import/Export
+field_term,Data Import/Export
+opt_line_term,Data Import/Export
+line_term_list,Data Import/Export
+line_term,Data Import/Export
+opt_xml_rows_identified_by,Data Import/Export
+opt_ignore_lines,Data Import/Export
+lines_or_rows,Data Import/Export
+opt_field_or_var_spec,Data Import/Export
+fields_or_vars,Data Import/Export
+field_or_var,Data Import/Export
+opt_load_data_set_spec,Data Import/Export
+load_data_set_list,Data Import/Export
+load_data_set_elem,Data Import/Export
+opt_load_algorithm,Data Import/Export
+opt_compression_algorithm,Data Import/Export
+opt_load_parallel,Data Import/Export
+opt_load_memory,Data Import/Export
+text_literal,Data Manipulation
+text_string,Data Manipulation
+param_marker,Data Manipulation
+signed_literal,Data Manipulation
+signed_literal_or_null,Data Manipulation
+null_as_literal,Data Manipulation
+literal,Data Manipulation
+literal_or_null,Data Manipulation
+NUM_literal,Data Manipulation
+int64_literal,Data Manipulation
+temporal_literal,Data Manipulation
+opt_interval,Data Manipulation
+insert_column,Data Manipulation
+table_wild,Data Query
+order_expr,Data Query
+grouping_expr,Data Query
+simple_ident,Data Query
+simple_ident_nospvar,Data Query
+simple_ident_q,Data Query
+table_ident,Data Query
+table_ident_opt_wild,Data Query
+IDENT_sys,Data Query
+TEXT_STRING_sys_nonewline,Data Manipulation
+filter_wild_db_table_string,Data Query
+TEXT_STRING_sys,Data Manipulation
+TEXT_STRING_literal,Data Manipulation
+TEXT_STRING_filesystem,Data Import/Export
+TEXT_STRING_password,User Management
+TEXT_STRING_hash,User Management
+TEXT_STRING_validated,User Management
+ident,Data Query
+role_ident,User Management
+label_ident,User Management
+lvalue_ident,User Management
+ident_or_text,Data Query
+role_ident_or_text,User Management
+user_ident_or_text,User Management
+user,User Management
+role,User Management
+schema,Database Management
+ident_keyword,Statement Control
+ident_keywords_ambiguous_1_roles_and_labels,User Management
+ident_keywords_ambiguous_2_labels,User Management
+label_keyword,User Management
+ident_keywords_ambiguous_3_roles,User Management
+ident_keywords_unambiguous,Statement Control
+role_keyword,User Management
+lvalue_keyword,User Management
+ident_keywords_ambiguous_4_system_variables,System Variables
+set,System Variables
+start_option_value_list,Transaction Control
+set_role_stmt,User Management
+opt_except_role_list,User Management
+set_resource_group_stmt,Resource Management
+thread_id_list,Miscellaneous Operations
+thread_id_list_options,Miscellaneous Operations
+start_option_value_list_following_option_type,Transaction Control
+option_value_list_continued,System Variables
+option_value_list,System Variables
+option_value,System Variables
+option_type,System Variables
+opt_var_type,System Variables
+opt_rvalue_system_variable_type,System Variables
+opt_set_var_ident_type,System Variables
+option_value_following_option_type,System Variables
+option_value_no_option_type,System Variables
+lvalue_variable,System Variables
+rvalue_system_variable,System Variables
+transaction_characteristics,Transaction Control
+transaction_access_mode,Transaction Control
+opt_transaction_access_mode,Transaction Control
+isolation_level,Transaction Control
+opt_isolation_level,Transaction Control
+transaction_access_mode_types,Transaction Control
+isolation_types,Transaction Control
+set_expr_or_default,System Variables
+lock,Locking & Concurrency
+1716_53,Locking & Concurrency
+table_or_tables,Locking & Concurrency
+table_lock_list,Locking & Concurrency
+table_lock,Locking & Concurrency
+lock_option,Locking & Concurrency
+unlock,Locking & Concurrency
+1722_54,Locking & Concurrency
+shutdown_stmt,Miscellaneous Operations
+restart_server_stmt,Miscellaneous Operations
+alter_instance_stmt,Replication & Clustering
+alter_instance_action,Replication & Clustering
+handler_stmt,Data Manipulation
+handler_scan_function,Data Manipulation
+handler_rkey_function,Data Manipulation
+handler_rkey_mode,Data Manipulation
+revoke,Security & Privileges
+1732_55,Security & Privileges
+grant,Security & Privileges
+1734_56,Security & Privileges
+opt_acl_type,Security & Privileges
+opt_privileges,Security & Privileges
+role_or_privilege_list,Security & Privileges
+role_or_privilege,Security & Privileges
+opt_with_admin_option,Security & Privileges
+opt_and,Security & Privileges
+require_list,Security & Privileges
+require_list_element,Security & Privileges
+grant_ident,Security & Privileges
+user_list,User Management
+role_list,User Management
+opt_retain_current_password,User Management
+opt_discard_old_password,User Management
+opt_user_registration,User Management
+create_user,User Management
+opt_create_user_with_mfa,User Management
+identification,User Management
+identified_by_password,User Management
+identified_by_random_password,User Management
+identified_with_plugin,User Management
+identified_with_plugin_as_auth,User Management
+identified_with_plugin_by_password,User Management
+identified_with_plugin_by_random_password,User Management
+opt_initial_auth,User Management
+alter_user,User Management
+factor,User Management
+create_user_list,User Management
+alter_user_list,User Management
+opt_column_list,Data Definition
+column_list,Data Definition
+require_clause,Security & Privileges
+grant_options,Security & Privileges
+opt_grant_option,Security & Privileges
+opt_with_roles,Security & Privileges
+opt_grant_as,Security & Privileges
+begin_stmt,Transaction Control
+1771_57,Transaction Control
+opt_work,Transaction Control
+opt_chain,Transaction Control
+opt_release,Transaction Control
+opt_savepoint,Transaction Control
+commit,Transaction Control
+rollback,Transaction Control
+savepoint,Transaction Control
+release,Transaction Control
+union_option,Data Query
+row_subquery,Data Query
+table_subquery,Data Query
+subquery,Data Query
+query_spec_option,Data Query
+init_lex_create_info,Data Definition
+view_or_trigger_or_sp_or_event,Data Definition
+definer_tail,User Management
+no_definer_tail,User Management
+definer_opt,User Management
+no_definer,User Management
+definer,User Management
+view_replace_or_algorithm,Views
+view_replace,Views
+view_algorithm,Views
+view_suid,Views
+view_tail,Views
+1797_58,Views
+view_query_block,Views
+view_check_option,Views
+trigger_action_order,Triggers & Events
+trigger_follows_precedes_clause,Triggers & Events
+trigger_tail,Triggers & Events
+1803_59,Triggers & Events
+udf_tail,Stored Procedures & Functions
+sf_tail,Stored Procedures & Functions
+1806_60,Stored Procedures & Functions
+1807_61,Stored Procedures & Functions
+1808_62,Stored Procedures & Functions
+1809_63,Stored Procedures & Functions
+routine_string,Stored Procedures & Functions
+stored_routine_body,Stored Procedures & Functions
+sp_tail,Stored Procedures & Functions
+1813_64,Stored Procedures & Functions
+1814_65,Stored Procedures & Functions
+1815_66,Stored Procedures & Functions
+1816_67,Stored Procedures & Functions
+xa,Transaction Control
+opt_convert_xid,Transaction Control
+xid,Transaction Control
+begin_or_start,Transaction Control
+opt_join_or_resume,Transaction Control
+opt_one_phase,Transaction Control
+opt_suspend,Transaction Control
+install_option_type,Miscellaneous Operations
+install_set_rvalue,Miscellaneous Operations
+install_set_value,Miscellaneous Operations
+install_set_value_list,Miscellaneous Operations
+opt_install_set_value_list,Miscellaneous Operations
+install_stmt,Miscellaneous Operations
+uninstall,Miscellaneous Operations
+TEXT_STRING_sys_list,Miscellaneous Operations
+import_stmt,Data Import/Export
+clone_stmt,Data Import/Export
+opt_datadir_ssl,Data Import/Export
+opt_ssl,Data Import/Export
+resource_group_types,Resource Management
+opt_resource_group_vcpu_list,Resource Management
+vcpu_range_spec_list,Resource Management
+vcpu_num_or_range,Resource Management
+signed_num,Resource Management
+opt_resource_group_priority,Resource Management
+opt_resource_group_enable_disable,Resource Management
+opt_force,Miscellaneous Operations
+json_attribute,Data Query
