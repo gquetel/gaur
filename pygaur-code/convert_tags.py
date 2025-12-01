@@ -86,10 +86,10 @@ def expand_rules(filepath : str, df_tags : pd.DataFrame):
 
         # Retrieve tag given by LLM to that 
         tag_values = df_tags.loc[key].to_dict()
-        tag_values['chatgpt-tags'] = index
+        tag_values['tags'] = index
         results.append(tag_values)
 
-    df_res = pd.DataFrame(results).set_index('chatgpt-tags')
+    df_res = pd.DataFrame(results).set_index('tags')
     return df_res
     
 
