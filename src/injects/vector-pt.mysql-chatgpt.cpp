@@ -97,27 +97,28 @@ static struct
     int32_t value;
     const char *name;
 } _tags_mapping[] = {
-    {1 << 0, "DDL_ALTER"},
-    {1 << 1, "DDL_CREATE"},
-    {1 << 2, "DDL_DROP"},
-    {1 << 3, "DML_DELETE_TRUNCATE"},
-    {1 << 4, "DML_INSERT_REPLACE"},
-    {1 << 5, "DML_MAINTENANCE"},
-    {1 << 6, "DML_SELECT"},
-    {1 << 7, "DML_UPDATE"},
-    {1 << 8, "EXPRESSION_LOGIC"},
-    {1 << 9, "PARTITIONING_STORAGE"},
-    {1 << 10, "PRIVILEGES_SECURITY"},
-    {1 << 11, "PROCEDURAL_LOGIC"},
-    {1 << 12, "REPLICATION_MANAGEMENT"},
-    {1 << 13, "SERVER_ADMIN"},
-    {1 << 14, "SHOW_DESCRIBE_EXPLAIN"},
-    {1 << 15, "STATEMENT_CONTROL"},
-    {1 << 16, "STATEMENT_HELP"},
-    {1 << 17, "STATEMENT_MANAGEMENT"},
-    {1 << 18, "TRANSACTION_CONTROL"},
-    {1 << 19, "WINDOW_ANALYTICS"},
+    {1 << 19, "DDL_ALTER"},
+    {1 << 18, "DDL_CREATE"},
+    {1 << 17, "DDL_DROP"},
+    {1 << 16, "DML_DELETE_TRUNCATE"},
+    {1 << 15, "DML_INSERT_REPLACE"},
+    {1 << 14, "DML_MAINTENANCE"},
+    {1 << 13, "DML_SELECT"},
+    {1 << 12, "DML_UPDATE"},
+    {1 << 11, "EXPRESSION_LOGIC"},
+    {1 << 10, "PARTITIONING_STORAGE"},
+    {1 << 9,  "PRIVILEGES_SECURITY"},
+    {1 << 8,  "PROCEDURAL_LOGIC"},
+    {1 << 7,  "REPLICATION_MANAGEMENT"},
+    {1 << 6,  "SERVER_ADMIN"},
+    {1 << 5,  "SHOW_DESCRIBE_EXPLAIN"},
+    {1 << 4,  "STATEMENT_CONTROL"},
+    {1 << 3,  "STATEMENT_HELP"},
+    {1 << 2,  "STATEMENT_MANAGEMENT"},
+    {1 << 1,  "TRANSACTION_CONTROL"},
+    {1 << 0,  "WINDOW_ANALYTICS"},
 };
+
 
 /**
  * @brief Get current timestamp
