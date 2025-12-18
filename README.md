@@ -90,9 +90,8 @@ column_attribute.5,ON_SYM UPDATE_SYM,PT_on_update_column_attr
 
 The association between grammar rules and semantic tags can be performed using different strategies, such as:
 
-- Expert-driven labeling
-- Embedding-based similarity (e.g., Sentence-BERT)
-- LLM-based classification
+- Expert-driven labeling and embedding-based similarity (e.g., Sentence-BERT)
+- LLM-based classification (we provide the [prompt](data/prompt.md) used to instantiate the semantic model and associate tags to MySQL grammar rules).
 
 These mechanisms are implemented in `pygaur` and are **not part of the data collector's runtime**. The output is a static mapping file that associates each grammar rule identifier with semantic tags.
 

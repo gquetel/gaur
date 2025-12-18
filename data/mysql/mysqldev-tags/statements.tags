@@ -1,8 +1,0 @@
-DDL, Data Definition,alter,create,drop,rename
-DML, Data Manipulation,update,union,insert,select,delete
-Transa-Lock, Transactional, Locking, Transactional and Locking
-Replication, Replication 
-Prepared,Prepared 
-Compound,Compound
-Admin,Administration,admin,
-Utility,Utility
