@@ -1,9 +1,11 @@
 # GAUR
 
-GAUR is a parser-based instrumentation framework designed to collect **lexical, syntactic, and explicit semantic observations** for application-level intrusion detection systems (AIDS). It operates by automatically instrumenting parsers generated with **GNU Bison**, enabling fine-grained, semantically meaningful data collection at **parse time**, with **negligible runtime overhead** and **no runtime natural language processing**. 
 
+GAUR is a parser-based instrumentation framework designed to collect **lexical, syntactic, and explicit semantic observations** for application-level intrusion detection systems (AIDS). It operates by automatically instrumenting GNU Bison grammars, enabling data collection at **parse time**, with **negligible runtime overhead** and **no runtime natural language processing**.
 
+The instrumentation method is further described in our paper: TODO
 
+Examples of instrumented applications are available at [gaur-instrumented-apps](https://github.com/gquetel/gaur-instrumented-apps/).
 # Installation
 
 To build GAUR, the following tools are required:
@@ -51,13 +53,9 @@ gaur.modified.y
 
 GAUR follows a **three-phase architecture** that explicitly separates semantic modeling from runtime data collection.
 
-1. **Semantic Model Definition (offline)**
-2. **Static Rule-to-Semantic Tag Attribution and Parser instrumentation**
-3. **Data Collection**
-
-Only the third phase occurs at runtime.
-
-
+1. **Semantic Model Definition**
+2. **Static Rule-to-Semantic Tag Attribution**
+3. **Parser instrumentation***
 
 ## 1. Semantic Model Definition  
 
@@ -88,7 +86,6 @@ The extracted data is exported as a CSV file where each line corresponds to a sp
 column_attribute.5,ON_SYM UPDATE_SYM,PT_on_update_column_attr
 ```
 
-
 ## Attribution Mechanisms
 
 The association between grammar rules and semantic tags can be performed using different strategies, such as:
@@ -99,7 +96,7 @@ The association between grammar rules and semantic tags can be performed using d
 
 These mechanisms are implemented in `pygaur` and are **not part of the data collector's runtime**. The output is a static mapping file that associates each grammar rule identifier with semantic tags.
 
-## Parser Instrumentation 
+## 3. Parser Instrumentation 
 
 GAUR instruments the input Bison grammar to embed data collection logic directly into the generated parser.
 
@@ -131,8 +128,7 @@ The injected code defines macros and data structures used to build observations 
 
 An array mapping rule identifiers to their semantic tags is injected into the parser using the mapping file provided via the `--list` option.
 
-
-# 3. Runtime Data Collection
+# Runtime Data Collection
 
 For each processed input, GAUR produces a **tree-structured representation** that encodes:
 
@@ -147,7 +143,6 @@ This representation is generated:
 
 Flattening this structure into feature vectors (e.g., counters or Boolean features) is a **post-processing step** and is not part of GAUR itself.
 
-
 # Relationship to pygaur
 
 `pygaur` is an auxiliary toolchain used to assist with:
@@ -155,6 +150,3 @@ Flattening this structure into feature vectors (e.g., counters or Boolean featur
 - Rule data extraction
 - Semantic model instantiation
 - Rule-to-tag attribution
-
-It operates entirely offline and is **not required at runtime**. Any tool capable of producing a valid rule-to-tag mapping file can be used in its place.
-
