@@ -3,9 +3,12 @@
 
 GAUR is a parser-based instrumentation framework designed to collect **lexical, syntactic, and explicit semantic observations** for application-level intrusion detection systems (AIDS). It operates by automatically instrumenting GNU Bison grammars, enabling data collection at **parse time**, with **negligible runtime overhead** and **no runtime natural language processing**.
 
-The instrumentation method is further described in our paper: TODO
+The instrumentation method is further described in our paper: **Parser Instrumentation for Semantic-Aware Applicative Intrusion Detection**. Published in 41st International Conference on ICT Systems Security and Privacy Protection (IFIPSEC26), 2026. Recommended citation:
 
-Examples of instrumented applications are available at [gaur-instrumented-apps](https://github.com/gquetel/gaur-instrumented-apps/).
+> Quetel, G., Gimenez, P. F., Robert, T. & Pautet, L. (2026 June). Parser Instrumentation for Semantic-Aware Applicative Intrusion Detection. In the 41st International Conference on ICT Systems Security and Privacy Protection (IFIPSEC26) 
+
+- Examples of instrumented applications are available at [gaur-instrumented-apps](https://github.com/gquetel/gaur-instrumented-apps/).
+- Examples of IDS build using GAUR [gaur-sql-detect](https://github.com/gquetel/gaur-sql-detect) 
 # Installation
 
 To build GAUR, the following tools are required:
