@@ -2155,6 +2155,7 @@ yyacceptlab:
 `-----------------------------------*/
 yyabortlab:
   yyresult = 1;
+  GAUR_ERROR();
   goto yyreturnlab;
 
 
