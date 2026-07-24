@@ -8,12 +8,15 @@
 %{
 	#include <string.h>
 	#include "gaur.tab.h"
+	#include <gmodify.h>
 
   #define MAX_SIZE_LITERAL 1024
+  #define MAX_SIZE_COMMENT 65536
 
 	void yyerror(const char* msg);
   char * val_id;
 	char  buf_lit[MAX_SIZE_LITERAL];
+	char  buf_comment[MAX_SIZE_COMMENT];
 %}
 
 /* State after recognizing a first "%%" */
@@ -334,17 +337,40 @@ static int current_state = 0;
 }
 
 <SC_GRAMMAR,SC_AFTER_IDENTIFIER,SC_BRACED_CODE,INITIAL>{
-  /* Comments management */
-  "//".*                  {continue;}
+
+  /* Line comment followed by its terminating newline, matched as a single
+     token so the newline is not left for the surrounding state to consume
+     a second time (which would otherwise duplicate blank lines). */
+  "//".*\n                {pstr(yytext);}
+  /* Line comment at EOF, with no trailing newline in the input. */
+  "//".*                  {pstr(yytext); pstr("\n");}
+
+  /* Preserve comments in the output grammar. */
   "/*" {
     current_state = YY_START;
+    strcpy(buf_comment, "/*");
     BEGIN SC_YACC_COMMENT;
   }
 }
 
 <SC_YACC_COMMENT>{
-  "*/"     BEGIN current_state;
-  .|{eol}  continue;
+  "*/"     {
+    strcat(buf_comment, "*/");
+    if (current_state == SC_AFTER_IDENTIFIER) {
+      /* Would otherwise print before the id it trails; queue instead. */
+      queue_comment(buf_comment);
+    } else {
+      pstr(buf_comment);
+    }
+    BEGIN current_state;
+  }
+  .|{eol}  {
+    if (strlen(buf_comment) + yyleng < MAX_SIZE_COMMENT - 1) {
+      strcat(buf_comment, yytext);
+    } else {
+      printf("Comment buffer too small, comment content truncated in output.\n");
+    }
+  }
   <<EOF>>  yyerror("Unfinished comment");
 }
 

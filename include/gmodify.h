@@ -80,6 +80,16 @@ void pstr(char *string);
 void pstr_f(char *format, char *string);
 
 /**
+ * @brief Queue a comment found while peeking past an id for ':', to be printed later.
+ */
+void queue_comment(char *string);
+
+/**
+ * @brief Print and clear the comment queued by queue_comment(), if any.
+ */
+void flush_pending_comment();
+
+/**
  * @brief Add in the output file prologue the functions definitions needed to build and use the stack of nonterminals.
  *
  * @return int Number of char written.

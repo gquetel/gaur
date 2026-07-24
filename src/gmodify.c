@@ -37,6 +37,9 @@ char *current_lhs = NULL;
 
 static int gaur_mode = M_DEFAULT;
 
+/* Comment read while peeking past an id for ':' (SC_AFTER_IDENTIFIER), held until the id is printed. */
+static char *pending_comment = NULL;
+
 /* -------------------- INTERNAL FUNCTIONS --------------------*/
 
 /**
@@ -352,6 +355,22 @@ void pstr(char *string)
 void pstr_f(char *format, char *string)
 {
     add_tail(format, string);
+}
+
+void queue_comment(char *string)
+{
+    free(pending_comment);
+    pending_comment = strdup(string);
+}
+
+void flush_pending_comment()
+{
+    if (pending_comment != NULL)
+    {
+        pstr(pending_comment);
+        free(pending_comment);
+        pending_comment = NULL;
+    }
 }
 
 void end_group_rule()

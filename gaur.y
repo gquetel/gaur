@@ -18,7 +18,7 @@
   extern void yyerror(const char* s);
   extern FILE* yyin;
   char *latest_id_colon;
-  char* latest_symbol;  
+  char* latest_symbol;
 %}
 
 /* YACC Declarations */
@@ -108,7 +108,7 @@ epilogue:  %empty
 grammar_declaration: symbol_declaration
 | code_props_type L_BRACKET {pstr("{");}  code R_BRACKET {pstr("}");} generic_symlist
 | PERCENT_CODE L_BRACKET {pstr("{");}  code R_BRACKET {pstr("}");}
-| PERCENT_CODE ID L_BRACKET {pstr("{");}  code R_BRACKET {pstr("}");}
+| PERCENT_CODE ID {flush_pending_comment();} L_BRACKET {pstr("{");}  code R_BRACKET {pstr("}");}
 | PERCENT_UNION {pstr("%union");} union_name L_BRACKET {pstr("{");}  code R_BRACKET {pstr("}");}
 | PERCENT_DEFAULT_PREC {pstr("%default-prec ");}
 | PERCENT_NO_DEFAULT_PREC {pstr("%no-default-prec ");}
@@ -131,7 +131,7 @@ code_props_type: PERCENT_DESTRUCTOR {pstr("%destructor");}
 ;
 
 union_name: %empty
-| ID {pstr_f("\"%s\"", $1);free($1);}
+| ID {pstr_f("\"%s\"", $1);free($1);flush_pending_comment();}
 ;
 
 symbol_declaration: PERCENT_NTERM {pstr("%nterm");} nterm_decls
@@ -220,19 +220,20 @@ rules_or_grammar_declaration: rules {pstr("\n\n");}
 ;
 
 /* ID_COLON ([ID]) COLON rules */
-rules: ID_COLON { 
+rules: ID_COLON {
         pstr($1);
-        latest_id_colon = strdup($1); 
+        latest_id_colon = strdup($1);
         extract_lhs(latest_id_colon);
-        free($1);} 
-  named_ref COLON  {pstr(":\n");} 
+        free($1);
+        flush_pending_comment();}
+  named_ref COLON  {pstr(":\n");}
   rhses.1  {free(latest_id_colon);end_group_rule();}
 ;
 
 /* Recognizes the right-hand side of a rule */
-rhses.1:  rhs  
-| rhses.1 PIPE {pstr("\n|");  signal_new_rule(latest_id_colon);}  rhs 
-| rhses.1 SEMICOLON {pstr("\n;");}  
+rhses.1:  rhs
+| rhses.1 PIPE {pstr("\n|");  signal_new_rule(latest_id_colon);}  rhs
+| rhses.1 SEMICOLON {pstr("\n;");}
 ;
 
 /*Recognize the components of one rule*/
@@ -252,7 +253,7 @@ named_ref: %empty
 | BRACKETED_ID {pstr("[");pstr($1);free($1);pstr("]");}  
 ;
 
-id: ID {latest_symbol = strdup($1);pstr_f("%s ", $1); free($1);}
+id: ID {latest_symbol = strdup($1);pstr_f("%s ", $1); free($1);flush_pending_comment();}
 | CHAR_LITERAL {latest_symbol = strdup($1);pstr_f("'%s' ", $1);free($1);}
 ;
 
